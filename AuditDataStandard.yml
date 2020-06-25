@@ -1,0 +1,3208 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/xbrl-us2/das/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/XBRL-US/DAS-API/1.0.0
+info:
+  version: "1.0.0"
+  title: Audit Data Open Api Project (AICPA)
+  description: This is an initial API specification for requesting data for performing audits
+
+tags:
+  - name: General Ledger
+    description: Used to request General Ledger Information
+
+security:
+  - implicit:
+      - read
+      - write
+paths:
+  /gl_details:
+    get:
+      operationId: getGLDetails
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+       Allows searching for General Ledger Journal Transactions
+      parameters:
+        - name: start_date
+          in: query
+          description: Start date for GL transactions.  Returns all transactions with an `effective_date` after `the start_date`.
+          required: false
+          schema:
+            type: integer
+            format: date
+        - name: end_date
+          in: query
+          description: End date for GL transactions.  Returns all transactions with an `effective_date` before `the end_date`.
+          required: false
+          schema:
+            type: integer
+            format: date
+            
+        - name: journal_id
+          in: query
+          description: Search by a specific journal ID.
+          required: false
+          schema:
+            type: string
+            
+        
+      responses:
+        '200':
+          description: __gl_details__ successfully accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Journals'
+            application/xml:
+                schema:
+                  $ref: '#/components/schemas/Journals'
+
+  /gl_trial_balance:
+    get:
+      operationId: getTBDetails
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+        Allows searching for General Ledger Trial Balance Totals
+      parameters:
+  
+        - name: end_date
+          in: query
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          required: false
+          schema:
+            type: integer
+            format: date
+            
+        - $ref: '#/components/parameters/GL_Account_Number_Param' 
+            
+        
+      responses:
+        '200':
+          description: _gl_trial_balance_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documentInfo:
+                    $ref: '#/components/schemas/documentInfo_oim_json'
+                  facts:
+                      $ref: '#/components/schemas/facts_oim_json'
+  
+
+components:
+  securitySchemes:
+    implicit:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://example.com/oauth/auth'
+          scopes:
+            write: allows modifying resources
+            read: allows reading resources
+  schemas:
+    Journals:
+      type: object
+      properties:
+        Journals:
+          $ref: '#/components/schemas/GL_Journals'
+    GL_Journals:
+      type: array
+      items:
+         $ref: '#/components/schemas/GL_Details'
+    GL_Details: 
+      type: object
+      properties:
+        Journal_ID:
+          $ref: '#/components/schemas/Journal_ID'
+        Journal_Number:
+          $ref: '#/components/schemas/Journal_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Period:
+          $ref: '#/components/schemas/Period'
+        Effective_Date:
+          $ref: '#/components/schemas/Effective_Date'
+        JE_Type_Code:
+          $ref: '#/components/schemas/JE_Type_Code'
+        JE_Header_Description:
+          $ref: '#/components/schemas/JE_Header_Description'
+        Source:
+          $ref: '#/components/schemas/Source'
+        Reversal_Indicator:
+          $ref: '#/components/schemas/Reversal_Indicator'
+        Reversal_Journal_ID:
+          $ref: '#/components/schemas/Reversal_Journal_ID'
+        Cancellation_Sign:
+          $ref: '#/components/schemas/Cancellation_Sign'
+        # May be this should be changed to Created By not all journals are created by a human which entered implies.
+        # The ISO standard changed it to Created_User_Id. 
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
+        Created_Date:
+          $ref: '#/components/schemas/Created_Date'
+        Created_Time:
+          $ref: '#/components/schemas/Created_Time'
+        Approved_Person_ID:
+          $ref: '#/components/schemas/Approved_Person_ID'
+        Approved_Date:
+          $ref: '#/components/schemas/Approved_Date'
+        GL_Line_Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GL_Line_Items'
+      
+    GL_Line_Items:
+      type: object
+      properties:
+        GL_Account_Number:
+          $ref: '#/components/schemas/GL_Account_Number'
+        Journal_ID_Line_Number:
+          $ref: '#/components/schemas/Journal_ID_Line_Number'
+        JE_Line_Description:
+          $ref: '#/components/schemas/JE_Line_Description'
+        Functional_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Functional_Currency_Code:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Reporting_Amount:
+          $ref: '#/components/schemas/Reporting_Amount'
+        Reporting_Currency_Code:
+          $ref: '#/components/schemas/Reporting_Currency_Code'
+        Local_Amount:
+          $ref: '#/components/schemas/Local_Amount'  
+        Local_Currency_Code:
+          $ref: '#/components/schemas/Local_Currency_Code'
+        Transaction_Amount:
+          $ref: '#/components/schemas/Transaction_Amount'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Credit_Debit_Indicator:
+          $ref: '#/components/schemas/Credit_Debit_Indicator'
+
+    documentInfo_oim_json:
+      type: object
+      properties:
+        documentType:
+          type: string
+          example: http://www.xbrl.org/WGWD/YYYY-MM-DD/xbrl-json
+        features:
+          type: object
+          properties:
+            xbrl:canonicalValues: 
+              type: boolean
+        prefixes:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            xbrl: "http://www.xbrl.org/WGWD/YYYY-MM-DD/oim"
+            p1: "http://www.xbrl.org/2003/iso4217"
+            p2: "http://aicpa.org/das/us-gaap/2020-01-31"
+            p3: "http://www.xbrl.org/2003/instance"
+      
+            
+        taxonomy:
+          type: array
+          items:
+            type: string
+            example: 
+              "http://www.aicpa.org/das/us-gaap/2020-01-31.xsd"
+    
+    facts_oim_json:
+      type: object
+      properties:
+        value:
+          type: string
+        accuracy:
+          type: integer
+        aspects:
+          type: object
+          properties:
+            concept: 
+              type: string
+            entity:
+              type: string
+            period:
+              type: string
+            unit:
+              type: string
+            GL_Account_Number:
+              $ref: '#/components/schemas/GL_Account_Number'
+      example:
+        xfd233befbacbc83e43d510ae01866384c65f23a60482caaa20331642: {"value": "151000",
+      "accuracy": -3,
+      "aspects": {
+        "concept": "p2:ContractWithCustomers",
+        "entity": "p3:0001512228",
+        "period": "2015-07-01T00:00:00/2016-07-01T00:00:00",
+        "unit": "p1:USD",
+        "GL_Account_Number": "12345678"}
+        }
+
+    GL_Account_Balance: 
+      type: object
+      properties:
+        GL_Account_Number:
+          $ref: '#/components/schemas/GL_Account_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Balance_As_Of_Date:
+          $ref: '#/components/schemas/Balance_As_Of_Date'
+        Functional_Currency_Code:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Reporting_Currency_Code:
+          $ref: '#/components/schemas/Reporting_Currency_Code'
+        Local_Currency_Code:
+          $ref: '#/components/schemas/Local_Currency_Code'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Beginning_Functional_Amount:
+          $ref: '#/components/schemas/Beginning_Functional_Amount'
+        Beginning_Reporting_Amount:
+          $ref: '#/components/schemas/Beginning_Reporting_Amount'
+        Beginning_Local_Amount:
+          $ref: '#/components/schemas/Beginning_Local_Amount'
+    
+    AR_Open_Accounts_Receivables_Items:
+      type: array
+      items:
+          $ref: '#/components/schemas/AR_Open_Accounts_Receivables'
+    
+    AR_Open_Accounts_Receivables: 
+      type: object
+      properties:
+        Transaction_ID:
+          $ref: '#/components/schemas/Transaction_ID'
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Transaction_Date:
+          $ref: '#/components/schemas/Transaction_Date'
+        Transaction_Due_Date:
+          $ref: '#/components/schemas/Transaction_Due_Date'
+        Functional_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Functional_Currency_Code:  
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Transaction_Amount:
+          $ref: '#/components/schemas/Transaction_Amount'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Functional_Balance:
+          $ref: '#/components/schemas/Functional_Balance'
+        Transaction_Balance:
+          $ref: '#/components/schemas/Transaction_Balance'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+    
+    AR_Cash_Received_Items:
+      type: array
+      items:
+          $ref: '#/components/schemas/AR_Cash_Received'
+
+    AR_Cash_Received:
+      type: object
+      properties:
+        Receipt_ID:
+          $ref: '#/components/schemas/Receipt_ID'
+        Receipt_Number:
+          $ref: '#/components/schemas/Receipt_Number'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Receipt_Date:
+          $ref: '#/components/schemas/Receipt_Date'
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Reference_Number:
+          $ref: '#/components/schemas/Reference_Number'
+        Reference_Date:
+          $ref: '#/components/schemas/Reference_Date'
+        Functional_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Functional_Currency_Code: 
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Transaction_Amount:
+          $ref: '#/components/schemas/Transaction_Amount'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Amount_Credit_Debit_Indicator:
+          $ref: '#/components/schemas/Amount_Credit_Debit_Indicator'
+        GL_Debit_Account_Number:
+          $ref: '#/components/schemas/GL_Debit_Account_Number'
+        GL_Credit_Account_Number:
+          $ref: '#/components/schemas/GL_Credit_Account_Number'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    Inventory_Listing:
+      type: object
+      properties:
+        Inventory_Held:
+          $ref: '#/components/schemas/Inv_Items'
+    Inv_Items:
+      type: array
+      items:
+         $ref: '#/components/schemas/INV_On_Hand'
+          
+    INV_On_Hand:
+      type: object
+      properties:
+        Inventory_ID:
+          $ref: '#/components/schemas/Inventory_ID'
+        Inventory_Product_ID:
+          $ref: '#/components/schemas/Inventory_Product_ID'
+        Location_ID:
+          $ref: '#/components/schemas/Location_ID'
+        Inventory_As_Of_Date:
+          $ref: '#/components/schemas/Inventory_As_Of_Date'
+        Inventory_Stocking_UOM_Code:
+          $ref: '#/components/schemas/Inventory_Stocking_UOM_Code'
+        Quantity:
+          $ref: '#/components/schemas/Quantity'
+        System_Quantity:
+          $ref: '#/components/schemas/System_Quantity'
+        Inventory_Cost:
+          $ref: '#/components/schemas/Inventory_Cost'
+        Functional_Currency Code:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+
+
+    PPE_Listing:
+      type: object
+      properties:
+        PPE_Held:
+          $ref: '#/components/schemas/PPE_Items'
+    PPE_Items:
+      type: array
+      items:
+         $ref: '#/components/schemas/PPE_Master'
+
+    PPE_Master:
+      type: object
+      properties:
+        PPE_ID:
+          $ref: '#/components/schemas/PPE_ID'
+        PPE_Code:
+          $ref: '#/components/schemas/PPE_Code'
+        Type_Code:
+          $ref: '#/components/schemas/Type_Code'
+        PPE_Name:
+          $ref: '#/components/schemas/PPE_Name'
+        PPE_Feature:
+          $ref: '#/components/schemas/PPE_Feature'
+        Purchase_Order_ID:
+          $ref: '#/components/schemas/Purchase_Order_ID'
+        Inventory_Product_ID:
+          $ref: '#/components/schemas/Inventory_Product_ID'
+        Location_Description:
+          $ref: '#/components/schemas/Location_Description'
+        Condition_Name:
+          $ref: '#/components/schemas/Condition_Name'
+        Acquisition_Date:
+          $ref: '#/components/schemas/Acquisition_Date'
+        Posted_Date:
+          $ref: '#/components/schemas/Posted_Date'
+        Placed_Into_Service_Date:
+          $ref: '#/components/schemas/Placed_Into_Service_Date'
+        Quantity_On_Hand:
+          $ref: '#/components/schemas/Quantity_On_Hand'
+        UOM_Code:
+          $ref: '#/components/schemas/UOM_Code'
+        Useful_Life:
+          $ref: '#/components/schemas/Useful_Life'
+        Useful_Life_Remaining:
+          $ref: '#/components/schemas/Useful_Life_Remaining'
+        Original_Cost:
+          $ref: '#/components/schemas/Original_Cost'
+        Accumulated_Depreciation:
+          $ref: '#/components/schemas/Accumulated_Depreciation'
+        Impairment_Provision:
+          $ref: '#/components/schemas/Impairment_Provision'
+        Functional_Currency_Code: 
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AP_Open_Accounts_Payable:
+      type:  object
+      properties:
+        Transaction_ID:
+          $ref: '#/components/schemas/Transaction_ID'
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Transaction_Date:
+          $ref: '#/components/schemas/Transaction_Date'
+        Transaction_Due_Date:
+          $ref: '#/components/schemas/Transaction_Due_Date'
+        Functional_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Functional_Currency_Code:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Transaction_Amount:
+          $ref: '#/components/schemas/Transaction_Amount'
+        Transaction_Currency _Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Functional_Balance:
+          $ref: '#/components/schemas/Functional_Balance'
+        Transaction_Balance:
+          $ref: '#/components/schemas/Transaction_Balance'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AP_Payments_Made:
+      type: object
+      properties:
+        Payment_ID:
+          $ref: '#/components/schemas/Payment_ID'
+        Payment_Number:
+          $ref: '#/components/schemas/Payment_Number'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Payment_Date:
+          $ref: '#/components/schemas/Payment_Date'
+        Settlement_Method_Code: 
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Reference_Number:
+          $ref: '#/components/schemas/Reference_Number'
+        Reference_Date:
+          $ref: '#/components/schemas/Reference_Date'
+        Functional_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Functional_Currency_Code:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Transaction_Amount:
+          $ref: '#/components/schemas/Transaction_Amount'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Amount_Credit_Debit_Indicator:
+          $ref: '#/components/schemas/Amount_Credit_Debit_Indicator'
+        GL_Debit_Account_Number:
+          $ref: '#/components/schemas/GL_Debit_Account_Number'
+        GL_Credit_Account_Number: 
+          $ref: '#/components/schemas/GL_Credit_Account_Number'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    Customer_Listing:
+      type: object
+      properties:
+        entity_suppliers:
+          $ref: '#/components/schemas/individual_customers'
+
+    individual_customers:
+      type: array
+      items:
+         $ref: '#/components/schemas/Customer'
+
+    Customer:
+      type: object
+      properties:
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Customer_Account_Number:
+          $ref: '#/components/schemas/Customer_Account_Number'
+        Customer_Account_Name:
+          $ref: '#/components/schemas/Customer_Account_Name'
+        Customer_TIN:
+          $ref: '#/components/schemas/Customer_TIN'
+        Customer_Street_Address1:
+          $ref: '#/components/schemas/Customer_Street_Address1'
+        Customer_Street_Address2:
+          $ref: '#/components/schemas/Customer_Street_Address2'
+        Customer_City:
+          $ref: '#/components/schemas/Customer_City'
+        Customer_Physical_Postal_Code: 
+          $ref: '#/components/schemas/Customer_Physical_Postal_Code'
+        Customer_Country:
+          $ref: '#/components/schemas/Customer_Country'
+        Customer_Billing_Address1:
+          $ref: '#/components/schemas/Customer_Billing_Address1'
+        Customer_Billing_Address2:
+          $ref: '#/components/schemas/Customer_Billing_Address2'
+        Customer_Billing_City:
+          $ref: '#/components/schemas/Customer_Billing_City'
+        Customer_Billing_Postal_Code:
+          $ref: '#/components/schemas/Customer_Billing_Postal_Code'
+        Customer_Billing_Country:
+          $ref: '#/components/schemas/Customer_Billing_Country'
+    
+    Supplier_Listing:
+      type: object
+      properties:
+        entity_suppliers:
+          $ref: '#/components/schemas/individual_suppliers'
+    individual_suppliers:
+      type: array
+      items:
+         $ref: '#/components/schemas/Supplier'
+
+    Supplier:
+      type: object
+      properties:
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Supplier_Account_Number: 
+          $ref: '#/components/schemas/Supplier_Account_Number'
+        Supplier_Account_Name:
+          $ref: '#/components/schemas/Supplier_Account_Name'
+        Supplier_TIN:
+          $ref: '#/components/schemas/Supplier_TIN'
+        Supplier_Street_Address1:
+          $ref: '#/components/schemas/Supplier_Street_Address1'
+        Supplier_Street_Address2:
+          $ref: '#/components/schemas/Supplier_Street_Address2'
+        Supplier_City:
+          $ref: '#/components/schemas/Supplier_City'
+        Supplier_Physical_Postal_Code:
+          $ref: '#/components/schemas/Supplier_Physical_Postal_Code'
+        Supplier_Country:
+          $ref: '#/components/schemas/Supplier_Country'
+        Supplier_Billing_Address1: 
+          $ref: '#/components/schemas/Supplier_Billing_Address1'
+        Supplier_Billing_Address2:
+          $ref: '#/components/schemas/Supplier_Billing_Address2'
+        Supplier_Billing_City:
+          $ref: '#/components/schemas/Supplier_Billing_City'
+        Supplier_Billing_State_PRV: 
+          $ref: '#/components/schemas/Supplier_Billing_State_PRV'
+        Supplier_Billing_Postal_Code:
+          $ref: '#/components/schemas/Supplier_Billing_Postal_Code'
+        Supplier_Billing_Country:
+          $ref: '#/components/schemas/Supplier_Billing_Country'
+      
+
+    BAS_Chart_Of_Accounts:
+      type: object
+      properties:
+        GL_Account_Number:
+          $ref: '#/components/schemas/GL_Account_Number'
+        GL_Account_Name:
+          $ref: '#/components/schemas/GL_Account_Name'
+        FS_Caption:
+          $ref: '#/components/schemas/FS_Caption'
+        Account_Type:
+          $ref: '#/components/schemas/Account_Type'
+        Account_Subtype:
+          $ref: '#/components/schemas/Account_Subtype'
+        Parent_GL_Account_Number:
+          $ref: '#/components/schemas/Parent_GL_Account_Number'
+
+    BAS_Bank_Account:
+      type: object
+      properties:
+        Bank_Account_Number:
+          $ref: '#/components/schemas/Bank_Account_Number'
+        Bank_Account_Name:
+          $ref: '#/components/schemas/Bank_Account_Name'
+        Bank_Code:
+          $ref: '#/components/schemas/Bank_Code'
+        Bank_Name:
+          $ref: '#/components/schemas/Bank_Name'
+        Branch_Code:
+          $ref: '#/components/schemas/Branch_Code'
+        Branch_Name:
+          $ref: '#/components/schemas/Branch_Name'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Contracts_Details:
+      type: object
+      properties:
+        Sales_Contract_ID:
+          $ref: '#/components/schemas/Sales_Contract_ID'
+        Sales_Contract_Line_ID:
+          $ref: '#/components/schemas/Sales_Contract_Line_ID'
+        Dispatch_Organization_Code: 
+          $ref: '#/components/schemas/Dispatch_Organization_Code'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Contract_Quantity:
+          $ref: '#/components/schemas/Contract_Quantity'
+        Sales_UOM_Code:
+          $ref: '#/components/schemas/Sales_UOM_Code'
+        Tax_Exclude_Unit_Price:
+          $ref: '#/components/schemas/Tax_Exclude_Unit_Price'
+        Tax_Include_Unit_Price:
+          $ref: '#/components/schemas/Tax_Include_Unit_Price'
+        Tax_Exclude_Amount:
+          $ref: '#/components/schemas/Tax_Exclude_Amount'
+        Tax_Include_Amount:
+          $ref: '#/components/schemas/Tax_Include_Amount'
+        Due_Date:
+          $ref: '#/components/schemas/Due_Date'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Invoices_Generated:
+      type: object
+      properties:
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Invoice_Number:
+          $ref: '#/components/schemas/Invoice_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period: 
+          $ref: '#/components/schemas/Accounting_Period'
+        Invoice_Type_Name:
+          $ref: '#/components/schemas/Invoice_Type_Name'
+        Invoice_Date:
+          $ref: '#/components/schemas/Invoice_Date'
+        Invoice_Due_Date:
+          $ref: '#/components/schemas/Invoice_Due_Date'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Invoice_Transaction_Amount:
+          $ref: '#/components/schemas/Invoice_Transaction_Amount'
+        Invoice_Transaction_CUR_Code:
+          $ref: '#/components/schemas/Invoice_Transaction_CUR_Code'
+        Payment_Term_Code:
+          $ref: '#/components/schemas/Payment_Term_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Transaction_Amount:
+          $ref: '#/components/schemas/Tax1_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Orders:
+      type: object
+      properties:
+        Purchase_Order_ID:
+          $ref: '#/components/schemas/Purchase_Order_ID'
+        Purchase_Order_Number:
+          $ref: '#/components/schemas/Purchase_Order_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Purchase_Order_Type_Name: 
+          $ref: '#/components/schemas/Purchase_Order_Type_Name'
+        Purchase_Order_Date:
+          $ref: '#/components/schemas/Purchase_Order_Date'
+        Purchase_Organization_Code:
+          $ref: '#/components/schemas/Purchase_Organization_Code'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Payment_Term_Code:
+          $ref: '#/components/schemas/Payment_Term_Code'
+        Order_Transaction_Amount:
+          $ref: '#/components/schemas/Order_Transaction_Amount'
+        Order_Transaction_CUR_Code:
+          $ref: '#/components/schemas/Order_Transaction_CUR_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Remark:
+          $ref: '#/components/schemas/Remark'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Order_Details:
+      type: array
+      items:
+        $ref: '#/components/schemas/PUR_Orders_Detail'
+
+    PUR_Orders_Detail:
+      type: object
+      properties:
+        Purchase_Order_ID:
+          $ref: '#/components/schemas/Purchase_Order_ID'
+        Purchase_Order_Line_ID: 
+          $ref: '#/components/schemas/Purchase_Order_Line_ID'
+        Purchase_Contract_ID:
+          $ref: '#/components/schemas/Purchase_Contract_ID'
+        Purchase_Contract_Line_ID:   
+          $ref: '#/components/schemas/Purchase_Contract_Line_ID'
+        Receipt_Organization_ode:
+          $ref: '#/components/schemas/Receipt_Organization_ode'
+        Due_Date: 
+          $ref: '#/components/schemas/Due_Date'
+        Basic_UOM_Quantity:
+          $ref: '#/components/schemas/Basic_UOM_Quantity'
+        Purchase_Order_Line_Quantity:
+          $ref: '#/components/schemas/Purchase_Order_Line_Quantity'
+        Tax_Exclude_Unit_Price:
+          $ref: '#/components/schemas/Tax_Exclude_Unit_Price'
+        Tax_Include_Unit_Price:
+          $ref: '#/components/schemas/Tax_Include_Unit_Price'
+        Tax_Exclude_Amount:
+          $ref: '#/components/schemas/Tax_Exclude_Amount'
+        Tax_Include_Amount:
+          $ref: '#/components/schemas/Tax_Include_Amount'
+        Order_Line_Transaction_Amount:
+          $ref: '#/components/schemas/Order_Line_Transaction_Amount'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+    
+    PUR_Invoices_Received:
+      type: array
+      items: 
+        $ref: '#/components/schemas/PUR_Invoice_Received'
+ 
+    PUR_Invoice_Received:
+      type: object
+      properties:
+        Invoice_ID: 
+          $ref: '#/components/schemas/Invoice_ID'
+        Invoice_Number:
+          $ref: '#/components/schemas/Invoice_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Invoice_Type_Name:
+          $ref: '#/components/schemas/Invoice_Type_Name'
+        Invoice_Date:
+          $ref: '#/components/schemas/Invoice_Date'
+        Invoice_Due_Date:
+          $ref: '#/components/schemas/Invoice_Due_Date'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Invoice_Transaction_Amount:
+          $ref: '#/components/schemas/Invoice_Transaction_Amount'
+        Invoice_Transaction_CUR_Code:
+          $ref: '#/components/schemas/Invoice_Transaction_CUR_Code'
+        Payment_Term_Code:
+          $ref: '#/components/schemas/Payment_Term_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Tax1_Type_Code :
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Transaction_Amount: 
+          $ref: '#/components/schemas/Tax1_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Invoices_Received_Details:
+      type: object
+      properties:
+        Invoice_ID:
+          $ref: '#/components/schemas/Business_Segment_X'
+        Invoice_Line_ID:
+          $ref: '#/components/schemas/Invoice_Line_ID'
+        Purchase_Order_ID:
+          $ref: '#/components/schemas/Purchase_Order_ID'
+        Purchase_Order_Line_ID: 
+          $ref: '#/components/schemas/Purchase_Order_Line_ID'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Invoice_Quantity:
+          $ref: '#/components/schemas/Invoice_Quantity'
+        Purchase_UOM_Code:
+          $ref: '#/components/schemas/Purchase_UOM_Code'
+        Basic_UOM_Quantity:
+          $ref: '#/components/schemas/Basic_UOM_Quantity'
+        Tax_Exclude_Unit_Price:
+          $ref: '#/components/schemas/Tax_Exclude_Unit_Price'
+        Tax_Include_Unit_Price:
+         $ref: '#/components/schemas/Tax_Include_Unit_Price'
+        Tax_Exclude_Amount:
+          $ref: '#/components/schemas/Tax_Exclude_Amount'
+        Tax_Include_Amount:
+          $ref: '#/components/schemas/Tax_Include_Amount'
+        Invoice_Line_TRX_Amount:
+          $ref: '#/components/schemas/Invoice_Line_TRX_Amount'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Transaction_Amount:
+          $ref: '#/components/schemas/Tax1_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Materials_Received:
+      type: object
+      properties:
+        Receipt_ID:
+          $ref: '#/components/schemas/Receipt_ID'
+        Receipt_Number:
+          $ref: '#/components/schemas/Receipt_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Receipt_Organization_Code:
+          $ref: '#/components/schemas/Receipt_Organization_Code'
+        Receipt_Date:
+          $ref: '#/components/schemas/Receipt_Date'
+        Receipt_Reference_Number: 
+          $ref: '#/components/schemas/Receipt_Reference_Number'
+        Receipt_Transaction_Amount:
+          $ref: '#/components/schemas/Receipt_Transaction_Amount'
+        Receipt_Transaction_CUR_Code:
+          $ref: '#/components/schemas/Receipt_Transaction_CUR_Code'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Purchase_Order_ID:
+          $ref: '#/components/schemas/Purchase_Order_ID'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Materials_Received_Details:
+      type: object
+      properties:
+        Receipt_ID:
+          $ref: '#/components/schemas/Receipt_ID'
+        Receipt_Line_ID:
+          $ref: '#/components/schemas/Receipt_Line_ID'
+        Receipt_Line_Number:
+          $ref: '#/components/schemas/Receipt_Line_Number'
+        Product_ID: 
+          $ref: '#/components/schemas/Product_ID'
+        Receipt_Quantity:
+          $ref: '#/components/schemas/Receipt_Quantity'
+        Receipt_UOM_Code:
+          $ref: '#/components/schemas/Receipt_UOM_Code'
+        Receipt_Unit_Price:
+          $ref: '#/components/schemas/Receipt_Unit_Price'
+        Receipt_Line_TRX_Amount:
+          $ref: '#/components/schemas/Receipt_Line_TRX_Amount'
+        Purchase_Order_Line_ID:
+          $ref: '#/components/schemas/Purchase_Order_Line_ID'
+        Order_Line_Transaction_Amount:
+          $ref: '#/components/schemas/Order_Line_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    BAS_Business_Segment:
+      type: object
+      properties:
+        Business_Segment_Code:
+          $ref: '#/components/schemas/Business_Segment_Code'
+        Business_Segment_Name:
+          $ref: '#/components/schemas/Business_Segment_Name'
+        Segment_Reference_Level:
+          $ref: '#/components/schemas/Segment_Reference_Level'
+        Organization_Type_Name:
+          $ref: '#/components/schemas/Organization_Type_Name'
+    
+    BAS_Accounting_Period:
+      type: object
+      properties:
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Accounting_Period_BEG_Date:
+          $ref: '#/components/schemas/Accounting_Period_BEG_Date'
+        Accounting_Period_Ending_Date:
+          $ref: '#/components/schemas/Accounting_Period_Ending_Date'
+
+    BAS_Settlement_Method:
+      type: object
+      properties:
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Settlement_Method_Name:
+          $ref: '#/components/schemas/Settlement_Method_Name'
+
+    BAS_Currency:
+      type: object
+      properties:
+        Currency_Code:
+          $ref: '#/components/schemas/Currency_Code'
+        Currency_Name:
+          $ref: '#/components/schemas/Currency_Name'
+
+    BAS_Measurement_Unit:
+      type: object
+      properties:
+        UOM_Code:
+          $ref: '#/components/schemas/UOM_Code'
+        UOM_Name:
+          $ref: '#/components/schemas/UOM_Name'
+        UOM_Abbreviation:
+          $ref: '#/components/schemas/UOM_Abbreviation'
+
+    BAS_Payment_Term:
+      type: object
+      properties:
+        Payment_Term_Code:
+          $ref: '#/components/schemas/Payment_Term_Code'
+        Payment_Term_Name:
+          $ref: '#/components/schemas/Payment_Term_Name'
+        Payment_Term_Line_Number:
+          $ref: '#/components/schemas/Payment_Term_Line_Number'
+        Payment_Term_Line_Description:
+          $ref: '#/components/schemas/Payment_Term_Line_Description'
+
+    BAS_Tax_Regulatory:
+      type: object
+      properties:
+        Regulator_Code:
+          $ref: '#/components/schemas/Regulator_Code'
+        Regulator_Country:
+          $ref: '#/components/schemas/Regulator_Country'
+        Regulator_Region:
+          $ref: '#/components/schemas/Regulator_Region'
+        Regulator_Name:
+          $ref: '#/components/schemas/Regulator_Name'
+        Regulator_Role:
+          $ref: '#/components/schemas/Regulator_Role'
+        Regulator_Payable_Account_NUM:
+          $ref: '#/components/schemas/Regulator_Payable_Account_NUM'
+        Regulator_Accrual_Account_NUM:
+          $ref: '#/components/schemas/Regulator_Accrual_Account_NUM'
+        Regulator_Expense_Account_NUM:
+          $ref: '#/components/schemas/Regulator_Expense_Account_NUM'
+        Regulator_ID:
+          $ref: '#/components/schemas/Regulator_ID'
+        Regulator_Reporting_ORG:
+          $ref: '#/components/schemas/Regulator_Reporting_ORG'
+        Regulator_Active_Flag:
+          $ref: '#/components/schemas/Regulator_Active_Flag'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    BAS_Tax_Type:
+      type: object
+      properties:
+        Tax_Type_Code:
+          $ref: '#/components/schemas/Tax_Type_Code'
+        Tax_Name:
+          $ref: '#/components/schemas/Tax_Name'
+        Regulator_Code:
+          $ref: '#/components/schemas/Regulator_Code'
+        Tax_Type_Description:
+          $ref: '#/components/schemas/Tax_Type_Description'
+        Tax_Code_Description:
+          $ref: '#/components/schemas/Tax_Code_Description'
+        Tax_Percentage:
+          $ref: '#/components/schemas/Tax_Percentage'
+        Business_Segment_X: 
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    GL_Trial_Balance:
+      type: object
+      properties:
+        GL_Account_Number: 
+          $ref: '#/components/schemas/GL_Account_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Balance_As_Of_Date:
+          $ref: '#/components/schemas/Balance_As_Of_Date'
+        Functional_Currency_Code: 
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Reporting_Currency_Code: 
+          $ref: '#/components/schemas/Reporting_Currency_Code'
+        Local_Currency_Code:
+          $ref: '#/components/schemas/Local_Currency_Code'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        Beginning_Functional_Amount:
+          $ref: '#/components/schemas/Beginning_Functional_Amount'
+        Ending_Functional_Amount:
+          $ref: '#/components/schemas/Ending_Functional_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AR_Adjustments:
+      type: object
+      properties:
+        Adjustment_ID:
+          $ref: '#/components/schemas/Adjustment_ID'
+        Adjustment_Number:
+          $ref: '#/components/schemas/Adjustment_Number'
+        Adjustment_Type_Name:
+          $ref: '#/components/schemas/Adjustment_Type_Name'
+        Adjustment_Document_Number: 
+          $ref: '#/components/schemas/Adjustment_Document_Number'
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Adjustment_Date:
+          $ref: '#/components/schemas/Adjustment_Date'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Adjustment_Functional_Amount:
+          $ref: '#/components/schemas/Adjustment_Functional_Amount'
+        ADJ_Functional_CUR_Code:
+          $ref: '#/components/schemas/ADJ_Functional_CUR_Code'
+        ADJ_Transaction_Amount:
+          $ref: '#/components/schemas/ADJ_Transaction_Amount'
+        ADJ_TRX_CUR_Code:
+          $ref: '#/components/schemas/ADJ_TRX_CUR_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Created_Date:
+          $ref: '#/components/schemas/Created_Date'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Local_Amount:
+          $ref: '#/components/schemas/Tax1_Local_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AR_Adjustments_Details:
+      type: object
+      properties:
+        Adjustment_ID: 
+          $ref: '#/components/schemas/Adjustment_ID'
+        Adjustment_Line_ID:
+          $ref: '#/components/schemas/Adjustment_Line_ID'
+        Adjustment_Line_Number:
+          $ref: '#/components/schemas/Adjustment_Line_Number'
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Invoice_Line_ID:
+          $ref: '#/components/schemas/Invoice_Line_ID'
+        ADJ_Line_Functional_Amount:
+          $ref: '#/components/schemas/ADJ_Line_Functional_Amount'
+        ADJ_Line_Functional_CUR_Code:
+          $ref: '#/components/schemas/ADJ_Line_Functional_CUR_Code'
+        ADJ_Line_Transaction_Amount:
+          $ref: '#/components/schemas/ADJ_Line_Transaction_Amount'
+        ADJ_Line_TRX_CUR_Code: 
+          $ref: '#/components/schemas/ADJ_Line_TRX_CUR_Code'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Local_Amount:
+          $ref: '#/components/schemas/Tax1_Local_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Orders:
+      type: object
+      properties:
+        Sales_Order_ID:
+          $ref: '#/components/schemas/Sales_Order_ID'
+        Sales_Order_Number:
+          $ref: '#/components/schemas/Sales_Order_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Sales_Order_Type_Name:
+          $ref: '#/components/schemas/Sales_Order_Type_Name'
+        Sales_Order_Date:
+          $ref: '#/components/schemas/Sales_Order_Date'
+        Sales_Organization_Code: 
+          $ref: '#/components/schemas/Sales_Organization_Code'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Payment_Term_Code:
+          $ref: '#/components/schemas/Payment_Term_Code'
+        Order_Transaction_Amount:
+          $ref: '#/components/schemas/Order_Transaction_Amount'
+        Order_Transaction_CUR_Code:
+          $ref: '#/components/schemas/Order_Transaction_CUR_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Remark:
+          $ref: '#/components/schemas/Remark'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Orders_Details:
+      type: object
+      properties:
+        Sales_Order_ID:
+          $ref: '#/components/schemas/Sales_Order_ID'
+        Sales_Order_Line_ID:
+          $ref: '#/components/schemas/Sales_Order_Line_ID'
+        Sales_Order_Line_Number:
+          $ref: '#/components/schemas/Sales_Order_Line_Number'
+        Sales_Contract_ID:
+          $ref: '#/components/schemas/Sales_Contract_ID'
+        Sales_Contract_Line_ID:
+          $ref: '#/components/schemas/Sales_Contract_Line_ID'
+        Payer_ID:
+          $ref: '#/components/schemas/Payer_ID'
+        Dispatch_Organization_Code:
+          $ref: '#/components/schemas/Dispatch_Organization_Code'
+        Due_Date:
+          $ref: '#/components/schemas/Due_Date'
+        Basic_UOM_Quantity:
+          $ref: '#/components/schemas/Basic_UOM_Quantity'
+        Sales_Order_Line_Quantity:
+          $ref: '#/components/schemas/Sales_Order_Line_Quantity'
+        Tax_Exclude_Unit_Price:
+          $ref: '#/components/schemas/Tax_Exclude_Unit_Price'
+        Tax_Include_Unit_Price:
+          $ref: '#/components/schemas/Tax_Include_Unit_Price'
+        Tax_Exclude_Amount:
+          $ref: '#/components/schemas/Tax_Exclude_Amount'
+        Tax_Include_Amount:
+          $ref: '#/components/schemas/Tax_Include_Amount'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Order_Line_Transaction_Amount:
+          $ref: '#/components/schemas/Order_Line_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Invoices_Generated_Details: 
+      type: object
+      properties:
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Invoice_Line_ID :
+          $ref: '#/components/schemas/Invoice_Line_ID'
+        Invoice_Line_Number: 
+          $ref: '#/components/schemas/Invoice_Line_Number'
+        Sales_Order_ID:
+          $ref: '#/components/schemas/Sales_Order_ID'
+        Sales_Order_Line_ID:
+          $ref: '#/components/schemas/Sales_Order_Line_ID'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Basic_UOM_Quantity:
+          $ref: '#/components/schemas/Basic_UOM_Quantity'
+        Invoice_Quantity:
+          $ref: '#/components/schemas/Invoice_Quantity'
+        Sales_UOM_Code:
+          $ref: '#/components/schemas/Sales_UOM_Code'
+        Invoice_Line_Transaction_Amount:
+          $ref: '#/components/schemas/Invoice_Line_TRX_Amount'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Transaction_Amount:
+          $ref: '#/components/schemas/Tax1_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Shipments_Made:
+      type: object
+      properties:
+        Shipment_ID:
+          $ref: '#/components/schemas/Shipment_ID'
+        Shipment_Number:
+          $ref: '#/components/schemas/Shipment_Number'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Dispatch_Organization_Code: 
+          $ref: '#/components/schemas/Dispatch_Organization_Code'
+        Shipment_Date:
+          $ref: '#/components/schemas/Shipment_Date'
+        Shipping_Reference_Number: 
+          $ref: '#/components/schemas/Shipping_Reference_Number'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Sales_Order_ID:
+          $ref: '#/components/schemas/Sales_Order_ID'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    SAL_Shipments_Made_Details:
+      type: object
+      properties:
+        Shipment_ID:
+          $ref: '#/components/schemas/Shipment_ID'
+        Shipping_Document_Line_ID:
+          $ref: '#/components/schemas/Shipping_Document_Line_ID'
+        Shipping_Document_Line_Number:
+          $ref: '#/components/schemas/Shipping_Document_Line_Number'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Shipping_Quantity:
+          $ref: '#/components/schemas/Shipping_Quantity'
+        Shipping_Unit_Price: 
+          $ref: '#/components/schemas/Shipping_Unit_Price'
+        Shipping_Line_Transaction_Amount:
+          $ref: '#/components/schemas/Shipping_Line_Transaction_Amount'
+        Sales_Order_Line_ID:
+          $ref: '#/components/schemas/Sales_Order_Line_ID'
+        Order_Line_Transaction_Amount:
+          $ref: '#/components/schemas/Order_Line_Transaction_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AP_Cash_Application:
+      type: object
+      properties:
+        AP_Application_ID:
+          $ref: '#/components/schemas/AP_Application_ID'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        AP_Application_Date:
+          $ref: '#/components/schemas/AP_Application_Date'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Payment_ID:
+          $ref: '#/components/schemas/Payment_ID'
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Settlement_Method_Code: 
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Functional_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Functional_Currency_Code:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Transaction_Amount:
+          $ref: '#/components/schemas/Transaction_Amount'
+        Transaction_Currency_Code:
+          $ref: '#/components/schemas/Transaction_Currency_Code'
+        GL_Debit_Account_Number:
+          $ref: '#/components/schemas/GL_Debit_Account_Number'
+        GL_Credit_Account_Number:
+          $ref: '#/components/schemas/GL_Credit_Account_Number'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AP_Adjustments:
+      type: object
+      properties:
+        Adjustment_ID:
+          $ref: '#/components/schemas/Adjustment_ID'
+        Adjustment_Number:
+          $ref: '#/components/schemas/Adjustment_Number'
+        Adjustment_Type_Name:
+          $ref: '#/components/schemas/Adjustment_Type_Name'
+        Adjustment_Document_Number:
+          $ref: '#/components/schemas/Adjustment_Document_Number'
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Accounting_Period:
+          $ref: '#/components/schemas/Accounting_Period'
+        Adjustment_Date:
+          $ref: '#/components/schemas/Adjustment_Date'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Adjustment_Functional_Amount:
+          $ref: '#/components/schemas/Adjustment_Functional_Amount'
+        ADJ_Functional_CUR_Code:
+          $ref: '#/components/schemas/ADJ_Functional_CUR_Code'
+        ADJ_Transaction_Amount:
+          $ref: '#/components/schemas/ADJ_Transaction_Amount'
+        ADJ_TRX_CUR_Code:
+          $ref: '#/components/schemas/ADJ_TRX_CUR_Code'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Created_Date:
+          $ref: '#/components/schemas/Created_Date'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Local_Amount:
+          $ref: '#/components/schemas/Tax1_Local_Amount'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    AP_Adjustments_Details:
+      type: object
+      properties:
+        Adjustment_ID:
+          $ref: '#/components/schemas/Adjustment_ID'
+        Adjustment_Line_ID:
+          $ref: '#/components/schemas/Adjustment_Line_ID'
+        Adjustment_Line_Number:
+          $ref: '#/components/schemas/Adjustment_Line_Number'
+        Invoice_ID: 
+          $ref: '#/components/schemas/Invoice_ID'
+        Invoice_Line_ID: 
+          $ref: '#/components/schemas/Invoice_Line_ID'
+        ADJ_Line_Functional_Amount:
+          $ref: '#/components/schemas/ADJ_Line_Functional_Amount'
+        ADJ_Line_Functional_CUR_Code:
+          $ref: '#/components/schemas/ADJ_Line_Functional_CUR_Code'
+        ADJ_Line_Transaction_Amount:
+          $ref: '#/components/schemas/ADJ_Line_Transaction_Amount'
+        ADJ_Line_TRX_CUR_Code: 
+          $ref: '#/components/schemas/ADJ_Line_TRX_CUR_Code'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Local_Amount:
+          $ref: '#/components/schemas/Tax1_Local_Amount'
+        Business_Segment_X: 
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Requisitions:
+      type: object
+      properties:
+        Requisition_ID:
+          $ref: '#/components/schemas/Requisition_ID'
+        Requisition_Number:
+          $ref: '#/components/schemas/Requisition_Number'
+        Requisition_Date:
+          $ref: '#/components/schemas/Requisition_Date'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Created_Date: 
+          $ref: '#/components/schemas/Created_Date'
+        Status:
+          $ref: '#/components/schemas/Status'
+        Remark:
+          $ref: '#/components/schemas/Remark'
+        Business_Segment_X: 
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    PUR_Requisitions_Details:
+      type: object
+      properties:
+        Requisition_ID: 
+          $ref: '#/components/schemas/Requisition_ID'
+        Requisition_Line_ID:
+          $ref: '#/components/schemas/Requisition_Line_ID'
+        Product_ID:
+          $ref: '#/components/schemas/Product_ID'
+        Requisition_Due_Date:
+          $ref: '#/components/schemas/Requisition_Due_Date'
+        Requisition_Quantity: 
+          $ref: '#/components/schemas/Requisition_Quantity'
+        Approved_Quantity:
+          $ref: '#/components/schemas/Approved_Quantity'
+        Purchase_UOM_Code: 
+          $ref: '#/components/schemas/Purchase_UOM_Code'
+        Project_ID:
+          $ref: '#/components/schemas/Project_ID'
+        Supplier_Account_ID:
+          $ref: '#/components/schemas/Supplier_Account_ID'
+        Purchase_Organization_Code:
+          $ref: '#/components/schemas/Purchase_Organization_Code'
+        Requisition_Organization_Code:
+          $ref: '#/components/schemas/Purchase_Organization_Code'
+        Status:
+          $ref: '#/components/schemas/Status'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    INV_Location:
+      type: object
+      properties:
+        Location_ID:
+          $ref: '#/components/schemas/Location_ID'
+        Location_Code:
+          $ref: '#/components/schemas/Location_Code'
+        Location_Type:
+          $ref: '#/components/schemas/Location_Type'
+        Location_Street_Address1:
+          $ref: '#/components/schemas/Location_Street_Address1'
+        Location_Street_Address2:
+          $ref: '#/components/schemas/Location_Street_Address2'
+        Location_City: 
+          $ref: '#/components/schemas/Location_City'
+        Location_State_Province: 
+          $ref: '#/components/schemas/Location_State_Province'
+        Location_Country: 
+          $ref: '#/components/schemas/Location_Country'
+        Location_Postal_Code: 
+          $ref: '#/components/schemas/Location_Postal_Code'
+        Location_Active_Flag:
+          $ref: '#/components/schemas/Location_Active_Flag'
+        Business_Segment_X: 
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    INV_Product:
+      type: object
+      properties:
+        Inventory_Product_ID:
+          $ref: '#/components/schemas/Inventory_Product_ID'
+        Inventory_Product_Code:
+          $ref: '#/components/schemas/Inventory_Product_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    INV_Transaction:
+      type: object
+      properties:
+        Transaction_Document_ID:
+          $ref: '#/components/schemas/Transaction_Document_ID'
+        Transaction_Document_Line_ID:
+          $ref: '#/components/schemas/Transaction_Document_Line_ID'
+        Transaction_Order_ID:
+          $ref: '#/components/schemas/Transaction_Order_ID'
+        Transaction_Order_Line_ID: 
+          $ref: '#/components/schemas/Transaction_Order_Line_ID'
+        Transaction_Date:
+          $ref: '#/components/schemas/Transaction_Date'
+        Transaction_Time:
+          $ref: '#/components/schemas/Transaction_Time'
+        Transaction_Type_System:
+          $ref: '#/components/schemas/Transaction_Type_System'
+        Transaction_Description: 
+          $ref: '#/components/schemas/Transaction_Description'
+        Transaction_Quantity:
+          $ref: '#/components/schemas/Transaction_Quantity'
+        Inventory_Product_ID:
+          $ref: '#/components/schemas/Inventory_Product_ID'
+        Inventory_From_Location_ID:
+          $ref: '#/components/schemas/Inventory_From_Location_ID'
+        Inventory_To_Location_ID:
+          $ref: '#/components/schemas/Inventory_To_Location_ID'
+        INV_System_Or_External_Source: 
+          $ref: '#/components/schemas/INV_System_Or_External_Source'
+        Created_User_ID: 
+          $ref: '#/components/schemas/Created_User_ID'
+        GL_Line_Debit_Account_Number: 
+          $ref: '#/components/schemas/GL_Line_Debit_Account_Number'
+        GL_Line_Credit_Account_Number: 
+          $ref: '#/components/schemas/GL_Line_Credit_Account_Number'
+        Business_Segment_X: 
+          $ref: '#/components/schemas/Business_Segment_X'
+
+    INV_Physical_Inventory:
+      type: object
+      properties:
+        Inventory_Count_Sheet_ID:
+          $ref: '#/components/schemas/Inventory_Count_Sheet_ID'
+        Inventory_Count_Sheet_Line_ID:
+          $ref: '#/components/schemas/Inventory_Count_Sheet_Line_ID'
+        Inventory_Product_ID:
+          $ref: '#/components/schemas/Inventory_Product_ID'
+        Location_ID:
+          $ref: '#/components/schemas/Location_ID'
+        Inventory_Organization_Code: 
+          $ref: '#/components/schemas/Inventory_Organization_Code'
+        Count_Date:
+          $ref: '#/components/schemas/Count_Date'
+        Inventory_Stocking_UOM_Code:
+          $ref: '#/components/schemas/Inventory_Stocking_UOM_Code'
+        System_Quantity:
+          $ref: '#/components/schemas/System_Quantity'
+        Physical_Count_Quantity:
+          $ref: '#/components/schemas/Physical_Count_Quantity'
+        Comment:
+          $ref: '#/components/schemas/Comment'
+        Created_User_ID:
+          $ref: '#/components/schemas/Created_User_ID'
+        Business_Segment_X:
+          $ref: '#/components/schemas/Business_Segment_X'
+          
+
+     
+
+
+
+ # This is where all the field properties are defined
+
+    Balance_As_Of_Date:
+      type: string  
+      format: date
+      description: The date through which the provided balance reflects account activity. EXAMPLE If a report was run for activity through 2014-12-31 on 2015-01-22, the date recorded would be 20141231. .
+      example: "2018-12-31"
+
+    Beginning_Functional_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Beginning balance amount of theÇÏperiod (same amount as the ending  balance from the prior period)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
+
+    Beginning_Reporting_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Beginning balance amount for the  period in the currency used for  statutory reporting.
+
+    Beginning_Local_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Beginning balance amount for the  period in the local currency used for  multi-currency tracking.
+
+    Beginning_Transaction_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Beginning balance amount for the  period in the transaction currency  used for multi-currency tracking.
+
+    Ending_Functional_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Ending balance amount for the period  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
+
+    Ending_Reporting_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Ending balance amount for the period  in the currency used for statutory  reporting.
+
+    Ending_Local_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Ending balance amount for the period  in local currency used for multicurrency tracking.
+
+    Ending_Transaction_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Ending balance amount for the period  in the transaction currency used for  multi-currency tracking.
+      
+    Journal_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the journal entry. Typically auto-generated by the system.
+      example: '1234ab'
+    Journal_Number:
+      type: string
+      maxLength: 100
+      description: The number of the journal entry; for example, including serial number,document type, and date.
+    GL_Account_Number:
+      type: string
+      maxLength: 100
+      description: The GL account number. Shall match the GL_Account_Number used in the BAS_Chart_Of_Accounts table.
+    Fiscal_Year:
+      type: string
+      minLength: 4
+      maxLength: 4
+      description: |
+        Fiscal year in which the Effective_Date occurs. The year shall be shown in four digits as “YYYY”, which is part of the extended format and the “YYYYMM-DD” in ISO 8601:2004. 
+      example: 2019
+    Period:
+      type: string
+      maxLength: 15
+      description: Fiscal period in which the Effective_Date occurs. EXAMPLE include W1–W53 for weekly periods, M1–M12 for monthly periods, Q1–Q4 for quarterly periods, and from any beginning date to any ending date. Shall match the Accounting_Period in the BAS_Accounting_Period table
+    Effective_Date:
+      type: string
+      format: date
+      description: The date of the journal entry, no matter when the entry is received or created. This sometimes refers to the accounting date or accounting effective date; for example, if the user wants to see the financial results for the period ending March 5, 20X1, the journal entry may be created on any day during the open period and be assigned to the period ending March 5, 20X1.
+      example: "2018-12-31"
+    Journal_ID_Line_Number:
+      type: string
+      maxLength: 100
+      example: 1
+      description: Identifier that is unique for each line within a journal entry.
+    JE_Type_Code:
+      type: string
+      maxLength: 60
+      example:
+      description: The code of journal entry type. Shall match the JE_Type_Code in the BAS_Journal_Entry_Type table.
+    JE_Header_Description:
+      type: string
+      maxLength: 1000
+      description: Description of the entire journal entry as described by the journal entry header.
+      example: "My first json Journal"
+    JE_Line_Description:
+      type: string
+      maxLength: 1000
+      example: Book to accrual account
+      description: Description of the individual line within the journal entry.
+    Source:
+      type: string
+      maxLength: 25
+      example: "Sales journal"
+      description: Code for source from which the journal entry originated. EXAMPLE Sales journal, cash receipts journal, general journal, payroll journal, accountant manual entry, or spreadsheet.
+    Bill_Number :
+      type: string
+      maxLength: 100
+      example:
+      description: The number of the bill. A bill usually includes bank drafts, promissory notes and checks. A bill may be issued by the drawer who agreed upon themselves or entrust the drawee at sight; a specified date to the payee or bearer unconditionally pays a certain amount of securities. This number is generated either by manual input or by the system.
+    Bill_Type_Code:
+      type: string
+      maxLength: 60
+      example: Bank drafts
+      description: The type of the bill. EXAMPLE Bank drafts, promissory notes and checks. Shall match the Bill_Type_Code in the BAS_Bill_Type table.
+    Bill_Date:
+      type: string
+      format: date
+      maxLength: 10
+      example: "2018-12-31"
+      description: The date of the bill.
+
+    Quantity:
+      type: number
+      format: float
+      example: 10
+      description: The quantity of items referenced in the journal entry line. When the GL_Account_Number is for inventories or fixed assets, this field is effective, if not, this field is NULL.
+    UOM_Code:
+      type: string
+      maxLength: 80
+      example: "ft"
+      description: The code of the physical measurement scale for inventory and PPE referred to as a unit of measure (UOM). Shall match the UOM_Code in the BAS_Measurement_Unit table.
+    Unit_Price:
+      type: number
+      format: float
+      example: 100
+      description: The per unit price of the inventory or PPE. This field is associated with Quantity and Amount; for example, if the account is inventory or PPE, we can multiply Quantity by Unit_Price to get total line Amount.
+    Functional_Amount:
+      type: number
+      example: 100
+      description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency
+    Functional_Currency_Code:
+      type: string
+      maxLength: 3
+      minLength: 3
+      example: "USD"
+      description: The code of functional or group currency related to the amount (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+    Reporting_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Transaction monetary amount recorded in the reporting currency.
+
+    Reporting_Currency_Code:
+      type: string
+      maxLength: 3
+      minLength: 3
+      example: "USD"
+      description: The code of currency used for nonconsolidated reporting as opposed to functional, consolidated reporting, local or actual amounts (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+
+    Local_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Amount in the local country currency where the transaction originated.
+
+    Local_Currency_Code:
+      type: string
+      maxLength: 3
+      minLength: 3
+      example: "USD"
+    
+    Transaction_Amount:
+      type: number
+      format: float
+      example: 100
+      description: Amount in the transaction currency.
+    
+    Settlement_Method_Code:
+      type: string
+      maxLength: 60
+      example: "sales"
+      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the Settlement_Method_Code in the BAS_Settlement_Method table.
+    Credit_Debit_Indicator:
+      type: string
+      maxLength: 1
+      example: "C"
+      description: This indicates whether the amount is a credit or a debit. EXAMPLE C=credit; D=debit.
+      enum: [C,D]
+    Reversal_Indicator:
+      type: string
+      maxLength: 1
+      example: "1"
+      description: Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty (“”) = none of the above or system generated indicators.
+    Reversal_Journal_ID:
+      type: string
+      maxLength: 100
+      example: "sales"
+      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the Settlement_Method_Code in the BAS_Settlement_Method table.
+    Cancellation_Sign:
+      type: boolean
+      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE 0=entry is not cancelled, 1=entry is cancelled.
+      
+    Entered_By:
+      type: string
+      maxLength: 25
+      description: The unique identifier for the person or process that created the record. 
+      example: "Val"
+    
+    Created_Date:
+      type: string
+      format: string
+      description: The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date.
+      example: "2019-01-01"
+      
+    Created_Time:
+      type: string
+      format: time
+      description: The time the journal entry was created in the system.
+      example: '2018-12-31'
+    
+    Approved_Person_ID:
+      type: string
+      maxLength: 25
+      description: The unique identifier for the person who approved the entry. Typically auto-generated by the system. Shall match the User_ID in the BAS_User table.
+      example: "123456"
+      
+    Approved_Date:
+      type: string
+      format: date
+      description: The date the entry was approved
+      example: '2018-12-31'
+      
+    Posted_User_ID:
+      type: string
+      maxLength: 25
+      description: The unique identifier for the person who posted the journal entry to ledger. Typically auto-generated by the system. Shall match the User_ID in
+      example: "123456"
+      
+    Account_Segment_Employee:
+      type: string
+      maxLength: 60
+      description: This field is a fixed account segment, recording information related to an employee (e.g. loan to corporate officers). The value stored in this field stored is Employee_ID. Shall match the Employee_ID in the BAS_Employee table
+      example: "1234"
+    
+    Account_Segment_Project:
+      type: string
+      maxLength: 60
+      description: This field is a fixed account segement, recording information related to a project. EXAMPLE Construction projects which require a separate accounting. The value of this field stored is Project_ID. Shall match the Project_ID in the BAS_Project table. 
+      example: "1234"
+    
+    Account_Segment_Bank_Account:
+      type: string
+      maxLength: 60
+      description: This field is a fixed account segment, recording information related to bank accounts. The value of this field stored is Bank_Code, and we can get more information of a certain bank account in the BAS_Bank_Account table. Shall match the Bank_Code in the BAS_Bank_Account table. 
+      example: "1234"
+    
+    Account_Segment_X:
+      type: string
+      maxLength: 60
+      description: Reserved field that shall be used for supplementary information associated with particular account. The ‘X’ signifies that each unique account segment will be captured in a separate field.
+
+    Business_Segment_X:
+      type: string
+      maxLength: 60
+      description: A reserved field that shall be used for business segments/structures. The ‘X’ signifies that one number is associated with each unique reference level.
+      example: "Val"
+
+    Transaction_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the transaction of an open AR includes invoice and cash received. Typically auto-generated by the system.
+      example: 1234567890
+
+    Invoice_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the invoice, from which AR is derived. Typically auto-generated by the system. May be set to NULL if adjustment is at customer (not invoice) level. Otherwise shall match the Invoice_ID in the SAL_Invoices_Generated table.
+      example: 1234567890
+
+    Customer_Account_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the customer payment is expected or to whom unused credits have been applied. Typically auto-generated by the system. Shall match the Customer_Account_ID in the BAS_Customer table.
+      example: 123456
+
+    Transaction_Date:
+      type: string
+      format: date
+      maxLength: 10
+      minLength: 10
+      description: The date of the transaction, regardles of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.
+      example: '2018-12-31'
+
+    Transaction_Due_Date:
+      type: string
+      format: date
+      maxLength: 10
+      minLength: 10
+      description: The date payment is due from the customer. Not all transactions will have a due date. May be set to NULL, if there is no due date. EXAMPLE Credit memos. Aging of a receivable is usually calculated based on this date.
+      example: '2018-12-31'
+
+    Functional_ Amount:
+     type: number
+     description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency.
+     example: 100
+
+    Transaction_Currency_Code:
+      type: string 
+      maxLength: 3
+      minLength: 3
+      description: The currency used in actual transaction (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example:
+
+    Functional_Balance:
+      type: number
+      description: Balance monetary amount recorded in the functional or group currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it. No multicurrency translation should be performed on this amount because all transactions are recorded in a single currency.
+      example:
+
+    Transaction_Balance:
+      type: number
+      description: Balance monetary amount recorded in the transaction currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
+      example:
+
+    Receipt_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the transaction of cash received. Typically auto-generated by the system.
+      example: 123456
+
+    Receipt_Number:
+      type: string
+      maxLength: 100
+      description: The number of the cash received, from which AR is derived. This number is generated either by manual input or by the system.
+      example:
+
+    Receipt_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The receipt date of the account receivable by the customer.
+      example: '2018-12-31'
+
+    Reference_Number:
+      type: string 
+      maxLength: 100
+      description: The number of an internally or externally generated transaction; for example, check number, wire transfer number, or original document ID.
+      example:
+
+    Reference_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The date on an internally or externally generated transaction; for example, check date or wire transfer date.
+      example: '2018-12-31'
+
+    Amount_Credit_Debit_Indicator:
+      type: string
+      maxLength: 1
+      description: This indicates whether the amount isa credit or a debit.EXAMPLE C=credit; D=debit.
+      example:
+
+    GL_Debit_Account_Number:
+      type: string 
+      maxLength: 100
+      description: The GL account number on which the debit side of the transaction has been posted. Shall match the GL_Account_Number in the BAS_Chart_Of_Accounts table.
+      example:
+  
+    GL_Credit_Account_Number:
+      type: string
+      maxLength: 100
+      description: The GL account number on which the credit side of the transaction has been posted. Shall match the GL_Account_Number in the BAS_Chart_Of_Accounts table.
+      example:
+
+    Inventory_ID:
+      type: string
+      maxLength: 75
+      description: The unique identifier for the inventory. Typically auto-generated by the system. The unique value means that each line in the data table under consideration has a unique, non-repetitive, serial number for identification.
+      example:
+
+    Inventory_Product_ID:
+      type: string
+      maxLength: 75
+      description: The unique identifier for the inventory item. Typically auto-generated by the system. Shall match the Inventory_Product_ID in the INV_Product table.
+      example:
+
+    Location_ID:
+      type: string
+      maxLength: 75
+      description: The unique identifier for the organizations. Shall be a valid entry in INV_Location table. Typically autogenerated by the system. Shall match the Location_ID in the INV_Location table.
+      example:
+
+    Inventory_As_Of_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The specified date to which inventory information applies.
+      example:
+
+    Inventory_Stocking_UOM_Code:
+      type: string 
+      maxLength: 80
+      description: The code of the measurement unit used associated with the quantity used for stocking inventory. Shall match the UOM_Code in the BAS_Measurement_Unit table.
+      example:
+
+    System_Quantity:
+      type: number
+      description: The actual quantity on hand from physical count in the Basic_UOM_Code.
+      example:
+
+    Inventory_Cost:
+      type: number
+      description: Cost per unit using the method found in Inventory_Cost_Method.
+      example:
+
+    Functional_Currency Code:
+      type: string
+      maxLength: 3
+      description: The functional or group currency related to the balance (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table. 
+      example:
+
+    PPE_ID:
+      type: string 
+      maxLength: 100
+      description: The unique identifier for the PPE. Typically auto-generated by the system.
+      example:
+
+    PPE_Code:
+      type: string 
+      maxLength: 60
+      description: The internal code of PPE at the local level.
+      example:
+
+    Type_Code:
+      type: string 
+      maxLength: 60 
+      description: The unique code of the PPE type. Shall match the Type_Code in the PPE_ Type table.
+      example:
+
+    PPE_Name:
+      type: string 
+      maxLength: 60
+      description: The name of the PPE.
+      example:
+
+    PPE_Feature:
+      type: string
+      maxLength: 60
+      description: The feature is used to specify the PPE more clearly. EXAMPLE The brand, color, size and configuration.
+      example:
+
+    Purchase_Order_ID:
+      type: string 
+      maxLength: 100
+      description: The unique identifier for the purchase order. Typically autogenerated by the system. May be set to NULL if the PPE is not generated from a purchase order. Otherwise shall match the Purchase_Order_ID in the PUR_Order_Details table.
+      example:
+
+    Location_Description:
+      type: string
+      maxLength: 1000
+      description: Description of the location where the PPE is placed. 
+      example:
+
+    Condition_Name:
+      type: string
+      maxLength: 60
+      description: The name of various usage status of PPE. EXAMPLE Asset in-use, not-in-use and not-in-use for seasonal reasons.
+      example:
+
+    Acquisition_Date:
+      type: number
+      format: date
+      maxLength: 10
+      description: Date that the PPE is acquired.
+      example:
+
+    Posted_Date:
+      type: number
+      format: date
+      maxLength: 10
+      description: Date when PPE is posted into accounts.
+      example:
+
+    Placed_Into_Service_Date:
+      type: number
+      format: date
+      maxLength: 10
+      description: Date that PPE is placed into use.
+      example:
+
+    Quantity_On_Hand:
+      type: number
+      description: Quantity of PPE items on hand.
+      example:
+
+    Useful_Life:
+      type: integer
+      maxLength: 4
+      description: Total useful life of PPE in months. 
+      example:
+
+    Useful_Life_Remaining:
+      type: integer 
+      maxLength: 4
+      description: Remaining useful life of PPE in months as of the report date.
+      example:
+
+    Original_Cost:
+      type: number 
+      description: Original cost of PPE.
+      example:
+
+    Accumulated_Depreciation:
+      type: number
+      description: The accumulated depreciation of PPE as of the report date.
+      example:
+
+    Impairment_Provision:
+      type: number
+      description: The impairment provision of PPE as of the report date. 
+      example:
+
+    Supplier_Account_ID:
+      type: string
+      maxLength: 100
+      description: he unique identifier for the supplier to whom payment is expected or from whom unused credits have been applied. Typically auto-generated by the system. Shall match the Supplier_Account_ID in the BAS_Supplier table.
+      example:
+
+    Transaction_Currency _Code:
+      type: string 
+      maxLength: 3
+      description: The currency used in actual transaction (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table. 
+
+    Payment_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the transaction of cash paid. Typically auto-generated by the system.
+      example:
+       
+    Payment_Number:
+      type: string 
+      maxLength: 100
+      description: The number of the transactional document, from which AP is derived. The number is usually generated by manual input or automated using system based rules.
+      example:
+
+    Payment_Date:
+      type: number
+      format: date
+      maxLength: 10 
+      description: The payment date of the account payable by the supplier.
+      example:
+
+    Customer_Account_Number:
+      type: string
+      maxLength: 100
+      description: The number of the customer. This number is generated either by manual input or by the system.
+      example:
+
+    Customer_Account_Name:
+      type: string
+      maxLength: 100
+      description: The name of the customer.
+      example:
+
+    Customer_TIN:
+      type: string
+      maxLength: 100
+      description: The customer’s tax identification number. This number is usually generated by tax regulator.
+      example:
+
+    Customer_Street_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the customer’s physical street address.
+
+    Customer_Street_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the customer’s physical street address.
+      example:
+
+    Customer_City:
+      type: string
+      maxLength: 100
+      description: The physical city where the customer is located.
+
+    Customer_Physical_Postal_Code:
+      type: string
+      maxLength: 100
+      description: The postal code of the city where the customer is physically located.
+      example:
+
+    Customer_Country:
+      type: string
+      maxLength: 3
+      description: The country code where the customer is physically located (ISO 3166-1).
+      example:
+
+    Customer_Billing_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the customer’s billing address.
+      example:
+  
+    Customer_Billing_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the customer’s billing address.
+      example:
+
+    Customer_Billing_City:
+      type: string
+      maxLength: 100
+      description: The billing city of the customer.
+
+    Customer_Billing_Postal_Code:
+      type: string
+      maxLength: 20
+      description: The billing postal code of the customer’s city.
+      example:
+
+    Customer_Billing_Country:
+      type: string
+      maxLength: 3
+      description: The billing country code of the customer (ISO 3166-1).
+      example:
+
+    Supplier_Account_Number: 
+      type: string
+      maxLength: 100
+      description: The number of the supplier to whom payment is due or from whom unused credits have been applied. The number is usually generated by manual input or generated by the system.
+      example:
+      
+    Supplier_Account_Name:
+      type: string
+      maxLength: 200
+      description: The name of the supplier.
+      example:
+
+    Supplier_TIN:
+      type: string
+      maxLength: 100
+      description: The supplier’s tax identification number. The number is usually generated by the tax regulator.
+
+    Supplier_Street_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the supplier’s physical street address.
+
+    Supplier_Street_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the supplier’s physical street address.
+
+    Supplier_City:
+      type: string
+      maxLength: 100
+      description: The physical city where the supplier is located.
+
+    Supplier_Physical_Postal_Code:
+      type: string
+      maxLength: 20
+      description: The postal code of the city where the supplier is physically located.
+
+    Supplier_Country:
+      type: string
+      maxLength: 3
+      description: The country code where the supplier is physically located (ISO 3166-1).
+
+    Supplier_Billing_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the supplier’s billing address.
+
+    Supplier_Billing_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the supplier’s billing address.
+      example:
+
+    Supplier_Billing_City:
+      type: string
+      maxLength: 100
+      description: The billing city of the supplier.
+      example:
+
+    Supplier_Billing_State_PRV: 
+      type: string
+      maxLength: 6
+      description: The billing state or province of the supplier. (ISO 3166-2).
+      example:
+ 
+    Supplier_Billing_Postal_Code:
+      type: string
+      maxLength: 20
+      description: The billing postal code of the supplier’s city.
+      example:
+
+    Supplier_Billing_Country:
+      type: string
+      maxLength: 3
+      description: The billing country code of the supplier. (ISO 3166-1).
+      example:
+
+    GL_Account_Name:
+      type: string
+      maxLength: 100
+      description: The name of the GL account.
+      example:
+
+    FS_Caption:
+      type: string
+      maxLength: 100
+      description: The financial statement caption represents a related group of accounts. EXAMPLE Cash and cash equivalents, accounts payable and cost of sales. The caption can be at the trial balance level.
+      example:
+
+    Account_Type:
+      type: string
+      maxLength: 25
+      description: The type of account. EXAMPLE Assets, liabilities, equity, revenues and expenses. 
+      example:
+
+    Account_Subtype:
+      type: string
+      maxLength: 25
+      description: The subtype of the account. EXAMPLE Current assets are the subtype of assets.
+      example:
+
+    Parent_GL_Account_Number:
+      type: string
+      maxLength: 100
+      description: The number of the parent account in an account hierarchy. This is provided to allow more than the predefined levels of the hierarchy in the chart of accounts table. When Parent_GL_Account_Number is the highest level, its value can be set to the default value; for example, set to NULL. Shall match the GL_Account_Number in BAS_Chart_Of_Accounts table.
+      example:
+
+    Bank_Account_Number:
+      type: string
+      maxLength: 60
+      description:  The number of the account opened in institutions, for example, bank, financial institution and settlement center. ISO 13616 is recommended if applicable.
+      example:
+
+    Bank_Account_Name:
+      type: string
+      maxLength: 128
+      description: The name of the account opened in institutions, for example, bank, financial institution and settlement center.
+      example:
+
+    Bank_Code:
+      type: string
+      maxLength: 80
+      description: The code of the financial institution (ISO 9362 or ISO 17442). ISO 17442 is preferred. One reason is that bank branch identifier will not change due to location movement.
+      example:
+
+    Bank_Name:
+      type: string
+      maxLength: 200
+      description: The full name of the institution, for example, bank, financial institution and settlement center.
+      example:
+
+    Branch_Code:
+      type: string
+      maxLength: 80
+      description: The code of the institution’s branch. 
+      example:
+
+    Branch_Name:
+      type: string
+      maxLength: 200
+      description: The full name of the institution’s branch.
+      example:
+
+    Sales_Contract_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the sales contract. Typically auto-generated by the system. Shall match the Sales_Contract_ID in the SAL_Contracts table.
+      example:
+
+    Sales_Contract_Line_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for a sales contract line. Typically auto-generated by the system.
+      example:
+
+    Dispatch_Organization_Code: 
+      type: string
+      maxLength: 25
+      description: The unique code of the dispatch organization. The dispatch unit refers to the unit who send out goods belonging to the seller. Shall match the Business_Segment_Code in the Business_Segment_Master table.
+      example:
+
+    Product_ID:
+      type: string
+      maxLength: 75
+      description: The unique identifier for the product. Typically auto-generated by the system. Shall match the Inventory_Product_ID in the INV_Product table.
+      example:
+
+    Contract_Quantity:
+      type: number
+      format: float
+      description: The quantity of the sales product in the contract.
+      example: 22.4
+
+    Sales_UOM_Code:
+      type: string
+      maxLength: 60
+      description: The code of the measurement unit for sales product. Shall match the UOM_Code in the BAS_Measurement_Unit table.
+      example:
+
+    Tax_Exclude_Unit_Price:
+      type: number
+      format: float
+      description: The unit price (excluding tax) in transaction currency. 
+      example: 22.8
+
+    Tax_Include_Unit_Price:
+      type: number
+      format: float
+      description: The unit price (including tax) in transaction currency.
+      example:
+
+    Tax_Exclude_Amount:
+      type: number
+      format: float
+      description: The amount (excluding tax) in transaction currency.
+      example: 
+
+    Tax_Include_Amount:
+      type: number
+      format: float
+      description: The amount (including tax) in transaction currency.
+      example: 22.4
+
+    Due_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The last requested delivery of products; for example, when an order is delivered in multiple batches, this field refers to the time for the delivery of the last batch.
+      example:
+
+    Invoice_Number:
+      type: string
+      maxLength: 100
+      description: The number of the internally generated invoice. The number is  usually generated by manual input or is system generated; for example,  including serial number, document type and date.
+      example: 
+
+    Invoice_Type_Name:
+      type: string
+      maxLength: 60
+      description: The name of the invoice type. The documents are classified according  to business content.
+      example:
+
+    Invoice_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The date of the invoice, regardless of the date the invoice is created. This is the date from which the due date is calculated based on the invoice terms.
+      example:
+
+    Invoice_Due_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The date payment is due from the customer. Aging of a receivable is usually calculated based on this date.
+      example:
+
+    Invoice_Transaction_Amount:
+      type: number
+      format: float
+      description: The transaction monetary amount  recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency.
+      example:
+
+    Invoice_Transaction_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The transactional currency appeared in the invoice (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example:
+
+    Payment_Term_Code:
+      type: string
+      maxLength: 80
+      description: The code of the payment term. Shall match the Payment_Term_Code in the BAS_Payment_Term table; for example, cash on delivery, payment 30 days after delivery date.
+      example:
+
+    Tax1_Type_Code:
+      type: string
+      maxLength: 25
+      description: Code for Tax1 type. This field shall match the Tax_Type_Code in the BAS_Tax_Type table.
+      example:
+
+    Tax1_Transaction_Amount:
+      type: number
+      format: float
+      description: The amount of Tax1 included in the transaction. Recorded in transaction currency.
+      example: 
+
+    Purchase_Order_Number:
+      type: string
+      maxLength: 100
+      description: The number of the purchase order. The number is generated by manual  input or a system generated.
+      example:
+
+    Purchase_Order_Type_Name:
+      type: string
+      maxLength: 80 
+      description: The name of the order type in  purchase activities.  EXAMPLE Ordinary purchasing, outsourcing parts and process outsourcing.
+      example: 
+
+    Purchase_Order_Date:
+     type: string
+     format: date
+     maxLength: 10 
+     description: The date of the purchase order  regardless of the date the order is created. 
+     example: 
+
+    Purchase_Organization_Code:
+      type: string
+      maxLength: 25
+      description: The unique code of the purchase organization which signed the order. Shall match the Business_Segment_Code in the BAS_Business_Segment table.
+      example: 
+
+    Order_Transaction_Amount:
+      type: number
+      format: float
+      description: The transaction monetary amount in transaction currency.
+      example: 22.4f 
+
+    Order_Transaction_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The transactional currency specified in the purchase order (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example: 
+
+    Remark:
+      type: string
+      maxLength: 500
+      description: Freeform text description.
+      example: 
+  
+    Purchase_Order_Line_ID:
+      type: string
+      maxLength: 60 
+      description: The unique identifier for a purchase order line. Typically auto-generated by the system. One purchase order may contain more than one material and each material may be described by a line of the order. 
+      example: 
+
+    Purchase_Contract_ID:
+      type: string
+      maxLength: 60 
+      description: The unique identifier for the purchase contract. Typically autogenerated by the system. May be set to NULL if no transaction related purchase contract. Otherwise shall match the Purchase_Contract_ID in the PUR_Contract table.
+      example: 
+
+    Purchase_Contract_Line_ID: 
+      type: string
+      maxLength: 60
+      description: The unique identifier for a purchase contract line. One purchase contract may contain more than one material and each material may be described by a line of the contract. Typically auto-generated by the system. May be set to NULL if no transaction related purchase contract. Otherwise shall match the Purchase_Contract_Line_ID in the PUR_Contracts_Details table.
+      example: 
+
+    Receipt_Organization_ode:
+      type: string
+      maxLength: 25
+      description: The unique code of the receiving materials organization (Receiving organization, can be different from the settlement organization). The organization receiving materials may be a warehouse or an administration organization. Shall match the Business_Segment_Code in the BAS_Business_Segment table.
+      example:
+
+    Basic_UOM_Quantity:
+      type: number
+      format: float
+      description: The quantity of the materials in purchase order by the basic measurement unit.
+      example: 
+
+    Purchase_Order_Line_Quantity:
+      type: number
+      format: float
+      description: The quantity of the materials in the purchase order line by the purchase measurement unit.
+      example:
+
+    Order_Line_Transaction_Amount:
+      type: number
+      format: float
+      description: The transaction currency amount of a purchase order line.
+
+    Invoice_Line_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for a received invoice line. Typically autogenerated by the system.
+      example:
+      
+    Invoice_Line_Number:
+      type: string
+      maxLength: 60
+      description: The invoice line. Typically autogenerated by the system.
+      example:
+
+    Invoice_Quantity:
+      type: number
+      format: float
+      description: The quantity recorded in the invoice by the measurement unit recorded in invoice.
+      example:
+
+    Purchase_UOM_Code:
+      type: string
+      maxLength: 80 
+      description: The code of the measurement unit for purchasing materials. Shall match the UOM_Code in the BAS_Measurement_Unit table.
+      example:
+
+    Invoice_Line_TRX_Amount:
+      type: number
+      format: float
+      description: The transaction monetary amount in transaction currency. 
+      example:
+
+    Receipt_Organization_Code:
+      type: string
+      maxLength: 25 
+      description: The unique code of the receiving materials organization (Receiving organization, can be different from the settlement organization). The organization receiving materials may be a warehouse or an administration organization. Shall match the Business_Segment_Code in the BAS_Business_Segment table.
+      example:
+
+    Receipt_Reference_Number: 
+      type: string
+      maxLength: 100
+      description: The number of the reference receipt. Company reference or logistics company official waybill number.
+      example:
+
+    Receipt_Transaction_Amount:
+      type: number
+      format: float
+      description: Monetary amount for the items in the receipt related to the purchase order in transaction currency. This amount  is calculated through the receipt details.
+      example:
+
+    Receipt_Transaction_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The transactional currency appeared in the receipt (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example:
+
+    Receipt_Line_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for a receipt line. Typically auto-generated by the system.
+      example:
+
+    Receipt_Line_Number:
+      type: string
+      maxLength: 100
+      description: The number of a receipt line. This number is generated either by manual input or by the system.
+      example: 
+
+    Receipt_Quantity:
+      type: number
+      format: float
+      description: The quantity of materials received recorded in the receipt.
+      example: 
+
+    Receipt_UOM_Code:
+     type: string
+     maxLength: 80 
+     description: The code of the measurement unit recorded in receipt. Shall match the UOM_Code in the BAS_Measurement_Unit table. 
+     example: 
+
+    Receipt_Unit_Price:
+      type: number
+      format: float
+      description: Price per unit for item received (including tax).
+      example: 22.8
+
+    Receipt_Line_TRX_Amount:
+      type: number
+      format: float
+      description: Monetary amount for the line item in the receipt document related to the purchase order in transaction currency.
+      example: 22.4
+
+    BAS_Business_Segment1:
+      type: string 
+      maxLength: 25
+      description: The code of each business segment.
+      example:
+    
+    Business_Segment_Code:
+      type: string
+      maxLength: 25
+      description: The name of the business segment.
+
+    Business_Segment_Name:
+      type: string
+      maxLength: 25
+      description: The name of the business segment.
+
+    Segment_Reference_Level: 
+      type: string 
+      maxLength: 2
+      description: The relative level of the segment with 1 being the consolidated level and numbers increasing through lower levels of the organizational chart.
+
+    Organization_Type_Name:
+      type: string 
+      maxLength: 60
+      description: Indicates the name of the organization type, for example, “Department” and “Cost Center”.
+      
+    Accounting_Period_BEG_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The calendar beginning date of the current accounting period. 
+
+    Accounting_Period_Ending_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The calendar ending date of the current accounting period. 
+      example:
+
+
+    Settlement_Method_Name:
+      type: string
+      maxLength: 60
+      description: The name of the settlement method. EXAMPLE Cash settlement, Issuing bills, Credit card, Bank remittance and Bank collection.
+      example:
+
+    Currency_Code:
+      type: string
+      maxLength: 3
+      description: The code of the currency (ISO 4217:2015).
+      example:
+
+    Currency_Name:
+      type: string
+      maxLength: 30
+      description: The name of the currency in the accounting and/or ERP system. 
+      example:
+      
+
+    UOM_Name:
+      type: string
+      maxLength: 80
+      description: The name of the measurement unit for measuring the quantity of the material, etc.
+      example:
+
+    UOM_Abbreviation:
+      type: string
+      maxLength: 40
+      description: The abbreviation of the measurement unit's name. EXAMPLE Kilogram is recorded as “kg” and square meter is recorded as “sq.m”.
+      example:
+
+
+    Payment_Term_Name:
+      type: string
+      maxLength: 200
+      description: The full name of the payment term.
+      example:
+
+    Payment_Term_Line_Number:
+      type: string
+      maxLength: 10
+      description: The number of the lines according to the Payment_Term_Code value. This number is generated either by manual input or by the system.
+      example:
+
+    Payment_Term_Line_Description:
+      type: string
+      maxLength: 1000
+      description: The detailed description of the payment term’s line. EXAMPLE Payment due date, discount days, discount percentage.
+      example:
+
+    Regulator_Code:
+      type: string
+      maxLength: 25
+      description: The code of the regulator or jurisdiction. 
+      example:
+
+    Regulator_Country:
+      type: string
+      maxLength: 3
+      description: The country code where the regulator is located (ISO 3166-1).
+      example:
+
+    Regulator_Region:
+      type: string
+      maxLength: 25
+      description: The sub-region within a country. EXAMPLE In the U.S. this would be a state and in Canada this would be a province.
+      example:
+
+    Regulator_Name:
+      type: string
+      maxLength: 100
+      description: The name of the regulator for which tax is withheld or accrued.
+      example:
+
+    Regulator_Role:
+      type: string
+      maxLength: 20
+      description: federal,regional or local.
+      example:
+
+    Regulator_Payable_Account_NUM:
+      type: string
+      maxLength: 100
+      description: The GL account used to reflect amounts payable to the regulator. Shall match the GL_Account_Number in BAS_Chart_Of_Accounts table.
+      example:
+
+    Regulator_Accrual_Account_NUM:
+      type: string
+      maxLength: 100
+      description: The GL account used to reflect accruals due to the regulator. Shall match the GL_Account_Number in BAS_Chart_Of_Accounts table.
+      example: 
+
+    Regulator_Expense_Account_NUM:
+      type: string
+      maxLength: 100
+      description: The GL account used to reflect expense related to the regulator. Shall match the GL_Account_Number in BAS_Chart_Of_Accounts table.
+      example:
+
+    Regulator_ID:
+      type: string
+      maxLength: 25
+      description: The ID assigned/generated by the regulator for the reporting organization to the regulator.
+      example:
+
+    Regulator_Reporting_ORG:
+      type: string
+      maxLength: 100
+      description: The code of the reporting organization. Shall match the Business_Segment_Code in the BAS_Business_Segment table.
+      example:
+
+    Regulator_Active_Flag:
+      type: boolean
+      maxLength: 1
+      description: This indicates whether the Regulator_Code is active or inactive. EXAMPLE 1 is active and 0 is inactive.
+      example:
+
+
+    Tax_Type_Code:
+      type: string
+      maxLength: 25
+      description: A code used to refer to this tax type, used as a key or cross-reference in files. EXAMPLE Using 004 to represent the income tax, 005 to represent the tariff, 006 to represent the value added tax.
+      example:
+
+    Tax_Name:
+      type: string
+      maxLength: 100
+      description: The name of the tax type. EXAMPLE Income tax, Tariff and Value added tax.
+      example:
+
+    Tax_Type_Description:
+      type: string
+      maxLength: 100
+      description: The description of the tax type.
+      example:
+
+    Tax_Code_Description:
+      type: string
+      maxLength: 1000
+      description: The description of the tax code, subdivision of the tax type. EXAMPLE Lower percentage applicable for common goods.
+      example:
+
+    Tax_Percentage:
+      type: number
+      format: float
+      description: Default percentage for this combination of tax type and tax code. Can as of the Extracted_Date from Profile table.
+      example:
+
+    Adjustment_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the adjustment of record. Typically autogenerated by the system.
+      example:
+
+    Adjustment_Number:
+      type: string
+      maxLength: 100
+      description: The number of the adjustment of record. This number is generated either by manual input or by the system. This number can be created by concatenating  fields to uniquely identify each transaction. EXAMPLE Serial number, document type, and adjustment date.
+
+    Adjustment_Type_Name:
+      type: string
+      maxLength: 60
+      description: The name of the method by which the transaction debit or credit amount was extinguished or apportioned to the debt by the customer. EXAMPLE Credit memo, debit memo, finance charge and other adjustments.
+
+    Adjustment_Document_Number:
+      type: string
+      maxLength: 100
+      description: The number of an internally generated adjustment document. EXAMPLE Credit memo. The number is usually generated by manual input or is system generated. EXAMPLE Document number, document type, and year.
+
+    Adjustment_Date:
+      type: string
+      format: date
+      description: The date of the adjustment, regardless of the date the adjustment is created.
+
+    Adjustment_Functional_Amount:
+      type: string
+      format: float
+      description: Adjusted monetary amount recorded in the functional or group currency. No multicurrency translation should be performed on this amount because all transactions are recorded in a single currency.
+
+    ADJ_Functional_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The functional or group currency related to the adjustment amount (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+
+    ADJ_Transaction_Amount:
+      type: number
+      format: float
+      description: Adjusted monetary amount recorded in the transaction currency.
+      example:
+
+    ADJ_TRX_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The transaction currency related to the adjustment transaction amount (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example: 
+
+    Tax1_Local_Amount:
+      type: number
+      format: float
+      description: The amount of Tax1 included in the transaction. Recorded in local currency.
+
+    Adjustment_Line_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the adjustment line. Typically autogenerated by the system.
+      example: 
+
+    Adjustment_Line_Number:
+      type: string
+      maxLength: 10
+      description: The number of the line item of the adjustment of record. This number is generated either by manual input or by the system.
+      example:
+
+    ADJ_Line_Functional_Amount:
+      type: number
+      format: float
+      description: Adjusted monetary amount recorded in the functional or group currency. No multicurrency translation should be performed on this amount because all transactions are recorded in a single currency.
+
+    ADJ_Line_Functional_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The functional or group currency related to the adjustment amount (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example: 
+  
+    ADJ_Line_Transaction_Amount:
+      type: number
+      format: float
+      description: Adjusted monetary amount recorded in the transaction currency. 
+      example:
+      
+    ADJ_Line_TRX_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The transaction currency related to the adjustment transaction amount (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example:
+
+    Sales_Order_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the sales order. Typically auto-generated by the system.
+
+    Sales_Order_Number:
+      type: string
+      maxLength: 100
+      description: The number of the sales order. This number is generated either by manual input or by the system.
+
+    Sales_Order_Type_Name:
+      type: string
+      maxLength: 80
+      description: The name of the order in sales activities. The types of sales orders are usually allocated by users of the system according to different business needs; for example, some enterprises will be configured as non contract orders, trial orders, factory orders and store orders.
+      example:
+
+    Sales_Order_Date:
+      type: string
+      format: date
+      description: The date of signing the sales order. It is the effective date of the sales order, not the system created date. The sales order of a certain period is counted based on the effective date.
+      example:
+
+    Sales_Organization_Code:
+      type: string
+      maxLength: 25
+      description: The unique code of the sales organization which signed the order. Shall match the Business_Segment_Code in the BAS_Business_Segment table.
+      example:
+
+    Sales_Order_Line_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for a sales order line. Typically auto-generated by the system.
+      example:
+
+    Sales_Order_Line_Number:
+      type: string
+      maxLength: 10
+      description: The line number of the sales order. This number is generated either by manual input or by the system.
+
+    Payer_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the payer. Typically auto-generated by the system. There are different purchase models in the group company; for example, centralized purchase, decentralized payment, decentralization of procurement and centralized payment. If the sales order customer adopts the centralized purchasing mode, the customer may be a group company, and the settlement organization may be a subsidiary company of the group company. The customer name and the name of the payment customer may be different.
+      example:
+
+    Sales_Order_Line_Quantity:
+      type: number
+      format: float
+      description: The quantity of the sales order line by the measurement unit in sales order line.
+      example: 
+      
+  
+
+
+
+    Shipment_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the shipment. Typically auto-generated by the system.
+      example:
+
+    Shipment_Number:
+      type: string
+      maxLength: 100
+      description: The number of the shipment. This number is generated either by manual input or by the system.
+      example: 
+
+    Shipment_Date:
+      type: string
+      format: date
+      description: The date of the shipment (date shipped).
+      example: 
+
+    Shipping_Reference_Number:
+      type: string
+      maxLength: 100
+      description: The number of the reference shipping. Company reference or logistics company official waybill number.
+      example: 
+
+    Shipping_Document_Line_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for a line of  shipping document. Typically autogenerated by the system.
+      example:
+
+    Shipping_Document_Line_Number:
+      type: string
+      maxLength: 10
+      description: The line number of the shipping document. This number is generated either by manual input or by the system.
+      example: 
+
+    Shipping_Quantity:
+      type: number
+      format: float
+      description: The quantity of the products in the shipment.
+
+    Shipping_Unit_Price:
+      type: number
+      format: float
+      description: Price per unit for item sent.
+
+    Shipping_Line_Transaction_Amount:
+      type: number
+      format: float
+      description: Monetary amount for the line item in the shipping document related to the sales order. Recorded in the transaction currency.
+      example: 
+
+    AP_Application_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the application of cash from a payment to each invoice. Typically auto-generated by the system. 
+      example: 
+
+    AP_Application_Date:
+      type: string
+      format: date
+      description: The date of the cash application transaction, regardless of the date the transaction is created.
+      example:
+
+    Requisition_ID:
+      type: string
+      maxLength: 60 
+      description: The unique identifier for the material purchase requisition. Typically autogenerated by the system.
+      example: 
+
+    Requisition_Number:
+      type: string
+      maxLength: 80
+      description: The number of the material purchase requisition. This number is generated either by manual input or by the system.
+      example: 
+
+    Requisition_Date:
+      type: string
+      format: date
+      description: The submission date of the purchase requisition.
+      example:
+
+    Status:
+      type: string
+      maxLength: 30
+      description: The status of the purchase requisition recorded at the moment. Different ERP vendors have different content for this information output. EXAMPLE New, save, submit, approved and frozen.
+      example: 
+       
+    Requisition_Line_ID:
+      type: string
+      maxLength: 60 
+      description: The unique identifier for a material purchase requisition line. Typically auto-generated by the system. A requisition form may apply for purchasing one or more materials. Each material requisitioned should be described in a separate row.
+      example: 
+
+    Requisition_Due_Date:
+      type: string
+      format: date 
+      description: The last requested delivery of the purchased materials in the purchasing requisition. Completion of the delivery shall not be later than that date.
+      example: 
+
+    Requisition_Quantity:
+      type: number
+      format: float
+      description: The quantity of the purchased materials in the requisition.
+      example: 
+
+    Approved_Quantity:
+      type: number
+      format: float
+      description: The approved quantity of the purchased materials from the requisition quantity. The approved quantity can differ from the requisition quantity.
+      example: 
+
+    Project_ID:
+      type: string
+      maxLength: 60
+      description: The unique identifier for the project. Typically auto-generated by the system. Shall match the Project_ID in the BAS_Project table.
+      example: 
+
+    Location_Code:
+      type: string
+      maxLength: 80 
+      description: The code of the location used to identify inventory location at the local, rather than organizational level. 
+      example: 
+
+    Location_Type:
+      type: string 
+      maxLength: 12
+      description: Freeform description of the location type. EXAMPLE Warehouse, manufacturing floor, shipping, brokerage.
+      example: 
+
+    Location_Street_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the physical street address for the location of the organization at level below city. May include additional information. EXAMPLE The floor number.
+      example: 
+
+    Location_Street_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the physical street address for the location of the organization at level below city. May include additional information. EXAMPLE The floor number.
+      example: 
+
+    Location_City:
+      type: string
+      maxLength: 100
+      description: City where the location is found.
+      example: 
+
+    Location_State_Province:
+      type: string 
+      maxLength: 6 
+      description: Major region, state or province where the location is found (ISO 3166-2).
+      example:  
+
+    Location_Country:
+      type: string
+      maxLength: 3
+      description: Country where location is found (ISO 3166-2). 
+      
+    Location_Postal_Code:
+      type: string
+      maxLength: 20
+      description: Location code such as zip code. 
+
+    Location_Active_Flag:
+      type: string
+      format: boolean
+      description: This indicates whether this location is active or inactive. EXAMPLE 1 is active and 0 is inactive.
+      example: 
+
+    Transaction_Document_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the picking ticket, shipping notice, or other document created upon or associated with movement. Typically autogenerated by the system.
+      example: 
+
+    Transaction_Document_Line_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the line number for a document other than a customer order, or supplier purchase order. Typically auto-generated by the system.
+      example: 
+
+    Transaction_Order_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the customer order, (supplier) purchase order or other document associated with the transaction. Typically auto-generated by the system.
+      example: 
+
+    Transaction_Order_Line_ID:
+      type: string
+      maxLength: 100
+      description: The unique identifier for the line item from a customer order, (supplier) purchase order, to differentiate between multiple items in a single order for different quantities. Typically auto-generated by the system.
+      example: 
+
+    Transaction_Time:
+      type: string
+      format: time
+      description: The time of the activity, per associated transaction document if applicable.
+      example: 
+
+    Transaction_Type_System:
+      type: string
+      maxLength: 60
+      description: Transaction code local to the underlying accounting software system.
+
+    Transaction_Description:
+      type: string
+      maxLength: 1000
+      description: Description of the transaction.
+
+    Transaction_Quantity:
+      type: number
+      format: float
+      description: Quantity affected expressed in location stocking organization in Basic_UOM_Code. When the inventory is received, the number involved will be a ‘positive number’; when the inventory is dispatched, the number involved will be a ‘negative number’.
+      example: 
+
+    Inventory_From_Location_ID:
+      type: string
+      maxLength: 75
+      description: The unique identifier for the stock trading source location. Typically auto-generated by the system. Shall match the Location_ID in the INV_Location table.
+      example: 
+
+    Inventory_To_Location_ID:
+      type: string
+      maxLength: 75 
+      description: The unique identifier for the stock trading destination. Typically autogenerated by the system. Shall match the Location_ID in the INV_Location table.
+      example: 
+
+    INV_System_Or_External_Source: 
+      type: string
+      maxLength: 1
+      description: Indicator used to show whether the inventory transaction is originated within or outside the Inventory module. I for internally initiated transaction and E for externally initiated one. EXAMPLE Purchase or sale.
+      example: 
+
+    GL_Line_Debit_Account_Number:
+      type: string
+      maxLength: 100
+      description: The GL account number on which the debit side of the transaction has been posted. Shall match the GL_Account_Number in the BAS_Chart_Of_Accounts table.
+      example: 
+
+    GL_Line_Credit_Account_Number:
+      type: string
+      maxLength: 100
+      description: The GL account number on which the credit side of the transaction has been posted. Shall match the GL_Account_Number in the  BAS_Chart_Of_Accounts table.
+      example: 
+
+    Inventory_Count_Sheet_ID:
+      type: string 
+      maxLength: 60 
+      description: The unique identifier for the inventory count sheet. Typically auto-generated by the system.
+      example: 
+      
+    Inventory_Count_Sheet_Line_ID:
+      type: string
+      maxLength: 75
+      description: The unique identifier for the inventory item. Typically auto-generated by the system. Shall match the Inventory_Product_ID in the INV_Product table.
+      example: 
+
+    Inventory_Organization_Code:
+      type: string  
+      maxLength: 25
+      description: The code of the inventory organization. Shall match the Business_Segment_Code in the BAS_Business_Segment table.
+      
+    Count_Date:
+      type: string 
+      format: date
+      description: The date of the physical count. 
+      example: 
+       
+    Physical_Count_Quantity:
+      type: number
+      format: float
+      description: The quantity on hand at last physical count when multiple counts are performed in the Basic_UOM_Code.
+      example: 
+
+    Comment:
+      type: string
+      maxLength: 200
+      description: Comments on the count, the variances, or other information captured.
+      example:
+    
+
+
+   
+
+
+  parameters:
+    GL_Account_Number_Param:
+      in: query
+      name: GL_Account_Number
+      schema:
+        type: string
+        maxLength: 100
+      description: The GL account number. Shall match the GL_Account_Number used in the BAS_Chart_Of_Accounts table.
