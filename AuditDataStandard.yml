@@ -118,8 +118,8 @@ components:
         Journal_ID:
           $ref: '#/components/schemas/Journal_ID'
         #ISO ONLY
-        Journal_Number:
-          $ref: '#/components/schemas/Journal_Number'
+        #Journal_Number:
+        # $ref: '#/components/schemas/Journal_Number'
         #In AICPA and ISO
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
@@ -130,8 +130,8 @@ components:
         Effective_Date:
           $ref: '#/components/schemas/Effective_Date'
         #ISO ONLY
-        JE_Type_Code:
-          $ref: '#/components/schemas/JE_Type_Code'
+        #JE_Type_Code:
+        # $ref: '#/components/schemas/JE_Type_Code'
         #In AICPA and ISO
         JE_Header_Description:
           $ref: '#/components/schemas/JE_Header_Description'
