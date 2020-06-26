@@ -3,9 +3,7 @@ openapi: 3.0.0
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/xbrl-us2/das/1.0.0
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/XBRL-US/DAS-API/1.0.0
+    url: https://virtserver.swaggerhub.com/XBRL-US/Audit_Data_Open-API/1.0.0
 info:
   version: "1.0.0"
   title: Audit Data Open Api Project (AICPA)
@@ -42,15 +40,7 @@ paths:
           required: false
           schema:
             type: integer
-            format: date
-            
-        - name: journal_id
-          in: query
-          description: Search by a specific journal ID.
-          required: false
-          schema:
-            type: string
-            
+            format: date 
         
       responses:
         '200':
@@ -62,6 +52,9 @@ paths:
             application/xml:
                 schema:
                   $ref: '#/components/schemas/Journals'
+
+  #phase 2 GL Adjustment potential /gl_adjustent:
+  #New data notification then use get to get the data.
 
   /gl_trial_balance:
     get:
@@ -121,72 +114,117 @@ components:
     GL_Details: 
       type: object
       properties:
+        #In AICPA and ISO
         Journal_ID:
           $ref: '#/components/schemas/Journal_ID'
+        #ISO ONLY
         Journal_Number:
           $ref: '#/components/schemas/Journal_Number'
+        #In AICPA and ISO
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
+        #In AICPA and called Accounting_Period in ISO
         Period:
           $ref: '#/components/schemas/Period'
+        #In AICPA and ISO
         Effective_Date:
           $ref: '#/components/schemas/Effective_Date'
+        #ISO ONLY
         JE_Type_Code:
           $ref: '#/components/schemas/JE_Type_Code'
+        #In AICPA and ISO
         JE_Header_Description:
           $ref: '#/components/schemas/JE_Header_Description'
+        #In AICPA and ISO
         Source:
           $ref: '#/components/schemas/Source'
+        #In AICPA and ISO
+        Business_Unit_Code:
+          $ref: '#/components/schemas/Business_Unit_Code'
+        #In AICPA and ISO
         Reversal_Indicator:
           $ref: '#/components/schemas/Reversal_Indicator'
+        #In AICPA and ISO
         Reversal_Journal_ID:
           $ref: '#/components/schemas/Reversal_Journal_ID'
+        #ISO ONLY 
         Cancellation_Sign:
           $ref: '#/components/schemas/Cancellation_Sign'
         # May be this should be changed to Created By not all journals are created by a human which entered implies.
         # The ISO standard changed it to Created_User_Id. 
         Entered_By:
           $ref: '#/components/schemas/Entered_By'
-        Created_Date:
+        #In AICPA and called Created_Date in ISO
+        Entered_Date:
           $ref: '#/components/schemas/Created_Date'
-        Created_Time:
+        #In AICPA and called Created_Time in ISO
+        Entered_Time:
           $ref: '#/components/schemas/Created_Time'
-        Approved_Person_ID:
+        #AICPA ONLY
+        Last_Modified_By:
+          $ref: '#/components/schemas/Last_Modified_By'
+        #AICPA ONLY
+        Last_Modified_Date:
+          $ref: '#/components/schemas/Last_Modified_Date'
+        #In AICPA and called Approved_Person_ID in ISO
+        Approved_By:
           $ref: '#/components/schemas/Approved_Person_ID'
+        #In AICPA and ISO
         Approved_Date:
           $ref: '#/components/schemas/Approved_Date'
         GL_Line_Items:
           type: array
           items:
             $ref: '#/components/schemas/GL_Line_Items'
+      required:
+        - Journal_ID
+        - Effective_Date
+        - GL_Line_Items
+
       
     GL_Line_Items:
       type: object
       properties:
+        #In AICPA and ISO
         GL_Account_Number:
           $ref: '#/components/schemas/GL_Account_Number'
+        #In AICPA and ISO
         Journal_ID_Line_Number:
           $ref: '#/components/schemas/Journal_ID_Line_Number'
+        #In AICPA and ISO
         JE_Line_Description:
           $ref: '#/components/schemas/JE_Line_Description'
-        Functional_Amount:
+        #Amount in AICPA Functional_Amount in ISO
+        Amount:
           $ref: '#/components/schemas/Functional_Amount'
-        Functional_Currency_Code:
+        #Amount_Currency in AICPA Functional_Amount in ISO
+        Amount_Currency:
           $ref: '#/components/schemas/Functional_Currency_Code'
+        #In AICPA and ISO
         Reporting_Amount:
           $ref: '#/components/schemas/Reporting_Amount'
-        Reporting_Currency_Code:
+        #In AICPA and ISO as Reporting_Currency_Code
+        Reporting_Amount_Currency:
           $ref: '#/components/schemas/Reporting_Currency_Code'
+        #In AICPA and ISO
         Local_Amount:
-          $ref: '#/components/schemas/Local_Amount'  
-        Local_Currency_Code:
+          $ref: '#/components/schemas/Local_Amount' 
+        #In AICPA and ISO as Local_Currency_Code
+        Local_Amount_Currency:
           $ref: '#/components/schemas/Local_Currency_Code'
+        #ISO ONLY
         Transaction_Amount:
           $ref: '#/components/schemas/Transaction_Amount'
+        #ISO ONLY
         Transaction_Currency_Code:
           $ref: '#/components/schemas/Transaction_Currency_Code'
-        Credit_Debit_Indicator:
+        #Amount_Credit_Debit_Indicator in AICPA Credit_Debit_Indicator in ISO
+        Amount_Credit_Debit_Indicator:
           $ref: '#/components/schemas/Credit_Debit_Indicator'
+      required:
+        - GL_Account_Number
+        - Amount
+        - Amount_Credit_Debit_Indicator
 
     documentInfo_oim_json:
       type: object
@@ -255,8 +293,8 @@ components:
           $ref: '#/components/schemas/GL_Account_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Balance_As_Of_Date:
           $ref: '#/components/schemas/Balance_As_Of_Date'
         Functional_Currency_Code:
@@ -345,8 +383,8 @@ components:
           $ref: '#/components/schemas/GL_Debit_Account_Number'
         GL_Credit_Account_Number:
           $ref: '#/components/schemas/GL_Credit_Account_Number'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
 
@@ -436,8 +474,8 @@ components:
           $ref: '#/components/schemas/Impairment_Provision'
         Functional_Currency_Code: 
           $ref: '#/components/schemas/Functional_Currency_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
 
@@ -500,8 +538,8 @@ components:
           $ref: '#/components/schemas/GL_Debit_Account_Number'
         GL_Credit_Account_Number: 
           $ref: '#/components/schemas/GL_Credit_Account_Number'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
 
@@ -664,8 +702,8 @@ components:
           $ref: '#/components/schemas/Invoice_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period: 
-          $ref: '#/components/schemas/Accounting_Period'
+        Period: 
+          $ref: '#/components/schemas/Period'
         Invoice_Type_Name:
           $ref: '#/components/schemas/Invoice_Type_Name'
         Invoice_Date:
@@ -682,8 +720,8 @@ components:
           $ref: '#/components/schemas/Invoice_Transaction_CUR_Code'
         Payment_Term_Code:
           $ref: '#/components/schemas/Payment_Term_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Tax1_Type_Code:
           $ref: '#/components/schemas/Tax1_Type_Code'
         Tax1_Transaction_Amount:
@@ -700,8 +738,8 @@ components:
           $ref: '#/components/schemas/Purchase_Order_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Purchase_Order_Type_Name: 
           $ref: '#/components/schemas/Purchase_Order_Type_Name'
         Purchase_Order_Date:
@@ -718,8 +756,8 @@ components:
           $ref: '#/components/schemas/Order_Transaction_Amount'
         Order_Transaction_CUR_Code:
           $ref: '#/components/schemas/Order_Transaction_CUR_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Remark:
           $ref: '#/components/schemas/Remark'
         Business_Segment_X:
@@ -778,8 +816,8 @@ components:
           $ref: '#/components/schemas/Invoice_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Invoice_Type_Name:
           $ref: '#/components/schemas/Invoice_Type_Name'
         Invoice_Date:
@@ -796,8 +834,8 @@ components:
           $ref: '#/components/schemas/Invoice_Transaction_CUR_Code'
         Payment_Term_Code:
           $ref: '#/components/schemas/Payment_Term_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Tax1_Type_Code :
           $ref: '#/components/schemas/Tax1_Type_Code'
         Tax1_Transaction_Amount: 
@@ -850,8 +888,8 @@ components:
           $ref: '#/components/schemas/Receipt_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Receipt_Organization_Code:
           $ref: '#/components/schemas/Receipt_Organization_Code'
         Receipt_Date:
@@ -866,8 +904,8 @@ components:
           $ref: '#/components/schemas/Supplier_Account_ID'
         Purchase_Order_ID:
           $ref: '#/components/schemas/Purchase_Order_ID'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
 
@@ -909,17 +947,17 @@ components:
         Organization_Type_Name:
           $ref: '#/components/schemas/Organization_Type_Name'
     
-    BAS_Accounting_Period:
+    BAS_Period:
       type: object
       properties:
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
-        Accounting_Period_BEG_Date:
-          $ref: '#/components/schemas/Accounting_Period_BEG_Date'
-        Accounting_Period_Ending_Date:
-          $ref: '#/components/schemas/Accounting_Period_Ending_Date'
+        Period:
+          $ref: '#/components/schemas/Period'
+        Period_BEG_Date:
+          $ref: '#/components/schemas/Period_BEG_Date'
+        Period_Ending_Date:
+          $ref: '#/components/schemas/Period_Ending_Date'
 
     BAS_Settlement_Method:
       type: object
@@ -1012,8 +1050,8 @@ components:
           $ref: '#/components/schemas/GL_Account_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Balance_As_Of_Date:
           $ref: '#/components/schemas/Balance_As_Of_Date'
         Functional_Currency_Code: 
@@ -1044,8 +1082,8 @@ components:
           $ref: '#/components/schemas/Adjustment_Document_Number'
         Invoice_ID:
           $ref: '#/components/schemas/Invoice_ID'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Adjustment_Date:
           $ref: '#/components/schemas/Adjustment_Date'
         Customer_Account_ID:
@@ -1058,8 +1096,8 @@ components:
           $ref: '#/components/schemas/ADJ_Transaction_Amount'
         ADJ_TRX_CUR_Code:
           $ref: '#/components/schemas/ADJ_TRX_CUR_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Created_Date:
           $ref: '#/components/schemas/Created_Date'
         Tax1_Type_Code:
@@ -1106,8 +1144,8 @@ components:
           $ref: '#/components/schemas/Sales_Order_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Sales_Order_Type_Name:
           $ref: '#/components/schemas/Sales_Order_Type_Name'
         Sales_Order_Date:
@@ -1124,8 +1162,8 @@ components:
           $ref: '#/components/schemas/Order_Transaction_Amount'
         Order_Transaction_CUR_Code:
           $ref: '#/components/schemas/Order_Transaction_CUR_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Remark:
           $ref: '#/components/schemas/Remark'
         Business_Segment_X:
@@ -1208,8 +1246,8 @@ components:
           $ref: '#/components/schemas/Shipment_Number'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Dispatch_Organization_Code: 
           $ref: '#/components/schemas/Dispatch_Organization_Code'
         Shipment_Date:
@@ -1220,8 +1258,8 @@ components:
           $ref: '#/components/schemas/Customer_Account_ID'
         Sales_Order_ID:
           $ref: '#/components/schemas/Sales_Order_ID'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
 
@@ -1256,8 +1294,8 @@ components:
           $ref: '#/components/schemas/AP_Application_ID'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         AP_Application_Date:
           $ref: '#/components/schemas/AP_Application_Date'
         Supplier_Account_ID:
@@ -1280,8 +1318,8 @@ components:
           $ref: '#/components/schemas/GL_Debit_Account_Number'
         GL_Credit_Account_Number:
           $ref: '#/components/schemas/GL_Credit_Account_Number'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
 
@@ -1300,8 +1338,8 @@ components:
           $ref: '#/components/schemas/Invoice_ID'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
-        Accounting_Period:
-          $ref: '#/components/schemas/Accounting_Period'
+        Period:
+          $ref: '#/components/schemas/Period'
         Adjustment_Date:
           $ref: '#/components/schemas/Adjustment_Date'
         Supplier_Account_ID:
@@ -1314,8 +1352,8 @@ components:
           $ref: '#/components/schemas/ADJ_Transaction_Amount'
         ADJ_TRX_CUR_Code:
           $ref: '#/components/schemas/ADJ_TRX_CUR_Code'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Created_Date:
           $ref: '#/components/schemas/Created_Date'
         Tax1_Type_Code:
@@ -1362,8 +1400,8 @@ components:
           $ref: '#/components/schemas/Requisition_Number'
         Requisition_Date:
           $ref: '#/components/schemas/Requisition_Date'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Created_Date: 
           $ref: '#/components/schemas/Created_Date'
         Status:
@@ -1468,8 +1506,8 @@ components:
           $ref: '#/components/schemas/Inventory_To_Location_ID'
         INV_System_Or_External_Source: 
           $ref: '#/components/schemas/INV_System_Or_External_Source'
-        Created_User_ID: 
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By: 
+          $ref: '#/components/schemas/Entered_By'
         GL_Line_Debit_Account_Number: 
           $ref: '#/components/schemas/GL_Line_Debit_Account_Number'
         GL_Line_Credit_Account_Number: 
@@ -1500,8 +1538,8 @@ components:
           $ref: '#/components/schemas/Physical_Count_Quantity'
         Comment:
           $ref: '#/components/schemas/Comment'
-        Created_User_ID:
-          $ref: '#/components/schemas/Created_User_ID'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
           
@@ -1589,7 +1627,7 @@ components:
     Period:
       type: string
       maxLength: 15
-      description: Fiscal period in which the Effective_Date occurs. EXAMPLE include W1–W53 for weekly periods, M1–M12 for monthly periods, Q1–Q4 for quarterly periods, and from any beginning date to any ending date. Shall match the Accounting_Period in the BAS_Accounting_Period table
+      description: Fiscal period in which the Effective_Date occurs. EXAMPLE include W1–W53 for weekly periods, M1–M12 for monthly periods, Q1–Q4 for quarterly periods, and from any beginning date to any ending date. Shall match the Period in the BAS_Period table
     Effective_Date:
       type: string
       format: date
@@ -1620,6 +1658,11 @@ components:
       maxLength: 25
       example: "Sales journal"
       description: Code for source from which the journal entry originated. EXAMPLE Sales journal, cash receipts journal, general journal, payroll journal, accountant manual entry, or spreadsheet.
+    Business_Unit_Code:
+      type: string
+      maxLength: 25
+      example: "WidgetGroup"
+      description: Used to identify the business unit, region, branch, and so on at the level that financial statements are being audited and for which the trial balance is generated. For example, you may use a code aligned with the concept of a reportable segment as defined in Financial Accounting Standards Board (FASB) Accounting Standards Codification (ASC) 280, Segment Reporting.
     Bill_Number :
       type: string
       maxLength: 100
@@ -1726,7 +1769,7 @@ components:
     
     Created_Date:
       type: string
-      format: string
+      format: date
       description: The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date.
       example: "2019-01-01"
       
@@ -1735,6 +1778,18 @@ components:
       format: time
       description: The time the journal entry was created in the system.
       example: '2018-12-31'
+
+    Last_Modified_By:
+      type: string
+      maxLength: 25
+      description: User_ID (from User_Listing file) for the last person modifying this entry. 
+      example: "Val"
+    
+    Last_Modified_Date:
+      type: string
+      format: date
+      description: The date the entry was last modified before posting.
+      example: "2019-01-01"
     
     Approved_Person_ID:
       type: string
@@ -1763,7 +1818,7 @@ components:
     Account_Segment_Project:
       type: string
       maxLength: 60
-      description: This field is a fixed account segement, recording information related to a project. EXAMPLE Construction projects which require a separate accounting. The value of this field stored is Project_ID. Shall match the Project_ID in the BAS_Project table. 
+      description: This field is a fixed account segment, recording information related to a project. EXAMPLE Construction projects which require a separate accounting. The value of this field stored is Project_ID. Shall match the Project_ID in the BAS_Project table. 
       example: "1234"
     
     Account_Segment_Bank_Account:
@@ -2608,13 +2663,13 @@ components:
       maxLength: 60
       description: Indicates the name of the organization type, for example, “Department” and “Cost Center”.
       
-    Accounting_Period_BEG_Date:
+    Period_BEG_Date:
       type: string
       format: date
       maxLength: 10
       description: The calendar beginning date of the current accounting period. 
 
-    Accounting_Period_Ending_Date:
+    Period_Ending_Date:
       type: string
       format: date
       maxLength: 10
