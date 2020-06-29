@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Audit Data Open Api Project (AICPA) - GL Adjustments
+  description: Describes schemas and the flow for requesting adjustments to be posted to a GL stored on the target system, as supplied by the source system
+
+paths:
+  /gl_post_adjustents:
+      post:
+        operationId: postGLAdjustments
+        tags: [General Ledger]
+        security:
+          - bearerAuth: []
+        description: >
+          The first leg of the flow to post adjustments. This call notifies a target system (where adjustments are to be recorded) 
+          about available adjustments at the source system. In order to retrieve the adjustments the target needs to 
+          a) authenticate to the source system, b) make a call to the source to to retrieve adjustments while returning back the adjustmentIds parameter,
+          and c) record them locally on the target 
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  callback_url:
+                    type: string
+                    format: uri
+                    example: https://source/prefix/gl_get_adjustents
+                  adjustment_ids:
+                    type: array
+                    items: 
+                      $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_ID'
+                      
+        responses:
+          '204':
+            description: callback request successfully accepted
+
+  /gl_get_adjustents:
+      # Due to a need to potentially pass hundreds of adjustment IDs, this endpoint is implemented as POST request
+      # to accomodate passing the same via a request body, which does not have limitations of a query string
+      post:
+        operationId: getGLAdjustments
+        tags: [General Ledger]
+        security:
+          # TODO: Identify additional auth modes which the source system can support for implementaiton purposes
+          - bearerAuth: []
+        description: >
+          The second leg of the flow to post adjustments. The target system requests specific adjustments by returning
+          their IDs initially provided by the source system. The source system returns the adjustments and the target records the same locally
+          and calls an optional webhook on the source system.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  adjustment_ids:
+                    type: array
+                    items: 
+                      $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_ID'
+                  callback_url:
+                    type: string
+                    format: uri
+                    description: >
+                      An optional implementation-specific GET/webhook endpoint to be invoked by the target to notify the source
+                      of completion and provide a success / error status
+        responses:
+          '200':
+            description: requested adjustments
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GL_Adjustment'
+
+components:
+  schemas:
+    GL_Adjustment:
+        # TODO: Provide missing fields
+        type: object
+        properties:
+          Adjustment_ID:
+            $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_ID'
+          Adjustment_Line_ID:
+            $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_Line_ID'
+          Adjustment_Line_Number:
+            $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_Line_Number'
+          Adjustment_Number:
+            $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_Number'
+          Adjustment_Type_Name:
+            $ref: '../AuditDataStrandard.yml#/components/schemas/Adjustment_Type_Name'

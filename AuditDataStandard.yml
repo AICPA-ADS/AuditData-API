@@ -53,8 +53,13 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Journals'
 
-  #phase 2 GL Adjustment potential /gl_adjustent:
-  #New data notification then use get to get the data.
+  # BEGIN: For Phase 2 discussion: A flow for posting GL adjustments
+  /gl_post_adjustents:
+    $ref: './GL_Adjustments/index.yml#/paths/gl_post_adjustments'
+
+  /gl_get_adjustents:
+    $ref: './GL_Adjustments/index.yml#/paths/gl_get_adjustments'                  
+  # END: For Phase 2 discussion: A flow for posting GL adjustments 
 
   /gl_trial_balance:
     get:
@@ -1543,10 +1548,6 @@ components:
         Business_Segment_X:
           $ref: '#/components/schemas/Business_Segment_X'
           
-
-     
-
-
 
  # This is where all the field properties are defined
 
