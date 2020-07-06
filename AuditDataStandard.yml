@@ -85,7 +85,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  GL_Account:
+                  GL_Accounts:
                     $ref: '#/components/schemas/GL_Accounts'
 
 
@@ -93,7 +93,7 @@ paths:
 
   /gl_trial_balance_xbrl:
     get:
-      operationId: getTBDetails
+      operationId: getTB-XBRLDetails
       tags: [General Ledger]
       security:
         - bearerAuth: []
@@ -330,26 +330,46 @@ components:
       properties:
         GL_Account_Number:
           $ref: '#/components/schemas/GL_Account_Number'
+        Business_Unit_code:
+          $ref: '#/components/schemas/Business_Unit_Code'
+        Balance_AsOf_Date:
+          $ref: '#/components/schemas/Balance_As_Of_Date'
         Fiscal_Year:
           $ref: '#/components/schemas/Fiscal_Year'
         Period:
           $ref: '#/components/schemas/Period'
-        Balance_As_Of_Date:
-          $ref: '#/components/schemas/Balance_As_Of_Date'
-        Functional_Currency_Code:
-          $ref: '#/components/schemas/Functional_Currency_Code'
-        Reporting_Currency_Code:
-          $ref: '#/components/schemas/Reporting_Currency_Code'
-        Local_Currency_Code:
-          $ref: '#/components/schemas/Local_Currency_Code'
-        Transaction_Currency_Code:
-          $ref: '#/components/schemas/Transaction_Currency_Code'
-        Beginning_Functional_Amount:
+        #In AICPA and called Beginning_Functional_Amount in ISO
+        Amount_Beginning:
           $ref: '#/components/schemas/Beginning_Functional_Amount'
-        Beginning_Reporting_Amount:
+        #In AICPA and called Beginning_Reporting_Amount in ISO
+        Amount_Beginning_Reporting:
           $ref: '#/components/schemas/Beginning_Reporting_Amount'
-        Beginning_Local_Amount:
+        #In AICPA and called Beginning_Local_Amount in ISO
+        Amount_Beginning_Local:
           $ref: '#/components/schemas/Beginning_Local_Amount'
+        #In AICPA and called Functional_Currency_Code in ISO
+        Amount_Currency:
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        #In AICPA and called Reporting_Currency_Code in ISO
+        Amount_Reporting_Currency:
+          $ref: '#/components/schemas/Reporting_Currency_Code'
+        #In AICPA and called Local_Currency_Code in ISO
+        Amount_Local_Currency:
+          $ref: '#/components/schemas/Local_Currency_Code'
+        #In AICPA and called Ending_Functional_Amount in ISO
+        Amount_Ending:
+          $ref: '#/components/schemas/Ending_Functional_Amount'
+        #In AICPA and called Ending_Reporting_Amount in ISO
+        Amount_Ending_Reporting:
+          $ref: '#/components/schemas/Ending_Reporting_Amount'
+         #In AICPA and called Ending_Local_Amount in ISO
+        Amount_Ending_Local:
+          $ref: '#/components/schemas/Ending_Local_Amount'
+      required:
+        - GL_Account_Number
+        - Amount_Ending
+        - Balance_AsOf_Date
+       
     
     AR_Open_Accounts_Receivables_Items:
       type: array
@@ -1599,7 +1619,7 @@ components:
       type: number
       format: float
       example: 100
-      description: Beginning balance amount of theÇÏperiod (same amount as the ending  balance from the prior period)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
+      description: Beginning balance amount of the period (same amount as the ending  balance from the prior period)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
 
     Beginning_Reporting_Amount:
       type: number
@@ -1655,7 +1675,7 @@ components:
     GL_Account_Number:
       type: string
       maxLength: 100
-      description: The GL account number. Shall match the GL_Account_Number used in the BAS_Chart_Of_Accounts table.
+      description: The GL account number. Shall match the GL_Account_Number.
     Fiscal_Year:
       type: string
       minLength: 4
@@ -1666,7 +1686,7 @@ components:
     Period:
       type: string
       maxLength: 15
-      description: Fiscal period in which the Effective_Date occurs. EXAMPLE include W1–W53 for weekly periods, M1–M12 for monthly periods, Q1–Q4 for quarterly periods, and from any beginning date to any ending date. Shall match the Period in the BAS_Period table
+      description: Fiscal period in which the balance AsOf data occurs. EXAMPLE include W1–W53 for weekly periods, M1–M12 for monthly periods, Q1–Q4 for quarterly periods.
     Effective_Date:
       type: string
       format: date
@@ -1768,6 +1788,7 @@ components:
       maxLength: 3
       minLength: 3
       example: "USD"
+      description: The currency used for local country reporting requirements. See ISO 4217 coding.
     
     Transaction_Amount:
       type: number
