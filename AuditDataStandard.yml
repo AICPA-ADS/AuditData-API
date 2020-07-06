@@ -53,10 +53,45 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Journals'
 
-  #phase 2 GL Adjustment potential /gl_adjustent:
+  #phase 2 GL Adjustment potential /gl_adjustment:
   #New data notification then use get to get the data.
 
   /gl_trial_balance:
+    get:
+      operationId: getTBDetails
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+        Allows searching for General Ledger Trial Balance Totals
+      parameters:
+  
+        - name: end_date
+          in: query
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          required: false
+          schema:
+            type: integer
+            format: date
+            
+        - $ref: '#/components/parameters/GL_Account_Number_Param' 
+            
+        
+      responses:
+        '200':
+          description: _gl_trial_balance_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  GL_Account:
+                    $ref: '#/components/schemas/GL_Accounts'
+
+
+
+
+  /gl_trial_balance_xbrl:
     get:
       operationId: getTBDetails
       tags: [General Ledger]
@@ -286,6 +321,10 @@ components:
         "GL_Account_Number": "12345678"}
         }
 
+    GL_Accounts:
+      type: array
+      items:
+          $ref: '#/components/schemas/GL_Account_Balance'
     GL_Account_Balance: 
       type: object
       properties:
