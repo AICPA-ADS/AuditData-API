@@ -18,7 +18,7 @@ security:
       - read
       - write
 paths:
-  /gl_details:
+  /gl_journals:
     get:
       operationId: getGLDetails
       tags: [General Ledger]
@@ -89,8 +89,28 @@ paths:
               schema:
                 type: object
                 properties:
-                  GL_Accounts:
-                    $ref: '#/components/schemas/GL_Accounts'
+                  GL_Trial_Balance:
+                    $ref: '#/components/schemas/GL_Account_Balances'
+
+  /gl_accounts:
+    get:
+      operationId: getChartAccounts
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+        Allows requesting a listing of chart of accounts      
+        
+      responses:
+        '200':
+          description: _gl_chart_of_accounts_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  GL_Chart_Of_Accounts:
+                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
 
 
 
@@ -325,7 +345,7 @@ components:
         "GL_Account_Number": "12345678"}
         }
 
-    GL_Accounts:
+    GL_Account_Balances:
       type: array
       items:
           $ref: '#/components/schemas/GL_Account_Balance'
@@ -695,8 +715,11 @@ components:
         Supplier_Billing_Country:
           $ref: '#/components/schemas/Supplier_Billing_Country'
       
-
-    BAS_Chart_Of_Accounts:
+    GL_Chart_of_Accounts:
+      type: array
+      items:
+          $ref: '#/components/schemas/GL_Account_Details'
+    GL_Account_Details:
       type: object
       properties:
         GL_Account_Number:
@@ -709,8 +732,12 @@ components:
           $ref: '#/components/schemas/Account_Type'
         Account_Subtype:
           $ref: '#/components/schemas/Account_Subtype'
+        GL_Account_Description:
+          $ref: '#/components/schemas/GL_Account_Description'
         Parent_GL_Account_Number:
           $ref: '#/components/schemas/Parent_GL_Account_Number'
+        XBRL_Concept:
+          $ref: '#/components/schemas/XBRL_Concept'
 
     BAS_Bank_Account:
       type: object
@@ -1625,13 +1652,13 @@ components:
       type: number
       format: float
       example: 100
-      description: Beginning balance amount of the period (same amount as the ending  balance from the prior period)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
+      description: Beginning balance amount of the period (same amount as the ending  balance from the prior period after opening journal entries)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
 
     Beginning_Reporting_Amount:
       type: number
       format: float
       example: 100
-      description: Beginning balance amount for the  period in the currency used for  statutory reporting.
+      description: Beginning balance amount for the  period (same amount as the ending  balance from the prior period after opening journal entries) recorded in the currency used for  statutory reporting.
 
     Beginning_Local_Amount:
       type: number
@@ -1681,7 +1708,9 @@ components:
     GL_Account_Number:
       type: string
       maxLength: 100
-      description: The GL account number. Shall match the GL_Account_Number.
+      description: The GL account number defined in the chart of accounts.
+      example: 1234-567-890
+    
     Fiscal_Year:
       type: string
       minLength: 4
@@ -2356,7 +2385,8 @@ components:
       type: string
       maxLength: 25
       description: The type of account. EXAMPLE Assets, liabilities, equity, revenues and expenses. 
-      example:
+      example: Asset
+      enum: [Asset,Liability,Equity,Revenue,Expense]
 
     Account_Subtype:
       type: string
@@ -2364,12 +2394,22 @@ components:
       description: The subtype of the account. EXAMPLE Current assets are the subtype of assets.
       example:
 
+    GL_Account_Description:
+          type: string
+          maxLength: 256
+          description: Label or description associated with GL_Account_Number.
+          example: Finished goods inventory held by the company.
+
     Parent_GL_Account_Number:
       type: string
       maxLength: 100
-      description: The number of the parent account in an account hierarchy. This is provided to allow more than the predefined levels of the hierarchy in the chart of accounts table. When Parent_GL_Account_Number is the highest level, its value can be set to the default value; for example, set to NULL. Shall match the GL_Account_Number in BAS_Chart_Of_Accounts table.
+      description: A reference to the GL_Account_Number that is the parent in an account hierarchy. Provided to allow more than the predefined levels of hierarchy in the chart of accounts table.
       example:
 
+    XBRL_Concept:
+      type: string
+      description: XBRL concept associated with the account with the namespace in clark notation.
+      example: '{http://fasb.org/us-gaap/2020-01-31}InventoryFinishedGoods'
     Bank_Account_Number:
       type: string
       maxLength: 60
