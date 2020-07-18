@@ -75,7 +75,7 @@ paths:
         - name: end_date_trial_balance
           in: query
           description: End date for the trial balance.  Returns all the values at the provided `end_date`.
-          required: false
+          required: true
           schema:
             type: integer
             format: date
@@ -284,6 +284,7 @@ components:
         - GL_Account_Number
         - Amount
         - Amount_Credit_Debit_Indicator
+        - Amount_Currency
 
     documentInfo_oim_json:
       type: object
@@ -1721,7 +1722,7 @@ components:
     Period:
       type: string
       maxLength: 15
-      description: Fiscal period in which the balance AsOf data occurs. EXAMPLE include W1–W53 for weekly periods, M1–M12 for monthly periods, Q1–Q4 for quarterly periods.
+      description: Fiscal period in which the balance AsOf data occurs. EXAMPLE iwould use the XML duration notation P1Y, PW53.
     Effective_Date:
       type: string
       format: date
