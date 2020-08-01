@@ -32,14 +32,14 @@ paths:
           description: Start date for GL transactions.  Returns all transactions with an `effective_date` after `the start_date`.
           required: false
           schema:
-            type: integer
+            type: string
             format: date
         - name: end_date
           in: query
           description: End date for GL transactions.  Returns all transactions with an `effective_date` before `the end_date`.
           required: false
           schema:
-            type: integer
+            type: string
             format: date 
         
       responses:
@@ -70,14 +70,14 @@ paths:
           description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
           required: false
           schema:
-            type: integer
+            type: string
             format: date
         - name: end_date_trial_balance
           in: query
           description: End date for the trial balance.  Returns all the values at the provided `end_date`.
           required: true
           schema:
-            type: integer
+            type: string
             format: date
             
         
@@ -92,42 +92,7 @@ paths:
                   GL_Trial_Balance:
                     $ref: '#/components/schemas/GL_Account_Balances'
 
-  /gl_periods:
-    get:
-      operationId: getPeriods
-      tags: [General Ledger]
-      security:
-        - bearerAuth: []
-      description: >
-        Allows requesting the reporting periods of the company. 
-      parameters:
-        - name: start_date_trial_balance
-          in: query
-          description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
-          required: false
-          schema:
-            type: integer
-            format: date
-        - name: end_date_trial_balance
-          in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
-          required: false
-          schema:
-            type: integer
-            format: date    
-        
-      responses:
-        '200':
-          description: _gl_periods_ successfully accepted
-          content:  
-            application/json:
-              schema:
-                type: object
-                properties:
-                  GL_Chart_Of_Accounts:
-                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
-
-  ## name of the period
+ ## name of the period
   #  period start date
   # period end date
   # Returns all periods availble
@@ -148,6 +113,42 @@ paths:
   # Add optional parameter for entity such as temporary GUID
   # End point for entities.
   # forcast and budgets
+
+  /gl_periods:
+    get:
+      operationId: getPeriods
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+        Allows requesting the reporting periods of the company. 
+      parameters:
+        - name: start_date_period
+          in: query
+          description: Returns all reporting periods with an end date equal or greater than the end date.
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: end_date_period
+          in: query
+          description: Returns all reporting periods with an end date equal or less than the end date.
+          required: false
+          schema:
+            type: string
+            format: date    
+        
+      responses:
+        '200':
+          description: _gl_periods_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  GL_Periods:
+                    $ref: '#/components/schemas/GL_Periods'
+
 
 
   /gl_accounts:
@@ -188,7 +189,7 @@ paths:
           description: End date for the trial balance.  Returns all the values at the provided `end_date`.
           required: false
           schema:
-            type: integer
+            type: string
             format: date
             
         - $ref: '#/components/parameters/GL_Account_Number_Param' 
@@ -773,7 +774,21 @@ components:
           $ref: '#/components/schemas/Supplier_Billing_Postal_Code'
         Supplier_Billing_Country:
           $ref: '#/components/schemas/Supplier_Billing_Country'
-      
+    
+    GL_Periods:
+      type: array
+      items:
+          $ref: '#/components/schemas/GL_Periods_Details'
+    GL_Periods_Details:
+      type: object
+      properties:
+        GL_Period_Name:
+          $ref: '#/components/schemas/GL_Period_Name'
+        Start_Date_Period:
+          $ref: '#/components/schemas/Start_Date_Period'
+        End_Date_Period:
+          $ref: '#/components/schemas/End_Date_Period'
+
     GL_Chart_of_Accounts:
       type: array
       items:
@@ -1764,6 +1779,7 @@ components:
       type: string
       maxLength: 100
       description: The number of the journal entry; for example, including serial number,document type, and date.
+    
     GL_Account_Number:
       type: string
       maxLength: 100
@@ -1782,6 +1798,23 @@ components:
       maxLength: 15
       description: Fiscal period in which the balance effective date occurs data occurs. This is the period defined by the company and is not a standardized format. Examples include W1–W53 for weekly periods, M1–M12 for monthly periods, and Q1–Q4 for quarterly periods. 
       example: Year
+
+    GL_Period_Name:
+      type: string
+      description: The name of the period as defined by the entity providing the reporting period.
+      example: Fiscal Year Ended 2019
+
+    Start_Date_Period:
+      type: string
+      format: date
+      description: The date that the defined reporting period started as defined by the entity providing the reporting period.
+      example: 2019-01-01
+    End_Date_Period:
+      type: string
+      format: date
+      description: The date that the defined reporting period ended as defined by the entity providing the reporting period.
+      example: 2019-12-31
+
     Effective_Date:
       type: string
       format: date
@@ -2188,21 +2221,21 @@ components:
       example:
 
     Acquisition_Date:
-      type: number
+      type: string
       format: date
       maxLength: 10
       description: Date that the PPE is acquired.
       example:
 
     Posted_Date:
-      type: number
+      type: string
       format: date
       maxLength: 10
       description: Date when PPE is posted into accounts.
       example:
 
     Placed_Into_Service_Date:
-      type: number
+      type: string
       format: date
       maxLength: 10
       description: Date that PPE is placed into use.
@@ -2259,7 +2292,7 @@ components:
       example:
 
     Payment_Date:
-      type: number
+      type: string
       format: date
       maxLength: 10 
       description: The payment date of the account payable by the supplier.
