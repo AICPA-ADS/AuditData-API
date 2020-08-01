@@ -1808,12 +1808,12 @@ components:
       type: string
       format: date
       description: The date that the defined reporting period started as defined by the entity providing the reporting period.
-      example: 2019-01-01
+      example: '2019-01-01'
     End_Date_Period:
       type: string
       format: date
       description: The date that the defined reporting period ended as defined by the entity providing the reporting period.
-      example: 2019-12-31
+      example: '2019-12-31'
 
     Effective_Date:
       type: string
