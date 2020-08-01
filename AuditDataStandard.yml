@@ -92,6 +92,64 @@ paths:
                   GL_Trial_Balance:
                     $ref: '#/components/schemas/GL_Account_Balances'
 
+  /gl_periods:
+    get:
+      operationId: getPeriods
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+        Allows requesting the reporting periods of the company. 
+      parameters:
+        - name: start_date_trial_balance
+          in: query
+          description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
+          required: false
+          schema:
+            type: integer
+            format: date
+        - name: end_date_trial_balance
+          in: query
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          required: false
+          schema:
+            type: integer
+            format: date    
+        
+      responses:
+        '200':
+          description: _gl_periods_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  GL_Chart_Of_Accounts:
+                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
+
+  ## name of the period
+  #  period start date
+  # period end date
+  # Returns all periods availble
+  # period
+  # periodName: 2019 Fiscal Year
+  # start: 2019-01-01
+  # end: 2019-12-31
+  # Entity identifier (optional request to end point what is entity)
+  # 
+  # periodName: 2019 Q1
+  # start: 2019-01-01
+  # end: 2019-03-31
+  # period: year
+  # periodName: 2019 M1  (Anything)  IS the same as period in the gl_journals
+  # start: 2019-01-01 ()
+  # end: 2019-01-31
+  # period: year
+  # Add optional parameter for entity such as temporary GUID
+  # End point for entities.
+  # forcast and budgets
+
+
   /gl_accounts:
     get:
       operationId: getChartAccounts
@@ -1722,7 +1780,8 @@ components:
     Period:
       type: string
       maxLength: 15
-      description: Fiscal period in which the balance AsOf data occurs. EXAMPLE iwould use the XML duration notation P1Y, PW53.
+      description: Fiscal period in which the balance effective date occurs data occurs. This is the period defined by the company and is not a standardized format. Examples include W1–W53 for weekly periods, M1–M12 for monthly periods, and Q1–Q4 for quarterly periods. 
+      example: Year
     Effective_Date:
       type: string
       format: date
@@ -2373,9 +2432,8 @@ components:
     Account_Type:
       type: string
       maxLength: 25
-      description: The type of account. EXAMPLE Assets, liabilities, equity, revenues and expenses. 
+      description: The type of account. EXAMPLE Assets, Liabilities, Equity, Revenue and Expense. 
       example: Asset
-      enum: [Asset,Liability,Equity,Revenue,Expense]
 
     Account_Subtype:
       type: string
