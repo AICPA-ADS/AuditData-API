@@ -149,7 +149,24 @@ paths:
                   GL_Periods:
                     $ref: '#/components/schemas/GL_Periods'
 
-
+  /gl_entities:
+    get:
+      operationId: getEntities
+      tags: [General Ledger]
+      security:
+        - bearerAuth: []
+      description: >
+        Allows requesting the reporting entities available from the API.   
+      responses:
+        '200':
+          description: _gl_entities_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  GL_Entities:
+                    $ref: '#/components/schemas/GL_Entities'
 
   /gl_accounts:
     get:
@@ -170,9 +187,6 @@ paths:
                 properties:
                   GL_Chart_Of_Accounts:
                     $ref: '#/components/schemas/GL_Chart_of_Accounts'
-
-
-
 
   /gl_trial_balance_xbrl:
     get:
@@ -779,6 +793,31 @@ components:
       type: array
       items:
           $ref: '#/components/schemas/GL_Periods_Details'
+      example: [
+                {
+                  "GL_Period_Name": "Fiscal Year Ended 2019",
+                  "Start_Date_Period": "2019-01-01",
+                  "End_Date_Period": "2019-12-31",
+                  "Period_Type": "Year"
+                },
+                {
+                  "GL_Period_Name": "Fiscal Year Ended 2020",
+                  "Start_Date_Period": "2020-01-01",
+                  "End_Date_Period": "2020-12-31",
+                  "Period_Type": "Year"
+                },
+                {
+                  "GL_Period_Name": "Fiscal Quarter Ended Q1 2020",
+                  "Start_Date_Period": "2020-01-01",
+                  "End_Date_Period": "2020-03-31",
+                  "Period_Type": "Quarter"
+                }
+              ]
+      required:
+        - GL_Period_Name
+        - Start_Date_Period
+        - End_Date_Period
+    
     GL_Periods_Details:
       type: object
       properties:
@@ -788,6 +827,19 @@ components:
           $ref: '#/components/schemas/Start_Date_Period'
         End_Date_Period:
           $ref: '#/components/schemas/End_Date_Period'
+        Period_Type:
+          $ref: '#/components/schemas/Period_Type'
+
+    GL_Entities:
+      type: array
+      items:
+          $ref: '#/components/schemas/GL_Entities_Details'
+    GL_Entities_Details:
+      type: object
+      properties:
+        GL_Entity_Name:
+          $ref: '#/components/schemas/GL_Entity_Name'
+        
 
     GL_Chart_of_Accounts:
       type: array
@@ -1809,11 +1861,23 @@ components:
       format: date
       description: The date that the defined reporting period started as defined by the entity providing the reporting period.
       example: '2019-01-01'
+
     End_Date_Period:
       type: string
       format: date
       description: The date that the defined reporting period ended as defined by the entity providing the reporting period.
       example: '2019-12-31'
+    
+
+    Period_Type:
+      type: string
+      description: The type of period defined. For example Quarter, Year Half Year.
+      enum: [Year, Quarter, HalfYear, 52Weeks, 3QCum, Month, 13Months, Other]
+      example: 'Year'
+
+    GL_Entity_Name:
+      type: string
+      description: The name of the entity for which the GL information is applicable.
 
     Effective_Date:
       type: string
