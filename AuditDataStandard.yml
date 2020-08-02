@@ -1,3 +1,27 @@
+#--------OUTSTANDING ITEMS  -----------
+
+# PAGINATION
+# Define pagination scheme if this implemented by an API provider. Don't want implementers to use different 
+# schemes thus making the API incompatible.
+
+# Budgets
+# Need an indicator for Budget Information
+
+# Forecasts
+# Need to document dealing with Forecasts
+# I assume handle similar manner to budgets
+# Assume can have multiple forecasts where budget would only be one.
+
+# Entities
+# Need to discuss entity identification.
+
+# Security
+# Need to document approach to security and authentication.
+
+# GL Adjustments
+# Should the standard cover adjustments proposed by the auditors.
+
+
 openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 servers:
@@ -53,8 +77,6 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Journals'
 
-  #phase 2 GL Adjustment potential /gl_adjustment:
-  #New data notification then use get to get the data.
 
   /gl_trial_balance:
     get:
@@ -92,27 +114,6 @@ paths:
                   GL_Trial_Balance:
                     $ref: '#/components/schemas/GL_Account_Balances'
 
- ## name of the period
-  #  period start date
-  # period end date
-  # Returns all periods availble
-  # period
-  # periodName: 2019 Fiscal Year
-  # start: 2019-01-01
-  # end: 2019-12-31
-  # Entity identifier (optional request to end point what is entity)
-  # 
-  # periodName: 2019 Q1
-  # start: 2019-01-01
-  # end: 2019-03-31
-  # period: year
-  # periodName: 2019 M1  (Anything)  IS the same as period in the gl_journals
-  # start: 2019-01-01 ()
-  # end: 2019-01-31
-  # period: year
-  # Add optional parameter for entity such as temporary GUID
-  # End point for entities.
-  # forcast and budgets
 
   /gl_periods:
     get:
