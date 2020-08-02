@@ -148,14 +148,14 @@ paths:
       description: >
         Allows requesting the reporting periods of the company. 
       parameters:
-        - name: start_date_period
+        - name: start_date
           in: query
           description: Returns all reporting periods with an end date equal or greater than the end date.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date_period
+        - name: end_date
           in: query
           description: Returns all reporting periods with an end date equal or less than the end date.
           required: false
@@ -258,6 +258,17 @@ components:
           scopes:
             write: allows modifying resources
             read: allows reading resources
+
+  parameters:
+    GL_Account_Number_Param:
+      in: query
+      name: GL_Account_Number
+      schema:
+        type: string
+        maxLength: 100
+      description: The GL account number. Shall match the GL_Account_Number used in the BAS_Chart_Of_Accounts table.
+
+
   schemas:
     Journals:
       type: object
@@ -3528,11 +3539,3 @@ components:
    
 
 
-  parameters:
-    GL_Account_Number_Param:
-      in: query
-      name: GL_Account_Number
-      schema:
-        type: string
-        maxLength: 100
-      description: The GL account number. Shall match the GL_Account_Number used in the BAS_Chart_Of_Accounts table.
