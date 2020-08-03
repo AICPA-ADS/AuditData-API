@@ -1,5 +1,5 @@
 # AuditData-API
-The purpose of the Audit Data API Working Group (Working Group) is to define an API standard for the transfer of financial audit data between two systems. The standard is open and licensed under an MIT license Participation in the Working Group and contributions are open to all interested parties. The API standard intends to build upon the standards already developed by the AICPA  and to use the terms defined in that standard where applicable. 
+The purpose of the Audit Data API Working Group (Working Group) is to define an API standard for the transfer of financial audit data between two systems. The standard is open and licensed under an MIT license. Participation in the Working Group and contributions are open to all interested parties. The API standard intends to build upon the standards already developed by the AICPA  and to use the terms defined in that standard where applicable. 
 
 ## Background
 When auditors request client data to analyze in their audits, this data (audit data) is typically transferred to the auditor as discrete data files in a custom format. The scope of audit data covers information that is recorded in financial systems of the company, such as the following: 
