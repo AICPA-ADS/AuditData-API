@@ -28,3 +28,6 @@ The AICPA and XBRL US have initiated work to define an audit data transfer stand
 ## Initial Scope
 The initial scope of the APIs to be defined will cover General Ledger Transaction details and Trial balance values at a point in time. The scope will then expand to other financial subsystems. The Working Group will focus on developing and publishing the APIs, and promoting their adoption among auditees, ERP companies that work with them, and audit data extraction and analytics providers. 
 
+### Data Security
+The the API standard will not provide prescriptive guideance on security topics such as specific authentication/authorization schemes or in-transit data security, and will instead treat those as details to be chosen by between implementing parties. The standard may address additional security concerns by providing implementaiton notes, as required.
+
