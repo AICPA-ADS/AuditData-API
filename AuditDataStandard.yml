@@ -88,7 +88,15 @@ paths:
           required: false
           schema:
             type: string
-            format: date 
+            format: date
+
+        - name: entity_id
+          in: query
+          description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If multiple the API implementer determines entity to return.  (Do we need a standard error for this - ADD a standard response if one is required.)
+          required: false
+          schema:
+            type: string
+           
         
       responses:
         '200':
@@ -874,6 +882,8 @@ components:
       type: object
       properties:
         GL_Entity_Name:
+          $ref: '#/components/schemas/GL_Entity_Name'
+        Entity_Identifier:
           $ref: '#/components/schemas/GL_Entity_Name'
         
 
@@ -1914,6 +1924,10 @@ components:
     GL_Entity_Name:
       type: string
       description: The name of the entity for which the GL information is applicable.
+
+    Entity_Identifier:
+      type: string
+      description: The uid of the entity.
 
     Effective_Date:
       type: string
