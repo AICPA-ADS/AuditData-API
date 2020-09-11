@@ -16,7 +16,7 @@ The General leddger supports the following API end points:
 * Accounts
 * XBRL Trial Balance
 
-### Journal entrires
+### Journal entries
 
 The journal entries end point allows a user to request journal entries for a specific entity for a specific time range. If no request parameter is defined then the system will attempt to return all available journal entries that the specific user making the request is permitted to see. 
 
