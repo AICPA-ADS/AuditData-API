@@ -903,6 +903,7 @@ components:
       type: array
       items:
           $ref: '#/components/schemas/GL_Entities_Details'
+    
     GL_Entities_Details:
       type: object
       properties:
@@ -910,6 +911,15 @@ components:
           $ref: '#/components/schemas/GL_Entity_Name'
         Entity_Identifier:
           $ref: '#/components/schemas/Entity_Identifier'
+        GL_Subsidiaries:
+          $ref: '#/components/schemas/GL_Subsidiaries'
+
+    GL_Subsidiaries:
+      type: array
+      items:
+          $ref: '#/components/schemas/GL_Entities_Details'
+
+
         
 
     GL_Chart_of_Accounts:
