@@ -36,9 +36,6 @@
 # I assume handle similar manner to budgets
 # Assume can have multiple forecasts where budget would only be one.
 
-# Entities
-# Need to discuss entity identification.
-
 # Security
 # Need to document approach to security and authentication.
 
@@ -90,12 +87,7 @@ paths:
             type: string
             format: date
 
-        - name: entity_id
-          in: query
-          description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If multiple the API implementer determines entity to return.  (Do we need a standard error for this - ADD a standard response if one is required.)
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/entity_id_Param'
            
         
       responses:
@@ -133,6 +125,7 @@ paths:
           schema:
             type: string
             format: date
+        - $ref: '#/components/parameters/entity_id_Param'
             
         
       responses:
@@ -169,7 +162,9 @@ paths:
           required: false
           schema:
             type: string
-            format: date    
+            format: date
+
+        - $ref: '#/components/parameters/entity_id_Param'
         
       responses:
         '200':
@@ -208,7 +203,14 @@ paths:
       security:
         - bearerAuth: []
       description: >
-        Allows requesting a listing of chart of accounts      
+        Allows requesting a listing of chart of accounts 
+      parameters:
+        - name: entity_id
+          in: query
+          description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
+          required: false
+          schema:
+            type: string   
         
       responses:
         '200':
@@ -239,9 +241,10 @@ paths:
             type: string
             format: date
             
-        - $ref: '#/components/parameters/GL_Account_Number_Param' 
+        - $ref: '#/components/parameters/GL_Account_Number_Param'
+
+        - $ref: '#/components/parameters/entity_id_Param'
             
-        
       responses:
         '200':
           description: _gl_trial_balance_ successfully accepted
@@ -270,11 +273,19 @@ components:
   parameters:
     GL_Account_Number_Param:
       in: query
-      name: GL_Account_Number
+      name: gl_account_number
       schema:
         type: string
         maxLength: 100
       description: The GL account number. Shall match the GL_Account_Number used in the BAS_Chart_Of_Accounts table.
+
+    entity_id_Param:
+      in: query
+      name: entity_id
+      description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
+      required: false
+      schema:
+        type: string
 
 
   schemas:
@@ -348,6 +359,9 @@ components:
         #In AICPA and ISO
         Approved_Date:
           $ref: '#/components/schemas/Approved_Date'
+        #Added for API Specification for cases where have multiple entities.
+        Entity_Identifier:
+          $ref: '#/components/schemas/GL_Entity_Name'
         GL_Line_Items:
           type: array
           items:
@@ -472,6 +486,9 @@ components:
       properties:
         GL_Account_Number:
           $ref: '#/components/schemas/GL_Account_Number'
+        #Added for API Specification for cases where have multiple entities.
+        Entity_Identifier:
+          $ref: '#/components/schemas/GL_Entity_Name'
         Business_Unit_code:
           $ref: '#/components/schemas/Business_Unit_Code'
         Balance_AsOf_Date:
@@ -842,19 +859,22 @@ components:
                   "GL_Period_Name": "Fiscal Year Ended 2019",
                   "Start_Date_Period": "2019-01-01",
                   "End_Date_Period": "2019-12-31",
-                  "Period_Type": "Year"
+                  "Period_Type": "Year",
+                  "Entity_Identifier": "ABC-CO"
                 },
                 {
                   "GL_Period_Name": "Fiscal Year Ended 2020",
                   "Start_Date_Period": "2020-01-01",
                   "End_Date_Period": "2020-12-31",
-                  "Period_Type": "Year"
+                  "Period_Type": "Year",
+                  "Entity_Identifier": "ABC-CO"
                 },
                 {
                   "GL_Period_Name": "Fiscal Quarter Ended Q1 2020",
                   "Start_Date_Period": "2020-01-01",
                   "End_Date_Period": "2020-03-31",
-                  "Period_Type": "Quarter"
+                  "Period_Type": "Quarter",
+                  "Entity_Identifier": "ABC-CO"
                 }
               ]
       required:
@@ -873,6 +893,9 @@ components:
           $ref: '#/components/schemas/End_Date_Period'
         Period_Type:
           $ref: '#/components/schemas/Period_Type'
+        #Added for API Specification for cases where have multiple entities.
+        Entity_Identifier:
+          $ref: '#/components/schemas/GL_Entity_Name'
 
     GL_Entities:
       type: array
@@ -1928,6 +1951,7 @@ components:
     Entity_Identifier:
       type: string
       description: The uid of the entity.
+      example: ABC-CO
 
     Effective_Date:
       type: string
