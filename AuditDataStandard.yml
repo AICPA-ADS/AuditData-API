@@ -28,14 +28,6 @@
 # Define pagination scheme if this implemented by an API provider. Don't want implementers to use different 
 # schemes thus making the API incompatible.
 
-# Budgets
-# Need an indicator for Budget Information
-
-# Forecasts
-# Need to document dealing with Forecasts
-# I assume handle similar manner to budgets
-# Assume can have multiple forecasts where budget would only be one.
-
 # Security
 # Need to document approach to security and authentication.
 
@@ -125,6 +117,15 @@ paths:
           schema:
             type: string
             format: date
+        
+        - name: budget_flag
+          in: query
+          description: Flag to indicate if budget data should be returned. If not provided the default is actual data. To get budget data only a parameter of "budget" is used. To get both a parameter of "both" is passed.
+          required: false
+          schema:
+            type: string
+            enum: [budget, both]
+
         - $ref: '#/components/parameters/entity_id_Param'
             
         
@@ -526,11 +527,14 @@ components:
          #In AICPA and called Ending_Local_Amount in ISO
         Amount_Ending_Local:
           $ref: '#/components/schemas/Ending_Local_Amount'
+        Budget_Flag:
+          $ref: '#/components/schemas/Ending_Local_Amount'
+
       required:
         - GL_Account_Number
         - Amount_Beginning
         - Amount_Ending
-        - Amount_Amount_Currency
+        - Amount_Currency
         - Balance_AsOf_Date
        
     
@@ -1898,13 +1902,19 @@ components:
       type: number
       format: float
       example: 100
-      description: Ending balance amount for the period  in local currency used for multicurrency tracking.
+      description: Ending balance amount for the period  in local currency used for multi-currency tracking.
 
     Ending_Transaction_Amount:
       type: number
       format: float
       example: 100
       description: Ending balance amount for the period  in the transaction currency used for  multi-currency tracking.
+
+    Budget_Flag:
+      type: string
+      enum: [budget, actual]
+      example: actual
+      description: Indicates if the trial balance amount is an actual amount or a budget amount. If this field is missing from the return result then the value is presumed to be actual.
       
     Journal_ID:
       type: string
