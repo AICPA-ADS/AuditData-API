@@ -528,7 +528,7 @@ components:
         Amount_Ending_Local:
           $ref: '#/components/schemas/Ending_Local_Amount'
         Budget_Flag:
-          $ref: '#/components/schemas/Ending_Local_Amount'
+          $ref: '#/components/schemas/Budget_Flag'
 
       required:
         - GL_Account_Number
