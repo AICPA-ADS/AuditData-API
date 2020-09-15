@@ -92,6 +92,14 @@ paths:
             application/xml:
                 schema:
                   $ref: '#/components/schemas/Journals'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
 
 
   /gl_trial_balance:
@@ -292,6 +300,15 @@ components:
 
 
   schemas:
+    error_message:
+      type: object
+      properties:
+        errors:
+          type: string
+          description: Identifier for the error
+        error_description:
+          type: string
+          description: Adds more details to the error
     Journals:
       type: object
       properties:
@@ -3597,7 +3614,67 @@ components:
       maxLength: 200
       description: Comments on the count, the variances, or other information captured.
       example:
-    
+
+  responses:
+    bad_request:
+      description: >
+        Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. 
+      content:
+        applications/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: bad_request
+            error_description: Parameter field invalid.
+    bad_token:
+      description: The token is invalid, expired, or corrupted.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: unauthorized,
+            error_description: Cannot convert access token to JSON
+    unauthorized:
+      description: >
+        Bad credentials, or could not read credentials due to malformed JSON.
+         * "Full authentication is required..." -> malformed JSON
+         * "Bad client credentials" -> client_id/client_secret pair invalid
+         * "Bad credentials" -> username/password pair invalid
+      content:
+        applications/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: unauthorized
+            error_description: Full authentication is required to access this resource
+    not_found:
+      description: This resource doesn't exist or you don't have the permissions to view it.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example: 
+            error: not_found
+            error_description: An entity with that name could not be found.
+    method_not_allowed:
+      description: Method not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example: 
+            error: method_not_allowed
+            error_description: Request method 'DELETE' not supported
+    internal_server_error:
+      description: Internal error, not the fault of the client.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example: 
+            error: internal_error
+            error_description: Unknown error, try again later
 
 
    
