@@ -23,3 +23,25 @@ The journal entries end point allows a user to request journal entries for a spe
 To return data for a specific time range the user provides the start date and the end date.  This date refers to the effective date of the journal entry.
 
 If the system contains jopurnal entry data for multiple entites then the sytem will detemine which entity information to return based on the user making the request.  This is system dependent.
+
+
+### Trial Balance
+
+The trial balance end point allows a uesr to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting period. If a start date is provided then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see below)
+
+Only one reporting period is returned at a time. 
+
+Additional parameters can be provided to get budget information by passing a budget flag parameter with a value of budget.  If no value is provided the default value is the actual value.
+
+If the system has information on mutiple entities the entity parameter allows information for a specific entity to be requested using a system assigned entity identifier. If the entity identifier is not provided the default entity is returned. This is implementation specific.
+
+### Periods
+
+The periods end point allows the user to request the valid reporting periods of a given entity or all entities available to the requester.  No parameters are required for this end point.  However the user can request reporting periods by start date, end date and entity.  The start data parameter returns all reporting periods with an end date equal or greater than the end date. The end data parameter returns all reporting periods with an end date equal or less than the end date.
+
+### Entities
+
+The entities end point allows the user to request all available entities availble to the user on the system. The entities end point has one optional parameter for entity identifier. This parameter allows the user to get specific information about a specific entity. The end point returns the entity identifer the entity name and any subsidiariay entities.
+
+### Accounts
+
