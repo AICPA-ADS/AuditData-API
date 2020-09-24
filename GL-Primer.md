@@ -45,3 +45,9 @@ The entities end point allows the user to request all available entities availbl
 
 ### Accounts
 
+The accounts entry point allows a user to request the chart of accounts for a given entity.  The user can pass the entity identifier as a parameter to retrive the chart of accounts for that entity.  If no parameter is passed all the acconts of all entities available to the user are returned. Each account record includes the entity identifier.
+
+The end points returns details of each account defined in the chart of the accounts for the entity.  This does not include balance or journal information. These details are available in the Traial Balance and Journal end points.
+
+### Trial Balance XBRL
+
