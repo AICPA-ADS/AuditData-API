@@ -47,8 +47,10 @@ info:
   description: This is an initial API specification for requesting data for performing audits
 
 tags:
-  - name: General Ledger
+  - name: General Ledger Module
     description: Used to request General Ledger Information
+  - name: Base Module
+    description: Used across modules.
 
 security:
   - implicit:
@@ -58,7 +60,7 @@ paths:
   /gl_journals:
     get:
       operationId: getGLDetails
-      tags: [General Ledger]
+      tags: [General Ledger Module]
       security:
         - bearerAuth: []
       description: >
@@ -105,7 +107,7 @@ paths:
   /gl_trial_balance:
     get:
       operationId: getTBDetails
-      tags: [General Ledger]
+      tags: [General Ledger Module]
       security:
         - bearerAuth: []
       description: >
@@ -157,10 +159,10 @@ paths:
           $ref: '#/components/responses/internal_server_error'
 
 
-  /gl_periods:
+  /periods:
     get:
       operationId: getPeriods
-      tags: [General Ledger]
+      tags: [Base Module]
       security:
         - bearerAuth: []
       description: >
@@ -185,14 +187,14 @@ paths:
         
       responses:
         '200':
-          description: _gl_periods_ successfully accepted
+          description: _periods_ successfully accepted
           content:  
             application/json:
               schema:
                 type: object
                 properties:
-                  GL_Periods:
-                    $ref: '#/components/schemas/GL_Periods'
+                  Periods:
+                    $ref: '#/components/schemas/Periods'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -202,10 +204,10 @@ paths:
         '500':
           $ref: '#/components/responses/internal_server_error'
 
-  /gl_entities:
+  /entities:
     get:
       operationId: getEntities
-      tags: [General Ledger]
+      tags: [Base Module]
       security:
         - bearerAuth: []
       description: >
@@ -214,14 +216,14 @@ paths:
         - $ref: '#/components/parameters/entity_id_Param'
       responses:
         '200':
-          description: _gl_entities_ successfully accepted
+          description: _entities_ successfully accepted
           content:  
             application/json:
               schema:
                 type: object
                 properties:
-                  GL_Entities:
-                    $ref: '#/components/schemas/GL_Entities'
+                  Entities:
+                    $ref: '#/components/schemas/Entities'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -234,7 +236,7 @@ paths:
   /gl_accounts:
     get:
       operationId: getChartAccounts
-      tags: [General Ledger]
+      tags: [General Ledger Module]
       security:
         - bearerAuth: []
       description: >
@@ -269,7 +271,7 @@ paths:
   /gl_trial_balance_xbrl:
     get:
       operationId: getTB-XBRLDetails
-      tags: [General Ledger]
+      tags: [General Ledger Module]
       security:
         - bearerAuth: []
       description: >
@@ -595,44 +597,39 @@ components:
         - Balance_AsOf_Date
        
     
-    
-    GL_Periods:
+    Periods:
       type: array
       items:
-          $ref: '#/components/schemas/GL_Periods_Details'
+          $ref: '#/components/schemas/Periods_Details'
       example: [
                 {
-                  "GL_Period_Name": "Fiscal Year Ended 2019",
+                  "Period_Name": "Fiscal Year Ended 2019",
                   "Start_Date_Period": "2019-01-01",
                   "End_Date_Period": "2019-12-31",
                   "Period_Type": "Year",
                   "Entity_Identifier": 123456789
                 },
                 {
-                  "GL_Period_Name": "Fiscal Year Ended 2020",
+                  "Period_Name": "Fiscal Year Ended 2020",
                   "Start_Date_Period": "2020-01-01",
                   "End_Date_Period": "2020-12-31",
                   "Period_Type": "Year",
                   "Entity_Identifier": 123456789
                 },
                 {
-                  "GL_Period_Name": "Fiscal Quarter Ended Q1 2020",
+                  "Period_Name": "Fiscal Quarter Ended Q1 2020",
                   "Start_Date_Period": "2020-01-01",
                   "End_Date_Period": "2020-03-31",
                   "Period_Type": "Quarter",
                   "Entity_Identifier": 123456789
                 }
               ]
-      required:
-        - GL_Period_Name
-        - Start_Date_Period
-        - End_Date_Period
     
-    GL_Periods_Details:
+    Periods_Details:
       type: object
       properties:
-        GL_Period_Name:
-          $ref: '#/components/schemas/GL_Period_Name'
+        Period_Name:
+          $ref: '#/components/schemas/Period_Name'
         Start_Date_Period:
           $ref: '#/components/schemas/Start_Date_Period'
         End_Date_Period:
@@ -642,26 +639,34 @@ components:
         #Added for API Specification for cases where have multiple entities.
         Entity_Identifier:
           $ref: '#/components/schemas/Entity_Identifier'
+      required:
+        - Period_Name
+        - Start_Date_Period
+        - End_Date_Period
+        - Period_Type
 
-    GL_Entities:
+    Entities:
       type: array
       items:
-          $ref: '#/components/schemas/GL_Entities_Details'
+          $ref: '#/components/schemas/Entities_Details'
     
-    GL_Entities_Details:
+    Entities_Details:
       type: object
       properties:
-        GL_Entity_Name:
-          $ref: '#/components/schemas/GL_Entity_Name'
+        Entity_Name:
+          $ref: '#/components/schemas/Entity_Name'
         Entity_Identifier:
           $ref: '#/components/schemas/Entity_Identifier'
         GL_Subsidiaries:
           $ref: '#/components/schemas/GL_Subsidiaries'
+      required:
+        - Entity_Name
+        - Entity_Identifier
 
     GL_Subsidiaries:
       type: array
       items:
-          $ref: '#/components/schemas/GL_Entities_Details'
+          $ref: '#/components/schemas/Entities_Details'
 
 
         
@@ -692,6 +697,10 @@ components:
           $ref: '#/components/schemas/Parent_GL_Account_Number'
         XBRL_Concept:
           $ref: '#/components/schemas/XBRL_Concept'
+      required:
+        - GL_Account_Number
+        - GL_Account_Name
+
 
 
 
@@ -776,7 +785,7 @@ components:
       description: Fiscal period in which the balance effective date occurs data occurs. This is the period defined by the company and is not a standardized format. Examples include W1–W53 for weekly periods, M1–M12 for monthly periods, and Q1–Q4 for quarterly periods. 
       example: Year
 
-    GL_Period_Name:
+    Period_Name:
       type: string
       description: The name of the period as defined by the entity providing the reporting period.
       example: Fiscal Year Ended 2019
@@ -800,7 +809,7 @@ components:
       enum: [Year, Quarter, HalfYear, 52Weeks, 3QCum, Month, 13Months, Other]
       example: 'Year'
 
-    GL_Entity_Name:
+    Entity_Name:
       type: string
       description: The name of the entity for which the GL information is applicable.
       example: ABC-CO
