@@ -147,6 +147,14 @@ paths:
                 properties:
                   GL_Trial_Balance:
                     $ref: '#/components/schemas/GL_Account_Balances'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
 
 
   /gl_periods:
@@ -185,6 +193,14 @@ paths:
                 properties:
                   GL_Periods:
                     $ref: '#/components/schemas/GL_Periods'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
 
   /gl_entities:
     get:
@@ -206,6 +222,14 @@ paths:
                 properties:
                   GL_Entities:
                     $ref: '#/components/schemas/GL_Entities'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
 
   /gl_accounts:
     get:
@@ -233,6 +257,14 @@ paths:
                 properties:
                   GL_Chart_Of_Accounts:
                     $ref: '#/components/schemas/GL_Chart_of_Accounts'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
 
   /gl_trial_balance_xbrl:
     get:
@@ -268,6 +300,14 @@ paths:
                     $ref: '#/components/schemas/documentInfo_oim_json'
                   facts:
                       $ref: '#/components/schemas/facts_oim_json'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
   
 
 components:
