@@ -1,0 +1,43 @@
+{
+  "Journals_XERO_Map": 
+    {
+      "Journal_ID": "JournalNumber",
+      "Fiscal_Year": "year(Effective_Date)",
+      "Period": "",
+      "Effective_Date": "JournalDate",
+      "JE_Header_Description": "",
+      "Source": "SourceType",
+      "Business_Unit_Code": "",
+      "Reversal_Indicator": "",
+      "Reversal_Journal_ID": "",
+      "Cancellation_Sign": "",
+      "Entered_By": "{Unavailable}",
+      "Entered_Date": "date(CreatedDateUTC)",
+      "Entered_Time": "time(CreatedDateUTC)",
+      "Last_Modified_By": "{Unavailable}",
+      "Last_Modified_Date": "{Unavailable}",
+      "Approved_By": "{Unavailable}",
+      "Approved_Date": "{Unavailable}",
+      "Entity_Identifier": "{Pull from header}",
+      "GL_Line_Items": [
+        {
+          "GL_Account_Number": "AccountCode",
+          "Journal_ID_Line_Number": "JournalLineID",
+          "JE_Line_Description": "Description",
+          "Amount": "NetAmount",
+          "Amount_Currency": {
+              "APICall": "https://api.xero.com/api.xro/2.0/currencies",
+              "XPathValue":"Response.Currencies.Currency.Code"
+          },
+          "Reporting_Amount": "{Unavailable}",
+          "Reporting_Amount_Currency": "{Unavailable}",
+          "Local_Amount": "{Unavailable}",
+          "Local_Amount_Currency": "{Unavailable}",
+          "Transaction_Amount": "{Unavailable}",
+          "Transaction_Currency_Code": "{Unavailable}",
+          "Amount_Credit_Debit_Indicator": "IF NetAmount < 0 then 'C' else 'D'"
+        }
+      ]
+    }
+  
+}
