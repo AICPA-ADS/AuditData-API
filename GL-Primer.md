@@ -56,7 +56,7 @@ The General Ledger module uses the base module to retrieve period and entity rel
 * Periods
 * Entities
 
-These end points provide meta data about the etiies and periods available from the API.  These endpoints are seperated out from the general ledger category as they would be used by other API modules.  The end points avialble in the base module are as follows:
+These end points provide meta data about the etiies and periods available from the API.  These endpoints are seperated out from the general ledger category as they would be used by other API modules.  The end points available in the base module are as follows:
 * Journal_ID
 * Effective_Date
 * GL_Account_Number
