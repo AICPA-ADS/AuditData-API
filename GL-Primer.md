@@ -41,7 +41,7 @@ The end points returns details of each account defined in the chart of the accou
 
 ### Trial Balance XBRL
 
-The trial balance in XBRL end point allows the user to retrive an XBRL instance of the trail balance in an XBRL-JSON format.
+The trial balance in XBRL end point allows the user to retrive an XBRL instance of the trail balance in an XBRL-JSON format.The API allows the user to pass the end date, the entity identifier and a specific G/L account number.
 
 
 ## Base Modules
