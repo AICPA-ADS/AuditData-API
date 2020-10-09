@@ -25,9 +25,11 @@ If the system contains journal entry data for multiple entities then the system 
 
 ### Trial Balance
 
-The trial balance end point allows a user to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting period. If a start date is provided, then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see base modules below)
+The trial balance end point allows a user to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting year. If a start date is provided, then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see base modules below).  The start date must use the start date provided form the period rest point.
 
 Only one reporting period is returned at a time. 
+
+The opening balances returned are the opening balances after opening journal entries have been applied.  To define a tradional year to year comparison of a trial balance to API calls would be made for the period ends requested. The opening balances are equal to the end of period balance + opening period journals.
 
 Additional parameters can be provided to get budget information by passing a budget flag parameter with a value of budget.  If no value is provided the default value is the actual value.
 
