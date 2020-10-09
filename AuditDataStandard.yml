@@ -91,9 +91,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Journals'
-            application/xml:
-                schema:
-                  $ref: '#/components/schemas/Journals'
+
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
