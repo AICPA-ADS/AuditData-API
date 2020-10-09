@@ -123,17 +123,10 @@ paths:
         - name: end_date_trial_balance
           in: query
           description: End date for the trial balance.  Returns all the values at the provided `end_date`.
-          required: false
+          required: true
           schema:
             type: string
             format: date
-        - name: period_name
-          in: query
-          description: The period name returned from the period end point.
-          required: false
-          schema:
-            type: string
-            example: "Fiscal Year Ended 2019"
         
         - name: budget_flag
           in: query
