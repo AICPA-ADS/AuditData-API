@@ -47,7 +47,14 @@ The trial balance in XBRL end point allows the user to retrive an XBRL instance 
 
 The data returned is generally flat.  The structure of the returned data deliberatly avoids  nested structures. This is to allow maximum flexibility to support transfer from as many systems as possible.  This means some data is reperated in every set of data returned such as the entity name. The journal entry data is the one exception however where the lines to the journal entry are nested as a child of the journal entry. This was not flattened as the majority of systems will have a one to many relationship defined for a specifc jornal and the line items of the journal.
 
-Not all data has to be returned in the return fields as in many systems the data defined in the standard will not be available.  The API however does define for each end point some miniamal data fields that do have to returned.  For example a journal entry end point must return
+Not all data has to be returned in the return fields as in many systems the data defined in the standard will not be available.  The API however does define for each end point some miniamal data fields that do have to returned.  For example a journal entry end point must return the following:
+
+* Journal_ID
+* Effective_Date
+* GL_Account_Number
+* Amount
+* Amount_Currency
+* Amount_Credit_Debit_Indicator
 
 
 ## Base Modules
@@ -57,12 +64,6 @@ The General Ledger module uses the base module to retrieve period and entity rel
 * Entities
 
 These end points provide meta data about the etiies and periods available from the API.  These endpoints are seperated out from the general ledger category as they would be used by other API modules.  The end points available in the base module are as follows:
-* Journal_ID
-* Effective_Date
-* GL_Account_Number
-* Amount
-* Amount_Currency
-* Amount_Credit_Debit_Indicator
 
 ### Periods
 
