@@ -25,7 +25,7 @@ If the system contains jopurnal entry data for multiple entites then the sytem w
 
 ### Trial Balance
 
-The trial balance end point allows a uesr to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting period. If a start date is provided then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see below)
+The trial balance end point allows a uesr to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting period. If a start date is provided then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see base modules below)
 
 Only one reporting period is returned at a time. 
 
@@ -43,6 +43,12 @@ The end points returns details of each account defined in the chart of the accou
 
 The trial balance in XBRL end point allows the user to retrive an XBRL instance of the trail balance in an XBRL-JSON format. The API allows the user to pass the end date, the entity identifier and a specific G/L account number.
 
+## Structure of Returned Data
+
+The data returned is generally flat.  The structure of the returned data deliberatly avoids  nested structures. This is to allow maximum flexibility to support transfer from as many systems as possible.  This means some data is reperated in every set of data returned such as the entity name. The journal entry data is the one exception however where the lines to the journal entry are nested as a child of the journal entry. This was not flattened as the majority of systems will have a one to many relationship defined for a specifc jornal and the line items of the journal.
+
+Not all data has to be returned in the return fields as in many systems the data defined in the standard will not be available.  The API however does define for each end point some miniamal data fields that do have to returned.  For example a journal entry end point must return
+
 
 ## Base Modules
 
@@ -51,7 +57,12 @@ The General Ledger module uses the base module to retrieve period and entity rel
 * Entities
 
 These end points provide meta data about the etiies and periods available from the API.  These endpoints are seperated out from the general ledger category as they would be used by other API modules.  The end points avialble in the base module are as follows:
-
+* Journal_ID
+* Effective_Date
+* GL_Account_Number
+* Amount
+* Amount_Currency
+* Amount_Credit_Debit_Indicator
 
 ### Periods
 
