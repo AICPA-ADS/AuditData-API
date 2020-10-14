@@ -25,11 +25,11 @@ If the system contains journal entry data for multiple entities then the system 
 
 ### Trial Balance
 
-The trial balance end point allows a user to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting year. If a start date is provided, then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see base modules below).  The start date must use the start date provided form the period rest point.
+The trial balance end point allows a user to request journal entries for a specific period end.  The end date must be provided.  The default trial balance will return values for the latest reporting year. If a start date is provided, then the period from the specified start date to the specified end date will be provided if available.  All available periods can be queried using the period end-point. (see base modules below).  The start date must use the start date provided from the period rest point.
 
 Only one reporting period is returned at a time. 
 
-The opening balances returned are the opening balances after opening journal entries have been applied.  To define a tradional year to year comparison of a trial balance to API calls would be made for the period ends requested. The opening balances are equal to the end of period balance + opening period journals.
+The opening balances returned are the opening balances after after opening adjustments to retained earnings and adjustments for changes in accounting standards.  To define a tradional year to year comparison of a trial balance two API calls would be made for the period ends requested. The opening balances are equal to the end of period balance + opening period journals.
 
 Additional parameters can be provided to get budget information by passing a budget flag parameter with a value of budget.  If no value is provided the default value is the actual value.
 
@@ -43,13 +43,13 @@ The end points returns details of each account defined in the chart of the accou
 
 ### Trial Balance XBRL
 
-The trial balance in XBRL end point allows the user to retrieve an XBRL instance of the trail balance in an XBRL-JSON format. The API allows the user to pass the end date, the entity identifier and a specific G/L account number.
+The trial balance in XBRL end point allows the user to retrieve an XBRL instance of the trial balance in an XBRL-JSON format. The API allows the user to pass the end date, the entity identifier and a specific G/L account number.
 
 ## Structure of Returned Data
 
 The data returned is generally flat.  The structure of the returned data deliberately  avoids  nested structures. This is to allow maximum flexibility to support transfer from as many systems as possible.  This means some data is repeated in every set of data returned such as the entity name. The journal entry data is the one exception however where the lines to the journal entry are nested as a child of the journal entry. This was not flattened as the majority of systems will have a one to many relationship defined for a specific  journal and the line items of the journal.
 
-Not all data has to be returned in the return fields as in many systems the data defined in the standard will not be available.  The API however does define for each end point some minimal data fields that do have to returned.  For example, a journal entry end point must return the following:
+Not all data has to be returned in the return fields as in many systems the data defined in the standard will not be available.  The API however does define for each end point some minimal data fields that do have to be returned.  For example, a journal entry end point must return the following:
 
 * Journal_ID
 * Effective_Date
@@ -69,7 +69,7 @@ These end points provide meta data about the entities and periods available from
 
 ### Periods
 
-The periods end point allows the user to request the valid reporting periods of a given entity or all entities available to the requester.  No parameters are required for this end point.  However, the user can request reporting periods by start date, end date and entity.  The start data parameter returns all reporting periods with an end date equal or greater than the end date. The end data parameter returns all reporting periods with an end date equal or less than the end date.
+The periods end point allows the user to request the valid reporting periods of a given entity or all entities available to the requester.  No parameters are required for this end point.  However, the user can request reporting periods by start date, end date and entity.  The start date parameter returns all reporting periods with an end date equal to or greater than the end date. The end date parameter returns all reporting periods with an end date equal or less than the end date.
 
 ### Entities
 
