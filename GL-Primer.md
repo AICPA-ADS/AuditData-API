@@ -3,7 +3,7 @@ The general ledger API is based on the AICPA Audit Standard with additional cont
 
 ## Intent of the Standard
 
-The intent of the standard is to facilitate the transfer of financial data between users across different systems. The primary purpose is to enable the extraction of detailed financial data for the performance of financial audits.  This is not the sole intent of the standard, and it the specification is written in a manner to support the general transfer of financial data between systems for any range of purposes.
+The intent of the standard is to facilitate the transfer of financial data between users across different systems. The primary purpose is to enable the extraction of detailed financial data for the performance of financial audits.  This is not the sole intent of the standard, and the specification is written in a manner to support the general transfer of financial data between systems for any range of purposes.
 
 ## General Ledger API Rest Points
 
