@@ -29,7 +29,7 @@ The trial balance end point allows a user to request journal entries for a speci
 
 Only one reporting period is returned at a time. 
 
-The opening balances returned are the opening balances after after opening adjustments to retained earnings and adjustments for changes in accounting standards.  To define a tradional year to year comparison of a trial balance two API calls would be made for the period ends requested. The opening balances are equal to the end of period balance + opening period journals.
+The opening balances returned are the opening balances after opening adjustments to retained earnings and adjustments for changes in accounting standards.  To define a traditional year to year comparison of a trial balance two API calls would be made for the period ends requested. The opening balances are equal to the end of period balance + opening period journals.
 
 Additional parameters can be provided to get budget information by passing a budget flag parameter with a value of budget.  If no value is provided the default value is the actual value.
 
