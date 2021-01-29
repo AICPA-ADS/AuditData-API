@@ -11,7 +11,7 @@ https://xbrlus.github.io/AuditData-API/
 
 ## Background
 When auditors request client data to analyze in their audits, this data (audit data) is typically transferred to the auditor as discrete data files in a custom format. The scope of audit data covers information that is recorded in financial systems of the company, such as the following: 
-1. General ledger including trial balance
+1. [General ledger including trial balance](https://github.com/xbrlus/AuditData-API/blob/master/GL-Primer.md)
 1. Sales ledger / Accounts Receivable
 1. Purchase ledger / Accounts Payable
 1. Inventory
