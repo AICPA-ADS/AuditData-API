@@ -12,12 +12,11 @@ https://xbrlus.github.io/AuditData-API/
 ## Background
 When auditors request client data to analyze in their audits, this data (audit data) is typically transferred to the auditor as discrete data files in a custom format. The scope of audit data covers information that is recorded in financial systems of the company, such as the following: 
 1. General ledger including trial balance
-1. Sales ledger
-1. Purchase ledger 
-1. Payroll
+1. Sales ledger / Accounts Receivable
+1. Purchase ledger / Accounts Payable
 1. Inventory
 1. PP&E registry
-1. Receivables and payables ledgers
+1. Payroll
 
 Various audit data standards have been proposed by the American Institute of CPAs (AICPA) and the International Organization for Standardization (ISO). Each of these initiatives define file formats for how the financial data should be expressed, but do not define the details of how transmission would occur. These standards also lack expressions of semantic meaning about the underlying data. 
 
