@@ -58,7 +58,7 @@ Not all data has to be returned in the return fields as in many systems the data
 * Amount_Currency
 * Amount_Credit_Debit_Indicator
 
-
+Requied fields are defined in the schema section of the [swagger](https://xbrlus.github.io/AuditData-API/#/) interface. Required fields are indicated with a red star.
 ## Base Modules
 
 The General Ledger module uses the base module to retrieve period and entity related information. The base module includes the following end points:
