@@ -1153,7 +1153,7 @@ components:
     Transaction_Balance:
       type: number
       description: Balance monetary amount recorded in the transaction currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
-      example:
+      example: '253.23'
 
 
 
