@@ -670,9 +670,9 @@ components:
     Entities:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
     
-    Entities_Details:
+    Entity_Details:
       type: object
       properties:
         Entity_Name:
@@ -688,7 +688,7 @@ components:
     GL_Subsidiaries:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
 
 
         
