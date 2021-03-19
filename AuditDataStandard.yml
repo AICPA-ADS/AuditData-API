@@ -90,7 +90,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Journals'
+                $ref: '#/components/schemas/GL_Journals'
 
         '400':
           $ref: '#/components/responses/bad_request'
@@ -143,10 +143,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Trial_Balance:
-                    $ref: '#/components/schemas/GL_Account_Balances'
+                $ref: '#/components/schemas/GL_Account_Balances'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -189,10 +186,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Periods:
-                    $ref: '#/components/schemas/Periods'
+                $ref: '#/components/schemas/Periods'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -218,10 +212,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Entities:
-                    $ref: '#/components/schemas/Entities'
+                $ref: '#/components/schemas/Entities'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -253,10 +244,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Chart_Of_Accounts:
-                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
+                $ref: '#/components/schemas/GL_Chart_of_Accounts'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -294,12 +282,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  documentInfo:
-                    $ref: '#/components/schemas/documentInfo_oim_json'
-                  facts:
-                      $ref: '#/components/schemas/facts_oim_json'
+                $ref: "#/components/schemas/xbrl_tb_response"
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -373,11 +356,6 @@ components:
         error_description:
           type: string
           description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
-    Journals:
-      type: object
-      properties:
-        Journals:
-          $ref: '#/components/schemas/GL_Journals'
     GL_Journals:
       type: array
       items:
@@ -501,6 +479,14 @@ components:
         - Amount_Credit_Debit_Indicator
         - Amount_Currency
 
+    xbrl_tb_response:
+      type: object
+      properties:
+        documentInfo:
+          $ref: '#/components/schemas/documentInfo_oim_json'
+        facts:
+            $ref: '#/components/schemas/facts_oim_json'
+    
     documentInfo_oim_json:
       type: object
       properties:
