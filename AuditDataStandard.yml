@@ -364,15 +364,15 @@ components:
 
 
   schemas:
-    error_message:
+    error_result:
       type: object
       properties:
-        errors:
+        code:
           type: string
-          description: Identifier for the error
+          description: Implementation-defined Identifier/Code for the error being returned by the server
         error_description:
           type: string
-          description: Adds more details to the error
+          description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
     Journals:
       type: object
       properties:
@@ -1164,7 +1164,7 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
             error: bad_request
             error_description: Parameter field invalid.
@@ -1173,7 +1173,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
             error: unauthorized,
             error_description: Cannot convert access token to JSON
@@ -1186,7 +1186,7 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
             error: unauthorized
             error_description: Full authentication is required to access this resource
@@ -1195,7 +1195,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
             error: not_found
             error_description: An entity with that name could not be found.
@@ -1204,7 +1204,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
             error: method_not_allowed
             error_description: Request method 'DELETE' not supported
@@ -1213,7 +1213,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
             error: internal_error
             error_description: Unknown error, try again later
