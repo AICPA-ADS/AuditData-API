@@ -111,16 +111,16 @@ paths:
       description: >
         Allows searching for General Ledger Trial Balance Totals
       parameters:
-        - name: start_date_trial_balance
+        - name: start_date
           in: query
           description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date_trial_balance
+        - name: end_date
           in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`, which may also be treated as an "as of" date.
           required: true
           schema:
             type: string
