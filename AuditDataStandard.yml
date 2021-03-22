@@ -427,14 +427,14 @@ components:
         GL_Line_Items:
           type: array
           items:
-            $ref: '#/components/schemas/GL_Line_Items'
+            $ref: '#/components/schemas/GL_Line_Item'
       required:
         - Journal_ID
         - Effective_Date
         - GL_Line_Items
 
       
-    GL_Line_Items:
+    GL_Line_Item:
       type: object
       properties:
         #In AICPA and ISO
