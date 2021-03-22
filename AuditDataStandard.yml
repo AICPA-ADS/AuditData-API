@@ -40,7 +40,7 @@ openapi: 3.0.0
 servers:
 # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/XBRL-US/Audit_Data_Open-API/1.0.0
+    url: /AuditDataOpenAPI/v1.0
 info:
   version: "1.0.0"
   title: Audit Data Open Api Project (AICPA)
