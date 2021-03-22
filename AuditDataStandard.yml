@@ -468,7 +468,7 @@ components:
         Transaction_Amount:
           $ref: '#/components/schemas/Transaction_Amount'
         #ISO ONLY
-        Transaction_Currency_Code:
+        Transaction_Currency:
           $ref: '#/components/schemas/Transaction_Currency_Code'
         #Amount_Credit_Debit_Indicator in AICPA Credit_Debit_Indicator in ISO
         Amount_Credit_Debit_Indicator:
