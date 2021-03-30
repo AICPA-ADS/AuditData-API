@@ -80,7 +80,7 @@ paths:
           schema:
             type: string
             format: date
-
+            
         - $ref: '#/components/parameters/entity_id_Param'
            
         
@@ -109,7 +109,7 @@ paths:
       security:
         - bearerAuth: []
       description: >
-        Allows searching for General Ledger Trial Balance Totals
+        Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementaiton). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
       parameters:
         - name: start_date_trial_balance
           in: query
@@ -147,6 +147,9 @@ paths:
                 properties:
                   GL_Trial_Balance:
                     $ref: '#/components/schemas/GL_Account_Balances'
+            application/xbrl+json:
+              schema:
+                $ref: "#/components/schemas/xbrl_tb_response"
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -264,50 +267,7 @@ paths:
         '405':
           $ref: '#/components/responses/method_not_allowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
-
-  /gl_trial_balance_xbrl:
-    get:
-      operationId: getTB-XBRLDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
-      description: >
-        Allows searching for General Ledger Trial Balance Totals
-      parameters:
-  
-        - name: end_date
-          in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
-          required: false
-          schema:
-            type: string
-            format: date
-            
-        - $ref: '#/components/parameters/GL_Account_Number_Param'
-
-        - $ref: '#/components/parameters/entity_id_Param'
-            
-      responses:
-        '200':
-          description: _gl_trial_balance_ successfully accepted
-          content:  
-            application/json:
-              schema:
-                type: object
-                properties:
-                  documentInfo:
-                    $ref: '#/components/schemas/documentInfo_oim_json'
-                  facts:
-                      $ref: '#/components/schemas/facts_oim_json'
-        '400':
-          $ref: '#/components/responses/bad_request'
-        '401':
-          $ref: '#/components/responses/bad_token'
-        '405':
-          $ref: '#/components/responses/method_not_allowed'
-        '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/internal_server_error'  
   
   /AR_Open_Accounts_Receivables:
     get:
@@ -500,6 +460,14 @@ components:
         - Amount
         - Amount_Credit_Debit_Indicator
         - Amount_Currency
+
+    xbrl_tb_response:
+      type: object
+      properties:
+        documentInfo:
+          $ref: '#/components/schemas/documentInfo_oim_json'
+        facts:
+            $ref: '#/components/schemas/facts_oim_json'
 
     documentInfo_oim_json:
       type: object
