@@ -49,17 +49,25 @@ tags:
   - name: Base Module
     description: Used across modules.
 
+# Security schemes are included below to support generation of 
+# authentication code in the AuditData Client packages.
+# The standard takes no position on authentication schemes, which
+# are an implementation decision
 security:
-  - bearerAuth:
+  - basicAuth: [] 
+  - implicitAuth:
       - read
-      - write
+  - bearerAuth: []
+  - apiKeyAuth: 
+      - read
+  - openIdAuth:
+      - read
+  
 paths:
   /gl_journals:
     get:
       operationId: getGLDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
        Allows searching for General Ledger Journal Transactions
       parameters:
@@ -102,9 +110,7 @@ paths:
   /gl_trial_balance:
     get:
       operationId: getTBDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
         Allows searching for General Ledger Trial Balance Totals
       parameters:
@@ -154,9 +160,7 @@ paths:
   /periods:
     get:
       operationId: getPeriods
-      tags: [Base Module]
-      security:
-        - bearerAuth: []
+      tags: [Base Module]      
       description: >
         Allows requesting the reporting periods of the company. If no parameters are passed all the available entities available to the user in the system are returned.  The end point also allows the user to pass an entity identifier to return the name of the entity.
       parameters:
@@ -196,9 +200,7 @@ paths:
   /entities:
     get:
       operationId: getEntities
-      tags: [Base Module]
-      security:
-        - bearerAuth: []
+      tags: [Base Module]      
       description: >
         Allows requesting the reporting entities available from the API.
       parameters:
@@ -222,9 +224,7 @@ paths:
   /gl_accounts:
     get:
       operationId: getChartAccounts
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
         Allows requesting a listing of chart of accounts 
       parameters:
@@ -254,9 +254,7 @@ paths:
   /gl_trial_balance_xbrl:
     get:
       operationId: getTB-XBRLDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
         Allows searching for General Ledger Trial Balance Totals
       parameters:
@@ -292,9 +290,7 @@ paths:
   /AR_Open_Accounts_Receivables:
     get:
       operationId: getAROpenAccountsReceivables
-      tags: [Accounts Receivable]
-      security:
-        - bearerAuth: []
+      tags: [Accounts Receivable]      
       description: >
         Each row in this table represents the balance expected from the customer for one uniquely identifiable transaction. This data should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date shall reconcile to the total AR amount in the General Ledger (GL) as of the same date.
       parameters:
@@ -316,10 +312,28 @@ paths:
 
 components:
   securitySchemes:
+    basicAuth:     
+      type: http
+      scheme: basic
+    implicitAuth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://example.local/oauth2/authorize
+          scopes:
+            read: allows reading resources
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    apiKeyAuth:        
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
+    openIdAuth:   
+      type: openIdConnect
+      openIdConnectUrl: https://example.local/.well-known/openid-configuration
+
 
   parameters:
     GL_Account_Number_Param:
