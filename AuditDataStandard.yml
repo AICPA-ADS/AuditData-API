@@ -307,7 +307,7 @@ paths:
         '500':
           $ref: '#/components/responses/internal_server_error'
   
-  /AR_Open_Accounts_Receivables:
+  /ar_open_balances:
     get:
       operationId: getAROpenAccountsReceivables
       tags: [Accounts Receivable]      
@@ -316,7 +316,7 @@ paths:
 
         Should be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.
       parameters:
-        - name: Open_Accounts_Receivables_Date
+        - name: ar_balance_date
           in: query
           description: Open receivables on a given date. 
           required: false
@@ -325,11 +325,45 @@ paths:
       
       responses:
         '200':
-          description: _AR_Open_Accounts_Receivables_ successfully accepted
+          description: _ar_open_balances_ successfully accepted
           content:  
             application/json:
               schema:
                 $ref: '#/components/schemas/AR_Open_Accounts_Receivables_Items'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
+
+  /ar_customers:
+    get:
+      operationId: getARCustomers
+      tags: [Accounts Receivable]      
+      description: >
+        Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. 
+      parameters:
+        - $ref: '#/components/parameters/customer_account_id_Param'
+      
+      responses:
+        '200':
+          description: _ar_customers_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
+
 
 
 components:
@@ -370,6 +404,14 @@ components:
       in: query
       name: entity_id
       description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
+      required: false
+      schema:
+        type: string
+    
+    customer_account_id_Param:
+      in: query
+      name: customer_account_id
+      description: Identifier of the customer from whom payment is expected or to whom unused credits have been applied.  
       required: false
       schema:
         type: string
@@ -771,6 +813,39 @@ components:
           $ref: '#/components/schemas/Local_Amount'
         Original_Balance_Amount_Reporting:
           $ref: '#/components/schemas/Reporting_Amount'
+    Customers:
+      type: array
+      items:
+          $ref: '#/components/schemas/Customer'
+    Customer:
+      type: object
+      properties:
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Customer_Account_Name:
+          $ref: '#/components/schemas/Customer_Account_Name'
+        Customer_TIN:
+          $ref: '#/components/schemas/Customer_TIN'
+        Customer_Physical_Street_Address1:
+          $ref: '#/components/schemas/Customer_Street_Address1'
+        Customer_Physical_Street_Address2:
+          $ref: '#/components/schemas/Customer_Street_Address2'
+        Customer_Physical_City:
+          $ref: '#/components/schemas/Customer_City'
+        Customer_Physical_ZipPostalCode: 
+          $ref: '#/components/schemas/Customer_Physical_Postal_Code'
+        Customer_Physical_Country:
+          $ref: '#/components/schemas/Customer_Country'
+        Customer_Billing_Address1:
+          $ref: '#/components/schemas/Customer_Billing_Address1'
+        Customer_Billing_Address2:
+          $ref: '#/components/schemas/Customer_Billing_Address2'
+        Customer_Billing_City:
+          $ref: '#/components/schemas/Customer_Billing_City'
+        Customer_Billing_ZipPostalCode:
+          $ref: '#/components/schemas/Customer_Billing_Postal_Code'
+        Customer_Billing_Country:
+          $ref: '#/components/schemas/Customer_Billing_Country'
 
 
 
@@ -1179,6 +1254,75 @@ components:
       type: number
       description: Balance monetary amount in local currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
       example: '253.23'
+
+    Customer_Account_Name:
+      type: string
+      maxLength: 100
+      description: The name of the customer.
+      example:
+
+    Customer_TIN:
+      type: string
+      maxLength: 100
+      description: The customer’s tax identification number. This number is usually generated by tax regulator.
+      example:
+
+    Customer_Street_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the customer’s physical street address.
+
+    Customer_Street_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the customer’s physical street address.
+      example:
+
+    Customer_City:
+      type: string
+      maxLength: 100
+      description: The physical city where the customer is located.
+
+    Customer_Physical_Postal_Code:
+      type: string
+      maxLength: 100
+      description: The postal code of the city where the customer is physically located.
+      example:
+
+    Customer_Country:
+      type: string
+      maxLength: 3
+      description: The country code where the customer is physically located (ISO 3166-1).
+      example:
+
+    Customer_Billing_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the customer’s billing address.
+      example:
+  
+    Customer_Billing_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the customer’s billing address.
+      example:
+
+    Customer_Billing_City:
+      type: string
+      maxLength: 100
+      description: The billing city of the customer.
+
+    Customer_Billing_Postal_Code:
+      type: string
+      maxLength: 20
+      description: The billing postal code of the customer’s city.
+      example:
+
+    Customer_Billing_Country:
+      type: string
+      maxLength: 3
+      description: The billing country code of the customer (ISO 3166-1).
+      example:
 
 
   responses:
