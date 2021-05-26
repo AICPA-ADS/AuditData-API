@@ -312,11 +312,13 @@ paths:
       operationId: getAROpenAccountsReceivables
       tags: [Accounts Receivable]      
       description: >
-        Each row in this table represents the balance expected from the customer for one uniquely identifiable transaction. This data should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date shall reconcile to the total AR amount in the General Ledger (GL) as of the same date.
+        Each record represents the balance expected from the customer for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AR amount in the general ledger (GL) as of the same date.
+
+        Should be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.
       parameters:
-        - name: AR_Open_Accounts_Receivables_id
+        - name: Open_Accounts_Receivables_Date
           in: query
-          description: Identifier for the transaction of an open AR includes invoice and cash received. 
+          description: Open receivables on a given date. 
           required: false
           schema:
             type: string
@@ -741,31 +743,34 @@ components:
     AR_Open_Accounts_Receivables: 
       type: object
       properties:
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
         Transaction_ID:
           $ref: '#/components/schemas/Transaction_ID'
         Invoice_ID:
           $ref: '#/components/schemas/Invoice_ID'
-        Customer_Account_ID:
-          $ref: '#/components/schemas/Customer_Account_ID'
-        Fiscal_Year:
-          $ref: '#/components/schemas/Fiscal_Year'
         Transaction_Date:
           $ref: '#/components/schemas/Transaction_Date'
         Transaction_Due_Date:
           $ref: '#/components/schemas/Transaction_Due_Date'
-        Functional_Amount:
-          $ref: '#/components/schemas/Functional_Amount'
-        Functional_Currency_Code:  
-          $ref: '#/components/schemas/Functional_Currency_Code'
-        Transaction_Amount:
-          $ref: '#/components/schemas/Transaction_Amount'
-        Transaction_Currency_Code:
-          $ref: '#/components/schemas/Transaction_Currency_Code'
-        Functional_Balance:
+        Balance_Amount:
           $ref: '#/components/schemas/Functional_Balance'
-        Transaction_Balance:
-          $ref: '#/components/schemas/Transaction_Balance'
-        
+        Balance_Amount_Currency:  
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Balance_Amount_Reporting:
+          $ref: '#/components/schemas/Reporting_Balance'
+        Balance_Reporting_Currency:
+          $ref: '#/components/schemas/Reporting_Currency_Code'
+        Balance_Amount_Local:
+          $ref: '#/components/schemas/Local_Balance'
+        Balance_Local_Currency:
+          $ref: '#/components/schemas/Local_Currency_Code'
+        Original_Balance_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Original_Balance_Amount_Local:
+          $ref: '#/components/schemas/Local_Amount'
+        Original_Balance_Amount_Reporting:
+          $ref: '#/components/schemas/Reporting_Amount'
 
 
 
@@ -1144,7 +1149,7 @@ components:
       format: date
       maxLength: 10
       minLength: 10
-      description: The date of the transaction, regardles of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.
+      description: The date of the transaction, regardless of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.
       example: '2018-12-31'
 
     Transaction_Due_Date:
@@ -1165,6 +1170,15 @@ components:
       description: Balance monetary amount recorded in the transaction currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
       example: '253.23'
 
+    Reporting_Balance:
+      type: number
+      description: Balance monetary amount recorded in the reporting currency.
+      example: '253.23'
+
+    Local_Balance:
+      type: number
+      description: Balance monetary amount in local currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
+      example: '253.23'
 
 
   responses:
