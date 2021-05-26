@@ -36,11 +36,8 @@
 
 
 openapi: 3.0.0
-# Added by API Auto Mocking Plugin
 servers:
-# Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/XBRL-US/Audit_Data_Open-API/1.0.0
+  - url: /AuditDataOpenAPI/v1.0
 info:
   version: "1.0.0"
   title: Audit Data Open Api Project (AICPA)
@@ -52,17 +49,25 @@ tags:
   - name: Base Module
     description: Used across modules.
 
+# Security schemes are included below to support generation of 
+# authentication code in the AuditData Client packages.
+# The standard takes no position on authentication schemes, which
+# are an implementation decision
 security:
-  - implicit:
+  - basicAuth: [] 
+  - implicitAuth:
       - read
-      - write
+  - bearerAuth: []
+  - apiKeyAuth: 
+      - read
+  - openIdAuth:
+      - read
+  
 paths:
   /gl_journals:
     get:
       operationId: getGLDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
        Allows searching for General Ledger Journal Transactions
       parameters:
@@ -90,7 +95,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Journals'
+                $ref: '#/components/schemas/GL_Journals'
 
         '400':
           $ref: '#/components/responses/bad_request'
@@ -105,22 +110,20 @@ paths:
   /gl_trial_balance:
     get:
       operationId: getTBDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
         Allows searching for General Ledger Trial Balance Totals
       parameters:
-        - name: start_date_trial_balance
+        - name: start_date
           in: query
           description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date_trial_balance
+        - name: end_date
           in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`, which may also be treated as an "as of" date.
           required: true
           schema:
             type: string
@@ -143,10 +146,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Trial_Balance:
-                    $ref: '#/components/schemas/GL_Account_Balances'
+                $ref: '#/components/schemas/GL_Account_Balances'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -160,9 +160,7 @@ paths:
   /periods:
     get:
       operationId: getPeriods
-      tags: [Base Module]
-      security:
-        - bearerAuth: []
+      tags: [Base Module]      
       description: >
         Allows requesting the reporting periods of the company. If no parameters are passed all the available entities available to the user in the system are returned.  The end point also allows the user to pass an entity identifier to return the name of the entity.
       parameters:
@@ -189,10 +187,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Periods:
-                    $ref: '#/components/schemas/Periods'
+                $ref: '#/components/schemas/Periods'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -205,9 +200,7 @@ paths:
   /entities:
     get:
       operationId: getEntities
-      tags: [Base Module]
-      security:
-        - bearerAuth: []
+      tags: [Base Module]      
       description: >
         Allows requesting the reporting entities available from the API.
       parameters:
@@ -218,10 +211,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Entities:
-                    $ref: '#/components/schemas/Entities'
+                $ref: '#/components/schemas/Entities'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -234,9 +224,7 @@ paths:
   /gl_accounts:
     get:
       operationId: getChartAccounts
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
         Allows requesting a listing of chart of accounts 
       parameters:
@@ -253,10 +241,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Chart_Of_Accounts:
-                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
+                $ref: '#/components/schemas/GL_Chart_of_Accounts'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -269,9 +254,7 @@ paths:
   /gl_trial_balance_xbrl:
     get:
       operationId: getTB-XBRLDetails
-      tags: [General Ledger Module]
-      security:
-        - bearerAuth: []
+      tags: [General Ledger Module]      
       description: >
         Allows searching for General Ledger Trial Balance Totals
       parameters:
@@ -294,12 +277,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  documentInfo:
-                    $ref: '#/components/schemas/documentInfo_oim_json'
-                  facts:
-                      $ref: '#/components/schemas/facts_oim_json'
+                $ref: "#/components/schemas/xbrl_tb_response"
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -312,9 +290,7 @@ paths:
   /AR_Open_Accounts_Receivables:
     get:
       operationId: getAROpenAccountsReceivables
-      tags: [Accounts Receivable]
-      security:
-        - bearerAuth: []
+      tags: [Accounts Receivable]      
       description: >
         Each row in this table represents the balance expected from the customer for one uniquely identifiable transaction. This data should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date shall reconcile to the total AR amount in the General Ledger (GL) as of the same date.
       parameters:
@@ -336,14 +312,28 @@ paths:
 
 components:
   securitySchemes:
-    implicit:
+    basicAuth:     
+      type: http
+      scheme: basic
+    implicitAuth:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: 'http://example.com/oauth/auth'
+          authorizationUrl: https://example.local/oauth2/authorize
           scopes:
-            write: allows modifying resources
             read: allows reading resources
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKeyAuth:        
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
+    openIdAuth:   
+      type: openIdConnect
+      openIdConnectUrl: https://example.local/.well-known/openid-configuration
+
 
   parameters:
     GL_Account_Number_Param:
@@ -371,20 +361,15 @@ components:
         type: string
 
   schemas:
-    error_message:
+    error_result:
       type: object
       properties:
-        errors:
+        code:
           type: string
-          description: Identifier for the error
+          description: Implementation-defined Identifier/Code for the error being returned by the server
         error_description:
           type: string
-          description: Adds more details to the error
-    Journals:
-      type: object
-      properties:
-        Journals:
-          $ref: '#/components/schemas/GL_Journals'
+          description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
     GL_Journals:
       type: array
       items:
@@ -456,14 +441,14 @@ components:
         GL_Line_Items:
           type: array
           items:
-            $ref: '#/components/schemas/GL_Line_Items'
+            $ref: '#/components/schemas/GL_Line_Item'
       required:
         - Journal_ID
         - Effective_Date
         - GL_Line_Items
 
       
-    GL_Line_Items:
+    GL_Line_Item:
       type: object
       properties:
         #In AICPA and ISO
@@ -497,7 +482,7 @@ components:
         Transaction_Amount:
           $ref: '#/components/schemas/Transaction_Amount'
         #ISO ONLY
-        Transaction_Currency_Code:
+        Transaction_Currency:
           $ref: '#/components/schemas/Transaction_Currency_Code'
         #Amount_Credit_Debit_Indicator in AICPA Credit_Debit_Indicator in ISO
         Amount_Credit_Debit_Indicator:
@@ -508,6 +493,14 @@ components:
         - Amount_Credit_Debit_Indicator
         - Amount_Currency
 
+    xbrl_tb_response:
+      type: object
+      properties:
+        documentInfo:
+          $ref: '#/components/schemas/documentInfo_oim_json'
+        facts:
+            $ref: '#/components/schemas/facts_oim_json'
+    
     documentInfo_oim_json:
       type: object
       properties:
@@ -677,9 +670,9 @@ components:
     Entities:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
     
-    Entities_Details:
+    Entity_Details:
       type: object
       properties:
         Entity_Name:
@@ -695,7 +688,7 @@ components:
     GL_Subsidiaries:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
 
 
         
@@ -1171,7 +1164,7 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
             error: bad_request
             error_description: Parameter field invalid.
@@ -1180,7 +1173,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
             error: unauthorized,
             error_description: Cannot convert access token to JSON
@@ -1193,7 +1186,7 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
             error: unauthorized
             error_description: Full authentication is required to access this resource
@@ -1202,7 +1195,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
             error: not_found
             error_description: An entity with that name could not be found.
@@ -1211,7 +1204,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
             error: method_not_allowed
             error_description: Request method 'DELETE' not supported
@@ -1220,7 +1213,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
             error: internal_error
             error_description: Unknown error, try again later
