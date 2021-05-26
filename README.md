@@ -6,7 +6,7 @@ The purpose of the Audit Data API Working Group (Working Group) is to define an 
 Working Draft
 
 View the standard in the Swagger viewer:
-https://xbrlus.github.io/AuditData-API/
+https://aicpa-ads.github.io/AuditData-API/
 
 
 ## Background
