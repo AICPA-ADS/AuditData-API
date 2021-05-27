@@ -993,8 +993,7 @@ components:
       
     Cancellation_Sign:
       type: boolean
-      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE 0=entry is not cancelled, 1=entry is cancelled.
-      enum: [0,1]
+      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE False=entry is not cancelled, True=entry is cancelled.
       x-AICPA-Audit-Data-Std: 'none'
       
     Entered_By:
