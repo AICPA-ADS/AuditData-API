@@ -36,11 +36,8 @@
 
 
 openapi: 3.0.0
-# Added by API Auto Mocking Plugin
 servers:
-# Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/XBRL-US/Audit_Data_Open-API/1.0.0
+  - url: /AuditDataOpenAPI/v1.0
 info:
   version: "1.0.0"
   title: Audit Data Open Api Project (AICPA)
@@ -88,8 +85,8 @@ paths:
           schema:
             type: string
             format: date
-            
-        - $ref: '#/components/parameters/entity_id_Param'
+
+        - $ref: '#/components/parameters/entity_id_Required_Param'
            
         
       responses:
@@ -98,7 +95,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Journals'
+                $ref: '#/components/schemas/GL_Journals'
 
         '400':
           $ref: '#/components/responses/bad_request'
@@ -117,16 +114,16 @@ paths:
       description: >
         Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementaiton). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
       parameters:
-        - name: start_date_trial_balance
+        - name: start_date
           in: query
           description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date_trial_balance
+        - name: end_date
           in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`, which may also be treated as an "as of" date.
           required: true
           schema:
             type: string
@@ -140,7 +137,7 @@ paths:
             type: string
             enum: [budget, both]
 
-        - $ref: '#/components/parameters/entity_id_Param'
+        - $ref: '#/components/parameters/entity_id_Required_Param'
             
         
       responses:
@@ -149,10 +146,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Trial_Balance:
-                    $ref: '#/components/schemas/GL_Account_Balances'
+                $ref: '#/components/schemas/GL_Account_Balances'
             application/xbrl+json:
               schema:
                 $ref: "#/components/schemas/xbrl_tb_response"
@@ -196,10 +190,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Periods:
-                    $ref: '#/components/schemas/Periods'
+                $ref: '#/components/schemas/Periods'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -223,10 +214,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Entities:
-                    $ref: '#/components/schemas/Entities'
+                $ref: '#/components/schemas/Entities'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -256,10 +244,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Chart_Of_Accounts:
-                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
+                $ref: '#/components/schemas/GL_Chart_of_Accounts'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -267,29 +252,89 @@ paths:
         '405':
           $ref: '#/components/responses/method_not_allowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'  
-
-  /AR_Open_Accounts_Receivables:
+          $ref: '#/components/responses/internal_server_error'
+  
+  /ar_open_balances:
     get:
       operationId: getAROpenAccountsReceivables
       tags: [Accounts Receivable]      
       description: >
-        Each row in this table represents the balance expected from the customer for one uniquely identifiable transaction. This data should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date shall reconcile to the total AR amount in the General Ledger (GL) as of the same date.
+        Each record represents the balance expected from the customer for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AR amount in the general ledger (GL) as of the same date.
+
+        Should be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.
       parameters:
-        - name: AR_Open_Accounts_Receivables_id
+        - name: ar_balance_date
           in: query
-          description: Identifier for the transaction of an open AR includes invoice and cash received. 
+          description: Open receivables on a given date. 
           required: false
           schema:
             type: string
       
       responses:
         '200':
-          description: _AR_Open_Accounts_Receivables_ successfully accepted
+          description: _ar_open_balances_ successfully accepted
           content:  
             application/json:
               schema:
                 $ref: '#/components/schemas/AR_Open_Accounts_Receivables_Items'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
+
+  /ar_customers:
+    get:
+      operationId: getARCustomers
+      tags: [Accounts Receivable]      
+      description: >
+        Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. 
+      parameters:
+        - $ref: '#/components/parameters/customer_account_id_Param'
+      
+      responses:
+        '200':
+          description: _ar_customers_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
+
+  /ar_invoices:
+    get:
+      operationId: getARInvoices
+      tags: [Accounts Receivable]      
+      description: >
+        Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that invoice—one for the items in the invoice associated with each of the three sales orders.
+      parameters:
+        - $ref: '#/components/parameters/customer_account_id_Param'
+      
+      responses:
+        '200':
+          description: _ar_customers_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+        '400':
+          $ref: '#/components/responses/bad_request'
+        '401':
+          $ref: '#/components/responses/bad_token'
+        '405':
+          $ref: '#/components/responses/method_not_allowed'
+        '500':
+          $ref: '#/components/responses/internal_server_error'
 
 
 components:
@@ -333,23 +378,33 @@ components:
       required: false
       schema:
         type: string
+    
+    customer_account_id_Param:
+      in: query
+      name: customer_account_id
+      description: Identifier of the customer from whom payment is expected or to whom unused credits have been applied.  
+      required: false
+      schema:
+        type: string
 
+    entity_id_Required_Param:
+      in: query
+      name: entity_id
+      description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
+      required: true
+      schema:
+        type: string
 
   schemas:
-    error_message:
+    error_result:
       type: object
       properties:
-        errors:
+        code:
           type: string
-          description: Identifier for the error
+          description: Implementation-defined Identifier/Code for the error being returned by the server
         error_description:
           type: string
-          description: Adds more details to the error
-    Journals:
-      type: object
-      properties:
-        Journals:
-          $ref: '#/components/schemas/GL_Journals'
+          description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
     GL_Journals:
       type: array
       items:
@@ -421,14 +476,14 @@ components:
         GL_Line_Items:
           type: array
           items:
-            $ref: '#/components/schemas/GL_Line_Items'
+            $ref: '#/components/schemas/GL_Line_Item'
       required:
         - Journal_ID
         - Effective_Date
         - GL_Line_Items
 
       
-    GL_Line_Items:
+    GL_Line_Item:
       type: object
       properties:
         #In AICPA and ISO
@@ -462,7 +517,7 @@ components:
         Transaction_Amount:
           $ref: '#/components/schemas/Transaction_Amount'
         #ISO ONLY
-        Transaction_Currency_Code:
+        Transaction_Currency:
           $ref: '#/components/schemas/Transaction_Currency_Code'
         #Amount_Credit_Debit_Indicator in AICPA Credit_Debit_Indicator in ISO
         Amount_Credit_Debit_Indicator:
@@ -480,7 +535,7 @@ components:
           $ref: '#/components/schemas/documentInfo_oim_json'
         facts:
             $ref: '#/components/schemas/facts_oim_json'
-
+    
     documentInfo_oim_json:
       type: object
       properties:
@@ -650,9 +705,9 @@ components:
     Entities:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
     
-    Entities_Details:
+    Entity_Details:
       type: object
       properties:
         Entity_Name:
@@ -668,7 +723,7 @@ components:
     GL_Subsidiaries:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
 
 
         
@@ -711,32 +766,108 @@ components:
     AR_Open_Accounts_Receivables: 
       type: object
       properties:
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
         Transaction_ID:
           $ref: '#/components/schemas/Transaction_ID'
         Invoice_ID:
           $ref: '#/components/schemas/Invoice_ID'
-        Customer_Account_ID:
-          $ref: '#/components/schemas/Customer_Account_ID'
-        Fiscal_Year:
-          $ref: '#/components/schemas/Fiscal_Year'
+        Transaction_Type:
+          $ref: '#/components/schemas/Transaction_Type'
         Transaction_Date:
           $ref: '#/components/schemas/Transaction_Date'
         Transaction_Due_Date:
           $ref: '#/components/schemas/Transaction_Due_Date'
-        Functional_Amount:
-          $ref: '#/components/schemas/Functional_Amount'
-        Functional_Currency_Code:  
-          $ref: '#/components/schemas/Functional_Currency_Code'
-        Transaction_Amount:
-          $ref: '#/components/schemas/Transaction_Amount'
-        Transaction_Currency_Code:
-          $ref: '#/components/schemas/Transaction_Currency_Code'
-        Functional_Balance:
+        Balance_Amount:
           $ref: '#/components/schemas/Functional_Balance'
-        Transaction_Balance:
-          $ref: '#/components/schemas/Transaction_Balance'
-        
-
+        Balance_Amount_Currency:  
+          $ref: '#/components/schemas/Functional_Currency_Code'
+        Balance_Amount_Reporting:
+          $ref: '#/components/schemas/Reporting_Balance'
+        Balance_Reporting_Currency:
+          $ref: '#/components/schemas/Reporting_Currency_Code'
+        Balance_Amount_Local:
+          $ref: '#/components/schemas/Local_Balance'
+        Balance_Local_Currency:
+          $ref: '#/components/schemas/Local_Currency_Code'
+        Original_Balance_Amount:
+          $ref: '#/components/schemas/Functional_Amount'
+        Original_Balance_Amount_Local:
+          $ref: '#/components/schemas/Local_Amount'
+        Original_Balance_Amount_Reporting:
+          $ref: '#/components/schemas/Reporting_Amount'
+        Amount_Credit_Debit_Indicator:
+          $ref: '#/components/schemas/Credit_Debit_Indicator'
+    Customers:
+      type: array
+      items:
+          $ref: '#/components/schemas/Customer'
+    Customer:
+      type: object
+      properties:
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Customer_Account_Name:
+          $ref: '#/components/schemas/Customer_Account_Name'
+        Customer_TIN:
+          $ref: '#/components/schemas/Customer_TIN'
+        Customer_Physical_Street_Address1:
+          $ref: '#/components/schemas/Customer_Street_Address1'
+        Customer_Physical_Street_Address2:
+          $ref: '#/components/schemas/Customer_Street_Address2'
+        Customer_Physical_City:
+          $ref: '#/components/schemas/Customer_City'
+        Customer_Physical_ZipPostalCode: 
+          $ref: '#/components/schemas/Customer_Physical_Postal_Code'
+        Customer_Physical_Country:
+          $ref: '#/components/schemas/Customer_Country'
+        Customer_Billing_Address1:
+          $ref: '#/components/schemas/Customer_Billing_Address1'
+        Customer_Billing_Address2:
+          $ref: '#/components/schemas/Customer_Billing_Address2'
+        Customer_Billing_City:
+          $ref: '#/components/schemas/Customer_Billing_City'
+        Customer_Billing_ZipPostalCode:
+          $ref: '#/components/schemas/Customer_Billing_Postal_Code'
+        Customer_Billing_Country:
+          $ref: '#/components/schemas/Customer_Billing_Country'
+    Invoices:
+      type: array
+      items:
+          $ref: '#/components/schemas/Invoice'
+    Invoice:
+      type: object
+      properties:
+        Invoice_ID:
+          $ref: '#/components/schemas/Invoice_ID'
+        Invoice_Number:
+          $ref: '#/components/schemas/Invoice_Number'
+        Invoice_Date:
+          $ref: '#/components/schemas/Invoice_Date'
+        Invoice_Fiscal_Year:
+          $ref: '#/components/schemas/Fiscal_Year'
+        Invoice_Period: 
+          $ref: '#/components/schemas/Period'
+        Invoice_Type_Name:
+          $ref: '#/components/schemas/Invoice_Type_Name'
+        Invoice_Due_Date:
+          $ref: '#/components/schemas/Invoice_Due_Date'
+        Customer_Account_ID:
+          $ref: '#/components/schemas/Customer_Account_ID'
+        Settlement_Method_Code:
+          $ref: '#/components/schemas/Settlement_Method_Code'
+        Invoice_Amount:
+          $ref: '#/components/schemas/Invoice_Transaction_Amount'
+        Invoice_Amount_Currency:
+          $ref: '#/components/schemas/Invoice_Transaction_CUR_Code'
+        Payment_Term_Code:
+          $ref: '#/components/schemas/Payment_Term_Code'
+        Entered_By:
+          $ref: '#/components/schemas/Entered_By'
+        Tax1_Type_Code:
+          $ref: '#/components/schemas/Tax1_Type_Code'
+        Tax1_Transaction_Amount:
+          $ref: '#/components/schemas/Tax1_Transaction_Amount'
 
 
  # This is where all the field properties are defined
@@ -980,8 +1111,7 @@ components:
       
     Cancellation_Sign:
       type: boolean
-      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE 0=entry is not cancelled, 1=entry is cancelled.
-      enum: [0,1]
+      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE False=entry is not cancelled, True=entry is cancelled.
       x-AICPA-Audit-Data-Std: 'none'
       
     Entered_By:
@@ -1094,14 +1224,85 @@ components:
     Transaction_ID:
       type: string
       maxLength: 60
-      description: The unique identifier for the transaction of an open AR includes invoice and cash received. Typically auto-generated by the system.
+      description: The unique identifier for the transaction of an open AR includes invoice and cash received. Typically auto-generated by the system. Unique identifier for each invoice. This ID may need to be created by concatenating fields (for example, document number, document type, and year) to uniquely identify each transaction. The same ID must be used for all tables with invoice data(Invoices_Generated_YYYYMMDD_YYYYMMDD,Open_Accounts_Receivable_YYYYMMDD,AR_Cash_Application_YYYYMMDD_YYYYMMDD, and AR_Adjustments_YYYYMMDD_YYYYMMDD).
+
       example: 1234567890
+
+    Transaction_Type:
+      type: string
+      maxLength: 60
+      description: The code value or indicator of the method by which the transaction debit or credit amount was extinguished or apportioned to the debt by the customer (for example, check, wire transfer, cash, credit memo, invoice, interest-only invoice, and so on). If not provided, defaults to invoice.
+      example: 'cash'
+      enum: [credit, cash, invoice, adjustment, other ]
 
     Invoice_ID:
       type: string
-      maxLength: 60
+      maxLength: 100
       description: The unique identifier for the invoice, from which AR is derived. Typically auto-generated by the system. May be set to NULL if adjustment is at customer (not invoice) level. Otherwise shall match the Invoice_ID in the SAL_Invoices_Generated table.
       example: 1234567890
+
+    Invoice_Number:
+      type: string
+      maxLength: 100
+      description: Identification number for an internally generated invoice.
+      example: 1234567890
+
+    Invoice_Type_Name:
+      type: string
+      maxLength: 60
+      description: The name of the invoice type. The documents are classified according  to business content.
+      example:
+
+    Invoice_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The date of the invoice, regardless of the date the invoice is created. This is the date from which the due date is calculated based on the invoice terms.
+      example:
+
+    Invoice_Due_Date:
+      type: string
+      format: date
+      maxLength: 10
+      description: The date payment is due from the customer. Aging of a receivable is usually calculated based on this date.
+      example:
+
+    Invoice_Transaction_Amount:
+      type: number
+      format: float
+      description: The transaction monetary amount  recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency.
+      example:
+
+    Invoice_Transaction_CUR_Code:
+      type: string
+      maxLength: 3
+      description: The transactional currency appeared in the invoice (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      example:
+
+    Payment_Term_Code:
+      type: string
+      maxLength: 80
+      description: The code of the payment term. Shall match the Payment_Term_Code in the BAS_Payment_Term table; for example, cash on delivery, payment 30 days after delivery date.
+      example:
+
+    Tax1_Type_Code:
+      type: string
+      maxLength: 25
+      description: Code for Tax1 type. This field shall match the Tax_Type_Code in the BAS_Tax_Type table.
+      example:
+
+    Tax1_Transaction_Amount:
+      type: number
+      format: float
+      description: The amount of Tax1 included in the transaction. Recorded in transaction currency.
+      example: 
+
+    Settlement_Method_Code:
+      type: string
+      maxLength: 60
+      example: "sales"
+      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the Settlement_Method_Code in the BAS_Settlement_Method table.
+      
 
     Customer_Account_ID:
       type: string
@@ -1114,7 +1315,7 @@ components:
       format: date
       maxLength: 10
       minLength: 10
-      description: The date of the transaction, regardles of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.
+      description: The date of the transaction, regardless of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.
       example: '2018-12-31'
 
     Transaction_Due_Date:
@@ -1135,6 +1336,84 @@ components:
       description: Balance monetary amount recorded in the transaction currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
       example: '253.23'
 
+    Reporting_Balance:
+      type: number
+      description: Balance monetary amount recorded in the reporting currency.
+      example: '253.23'
+
+    Local_Balance:
+      type: number
+      description: Balance monetary amount in local currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
+      example: '253.23'
+
+    Customer_Account_Name:
+      type: string
+      maxLength: 100
+      description: The name of the customer.
+      example:
+
+    Customer_TIN:
+      type: string
+      maxLength: 100
+      description: The customer’s tax identification number. This number is usually generated by tax regulator.
+      example:
+
+    Customer_Street_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the customer’s physical street address.
+
+    Customer_Street_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the customer’s physical street address.
+      example:
+
+    Customer_City:
+      type: string
+      maxLength: 100
+      description: The physical city where the customer is located.
+
+    Customer_Physical_Postal_Code:
+      type: string
+      maxLength: 100
+      description: The postal code of the city where the customer is physically located.
+      example:
+
+    Customer_Country:
+      type: string
+      maxLength: 3
+      description: The country code where the customer is physically located (ISO 3166-1).
+      example:
+
+    Customer_Billing_Address1:
+      type: string
+      maxLength: 100
+      description: Line 1 of the customer’s billing address.
+      example:
+  
+    Customer_Billing_Address2:
+      type: string
+      maxLength: 100
+      description: Line 2 of the customer’s billing address.
+      example:
+
+    Customer_Billing_City:
+      type: string
+      maxLength: 100
+      description: The billing city of the customer.
+
+    Customer_Billing_Postal_Code:
+      type: string
+      maxLength: 20
+      description: The billing postal code of the customer’s city.
+      example:
+
+    Customer_Billing_Country:
+      type: string
+      maxLength: 3
+      description: The billing country code of the customer (ISO 3166-1).
+      example:
 
 
   responses:
@@ -1144,18 +1423,18 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
-            error: bad_request
+            code: bad_request
             error_description: Parameter field invalid.
     bad_token:
       description: The token is invalid, expired, or corrupted.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
-            error: unauthorized,
+            code: unauthorized,
             error_description: Cannot convert access token to JSON
     unauthorized:
       description: >
@@ -1166,39 +1445,34 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
-            error: unauthorized
+            code: unauthorized
             error_description: Full authentication is required to access this resource
     not_found:
       description: This resource doesn't exist or you don't have the permissions to view it.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
-            error: not_found
+            code: not_found
             error_description: An entity with that name could not be found.
     method_not_allowed:
       description: Method not allowed
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
-            error: method_not_allowed
+            code: method_not_allowed
             error_description: Request method 'DELETE' not supported
     internal_server_error:
       description: Internal error, not the fault of the client.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
-            error: internal_error
+            code: internal_error
             error_description: Unknown error, try again later
-
-
-   
-
-
