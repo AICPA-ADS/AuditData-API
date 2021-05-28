@@ -36,11 +36,8 @@
 
 
 openapi: 3.0.0
-# Added by API Auto Mocking Plugin
 servers:
-# Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/XBRL-US/Audit_Data_Open-API/1.0.0
+  - url: /AuditDataOpenAPI/v1.0
 info:
   version: "1.0.0"
   title: Audit Data Open Api Project (AICPA)
@@ -98,7 +95,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Journals'
+                $ref: '#/components/schemas/GL_Journals'
 
         '400':
           $ref: '#/components/responses/bad_request'
@@ -117,16 +114,16 @@ paths:
       description: >
         Allows searching for General Ledger Trial Balance Totals
       parameters:
-        - name: start_date_trial_balance
+        - name: start_date
           in: query
           description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date_trial_balance
+        - name: end_date
           in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
+          description: End date for the trial balance.  Returns all the values at the provided `end_date`, which may also be treated as an "as of" date.
           required: true
           schema:
             type: string
@@ -149,10 +146,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Trial_Balance:
-                    $ref: '#/components/schemas/GL_Account_Balances'
+                $ref: '#/components/schemas/GL_Account_Balances'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -193,10 +187,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Periods:
-                    $ref: '#/components/schemas/Periods'
+                $ref: '#/components/schemas/Periods'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -220,10 +211,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  Entities:
-                    $ref: '#/components/schemas/Entities'
+                $ref: '#/components/schemas/Entities'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -253,10 +241,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  GL_Chart_Of_Accounts:
-                    $ref: '#/components/schemas/GL_Chart_of_Accounts'
+                $ref: '#/components/schemas/GL_Chart_of_Accounts'
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -292,12 +277,7 @@ paths:
           content:  
             application/json:
               schema:
-                type: object
-                properties:
-                  documentInfo:
-                    $ref: '#/components/schemas/documentInfo_oim_json'
-                  facts:
-                      $ref: '#/components/schemas/facts_oim_json'
+                $ref: "#/components/schemas/xbrl_tb_response"
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -442,20 +422,15 @@ components:
 
 
   schemas:
-    error_message:
+    error_result:
       type: object
       properties:
-        errors:
+        code:
           type: string
-          description: Identifier for the error
+          description: Implementation-defined Identifier/Code for the error being returned by the server
         error_description:
           type: string
-          description: Adds more details to the error
-    Journals:
-      type: object
-      properties:
-        Journals:
-          $ref: '#/components/schemas/GL_Journals'
+          description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
     GL_Journals:
       type: array
       items:
@@ -527,14 +502,14 @@ components:
         GL_Line_Items:
           type: array
           items:
-            $ref: '#/components/schemas/GL_Line_Items'
+            $ref: '#/components/schemas/GL_Line_Item'
       required:
         - Journal_ID
         - Effective_Date
         - GL_Line_Items
 
       
-    GL_Line_Items:
+    GL_Line_Item:
       type: object
       properties:
         #In AICPA and ISO
@@ -568,7 +543,7 @@ components:
         Transaction_Amount:
           $ref: '#/components/schemas/Transaction_Amount'
         #ISO ONLY
-        Transaction_Currency_Code:
+        Transaction_Currency:
           $ref: '#/components/schemas/Transaction_Currency_Code'
         #Amount_Credit_Debit_Indicator in AICPA Credit_Debit_Indicator in ISO
         Amount_Credit_Debit_Indicator:
@@ -579,6 +554,14 @@ components:
         - Amount_Credit_Debit_Indicator
         - Amount_Currency
 
+    xbrl_tb_response:
+      type: object
+      properties:
+        documentInfo:
+          $ref: '#/components/schemas/documentInfo_oim_json'
+        facts:
+            $ref: '#/components/schemas/facts_oim_json'
+    
     documentInfo_oim_json:
       type: object
       properties:
@@ -748,9 +731,9 @@ components:
     Entities:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
     
-    Entities_Details:
+    Entity_Details:
       type: object
       properties:
         Entity_Name:
@@ -766,7 +749,7 @@ components:
     GL_Subsidiaries:
       type: array
       items:
-          $ref: '#/components/schemas/Entities_Details'
+          $ref: '#/components/schemas/Entity_Details'
 
 
         
@@ -1153,10 +1136,8 @@ components:
       x-AICPA-Audit-Data-Std: 'Reversal_Journal_ID'
       
     Cancellation_Sign:
-      type: number
-      format: integer
-      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE 0=entry is not cancelled, 1=entry is cancelled.
-      enum: [0,1]
+      type: boolean
+      description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE False=entry is not cancelled, True=entry is cancelled.
       x-AICPA-Audit-Data-Std: 'none'
       
     Entered_By:
@@ -1468,18 +1449,18 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
-            error: bad_request
+            code: bad_request
             error_description: Parameter field invalid.
     bad_token:
       description: The token is invalid, expired, or corrupted.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
-            error: unauthorized,
+            code: unauthorized,
             error_description: Cannot convert access token to JSON
     unauthorized:
       description: >
@@ -1490,36 +1471,36 @@ components:
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example:
-            error: unauthorized
+            code: unauthorized
             error_description: Full authentication is required to access this resource
     not_found:
       description: This resource doesn't exist or you don't have the permissions to view it.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
-            error: not_found
+            code: not_found
             error_description: An entity with that name could not be found.
     method_not_allowed:
       description: Method not allowed
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
-            error: method_not_allowed
+            code: method_not_allowed
             error_description: Request method 'DELETE' not supported
     internal_server_error:
       description: Internal error, not the fault of the client.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_message'
+            $ref: '#/components/schemas/error_result'
           example: 
-            error: internal_error
+            code: internal_error
             error_description: Unknown error, try again later
 
 
