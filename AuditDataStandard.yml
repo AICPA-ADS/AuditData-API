@@ -847,6 +847,8 @@ components:
           $ref: '#/components/schemas/Customer_Billing_Country'
         CustomerEmail:
           $ref: '#/components/schemas/CustomerEmail'
+        CustomerDomainAddress:
+          $ref: '#/components/schemas/CustomerDomainAddress'
         CustomerActiveStatus:
           $ref: '#/components/schemas/CustomerActiveStatus'
         TransactionCreditLimit:
@@ -1448,6 +1450,11 @@ components:
       type: string
       description: Email address of the primary customer contact.
       example: 'joeSmith@example.com'
+
+    CustomerDomainAddress:
+      type: string
+      description: Web domain address of the customer.
+      example: 'www.example.com'
 
     CustomerActiveStatus:
       type: boolean
