@@ -86,7 +86,7 @@ paths:
             type: string
             format: date
 
-        - $ref: '#/components/parameters/entity_id_Param'
+        - $ref: '#/components/parameters/entity_id_Required_Param'
            
         
       responses:
@@ -137,7 +137,7 @@ paths:
             type: string
             enum: [budget, both]
 
-        - $ref: '#/components/parameters/entity_id_Param'
+        - $ref: '#/components/parameters/entity_id_Required_Param'
             
         
       responses:
@@ -269,7 +269,7 @@ paths:
             
         - $ref: '#/components/parameters/GL_Account_Number_Param'
 
-        - $ref: '#/components/parameters/entity_id_Param'
+        - $ref: '#/components/parameters/entity_id_Required_Param'
             
       responses:
         '200':
@@ -420,6 +420,13 @@ components:
       schema:
         type: string
 
+    entity_id_Required_Param:
+      in: query
+      name: entity_id
+      description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
+      required: true
+      schema:
+        type: string
 
   schemas:
     error_result:
