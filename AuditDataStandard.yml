@@ -881,18 +881,21 @@ components:
     Beginning_Functional_Amount:
       type: number
       format: float
+      nullable: true
       example: 100
       description: Beginning balance amount of the period (same amount as the ending  balance from the prior period after opening journal entries)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
 
     Beginning_Reporting_Amount:
       type: number
       format: float
+      nullable: true
       example: 100
       description: Beginning balance amount for the  period (same amount as the ending  balance from the prior period after opening journal entries) recorded in the currency used for  statutory reporting.
 
     Beginning_Local_Amount:
       type: number
       format: float
+      nullable: true
       example: 100
       description: Beginning balance amount for the  period in the local currency used for  multi-currency tracking.
 
@@ -1041,9 +1044,10 @@ components:
       x-AICPA-Audit-Data-Std: 'Business_Unit_Code'
 
 
-
     Functional_Amount:
       type: number
+      format: float
+      nullable: true
       example: 100
       description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Matches AICPA Audit Data Standard element Business_Unit_Code.
       x-AICPA-Audit-Data-Std: 'Amount'
@@ -1052,7 +1056,8 @@ components:
     Reporting_Amount:
       type: number
       format: float
-      example: 100
+      nullable: true
+      example: 100      
       description: Transaction monetary amount recorded in the reporting currency. Matches AICPA Audit Data Standard element Reporting_Amount.
       x-AICPA-Audit-Data-Std: 'Reporting_Amount'
 
@@ -1067,6 +1072,7 @@ components:
     Local_Amount:
       type: number
       format: float
+      nullable: true
       example: 100
       description: Amount in the local country currency where the transaction originated. Matches AICPA Audit Data Standard element Local_Amount.
       x-AICPA-Audit-Data-Std: 'Local_Amount'
@@ -1077,13 +1083,13 @@ components:
       minLength: 3
       example: "USD"
       description: The currency used for local country reporting requirements in ISO-4217 format. Matches AICPA Audit Data Standard element Local_Amount_Currency.
-      x-AICPA-Audit-Data-Std: 'Local_Amount_Currency'
-      
+      x-AICPA-Audit-Data-Std: 'Local_Amount_Currency'      
     
     Transaction_Amount:
       type: number
       format: float
-      example: 100
+      nullable: true
+      example: 100      
       description: Amount in the transaction currency.
       x-AICPA-Audit-Data-Std: 'none'
 
