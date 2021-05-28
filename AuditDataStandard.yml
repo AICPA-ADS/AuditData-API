@@ -112,7 +112,7 @@ paths:
       operationId: getTBDetails
       tags: [General Ledger Module]      
       description: >
-        Allows searching for General Ledger Trial Balance Totals
+        Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementaiton). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
       parameters:
         - name: start_date
           in: query
@@ -147,6 +147,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GL_Account_Balances'
+            application/xbrl+json:
+              schema:
+                $ref: "#/components/schemas/xbrl_tb_response"
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -242,42 +245,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GL_Chart_of_Accounts'
-        '400':
-          $ref: '#/components/responses/bad_request'
-        '401':
-          $ref: '#/components/responses/bad_token'
-        '405':
-          $ref: '#/components/responses/method_not_allowed'
-        '500':
-          $ref: '#/components/responses/internal_server_error'
-
-  /gl_trial_balance_xbrl:
-    get:
-      operationId: getTB-XBRLDetails
-      tags: [General Ledger Module]      
-      description: >
-        Allows searching for General Ledger Trial Balance Totals
-      parameters:
-  
-        - name: end_date
-          in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`.
-          required: false
-          schema:
-            type: string
-            format: date
-            
-        - $ref: '#/components/parameters/GL_Account_Number_Param'
-
-        - $ref: '#/components/parameters/entity_id_Required_Param'
-            
-      responses:
-        '200':
-          description: _gl_trial_balance_ successfully accepted
-          content:  
-            application/json:
-              schema:
-                $ref: "#/components/schemas/xbrl_tb_response"
         '400':
           $ref: '#/components/responses/bad_request'
         '401':
@@ -1509,8 +1476,3 @@ components:
           example: 
             code: internal_error
             error_description: Unknown error, try again later
-
-
-   
-
-
