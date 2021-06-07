@@ -64,72 +64,72 @@ security:
       - read
   
 paths:
-  /gl_journals:
+  /GL/Journals:
     get:
-      operationId: getGLDetails
+      operationId: GetGLDetails
       tags: [General Ledger Module]      
       description: >
        Allows searching for General Ledger Journal Transactions
       parameters:
-        - name: start_date
+        - name: startDate
           in: query
-          description: Start date for GL transactions.  Returns all transactions with an `effective_date` after `the start_date`.
+          description: Start date for GL transactions.  Returns all transactions with an `EffectiveDate` after `the startDate`.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date
+        - name: endDate
           in: query
-          description: End date for GL transactions.  Returns all transactions with an `effective_date` before `the end_date`.
+          description: End date for GL transactions.  Returns all transactions with an `EffectiveDate` before `the endDate`.
           required: false
           schema:
             type: string
             format: date
 
-        - $ref: '#/components/parameters/entity_id_Required_Param'
+        - $ref: '#/components/parameters/entityIdRequiredParam'
            
         
       responses:
         '200':
-          description: __gl_details__ successfully accepted
+          description: __GLDetails__ successfully accepted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GL_Journals'
+                $ref: '#/components/schemas/GLJournals'
 
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
 
-  /gl_trial_balance:
+  /GL/TrialBalance:
     get:
-      operationId: getTBDetails
+      operationId: GetTBDetails
       tags: [General Ledger Module]      
       description: >
         Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementaiton). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
       parameters:
-        - name: start_date
+        - name: startDate
           in: query
           description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date
+        - name: endDate
           in: query
-          description: End date for the trial balance.  Returns all the values at the provided `end_date`, which may also be treated as an "as of" date.
+          description: End date for the trial balance.  Returns all the values at the provided `endDate`, which may also be treated as an "as of" date.
           required: true
           schema:
             type: string
             format: date
         
-        - name: budget_flag
+        - name: BudgetFlag
           in: query
           description: Flag to indicate if budget data should be returned. If not provided the default is actual data. To get budget data only a parameter of "budget" is used. To get both a parameter of "both" is passed.
           required: false
@@ -137,44 +137,44 @@ paths:
             type: string
             enum: [budget, both]
 
-        - $ref: '#/components/parameters/entity_id_Required_Param'
+        - $ref: '#/components/parameters/entityIdRequiredParam'
             
         
       responses:
         '200':
-          description: _gl_trial_balance_ successfully accepted
+          description: __GetTBDetails__ successfully accepted
           content:  
             application/json:
               schema:
-                $ref: '#/components/schemas/GL_Account_Balances'
+                $ref: '#/components/schemas/GLAccountBalances'
             application/xbrl+json:
               schema:
-                $ref: "#/components/schemas/xbrl_tb_response"
+                $ref: "#/components/schemas/XbrlTbResponse"
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
 
-  /periods:
+  /Periods:
     get:
-      operationId: getPeriods
+      operationId: GetPeriods
       tags: [Base Module]      
       description: >
         Allows requesting the reporting periods of the company. If no parameters are passed all the available entities available to the user in the system are returned.  The end point also allows the user to pass an entity identifier to return the name of the entity.
       parameters:
-        - name: start_date
+        - name: startDate
           in: query
           description: Returns all reporting periods with a start date equal or greater than the start date.
           required: false
           schema:
             type: string
             format: date
-        - name: end_date
+        - name: endDate
           in: query
           description: Returns all reporting periods with an end date equal or less than the end date.
           required: false
@@ -182,7 +182,7 @@ paths:
             type: string
             format: date
 
-        - $ref: '#/components/parameters/entity_id_Param'
+        - $ref: '#/components/parameters/entityIdParam'
         
       responses:
         '200':
@@ -192,22 +192,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Periods'
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
-  /entities:
+  /Entities:
     get:
-      operationId: getEntities
+      operationId: GetEntities
       tags: [Base Module]      
       description: >
         Allows requesting the reporting entities available from the API.
       parameters:
-        - $ref: '#/components/parameters/entity_id_Param'
+        - $ref: '#/components/parameters/entityIdParam'
       responses:
         '200':
           description: _entities_ successfully accepted
@@ -216,54 +216,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entities'
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
-  /gl_accounts:
+  /GL/Accounts:
     get:
-      operationId: getChartAccounts
+      operationId: GetChartAccounts
       tags: [General Ledger Module]      
       description: >
         Allows requesting a listing of chart of accounts 
       parameters:
-        - name: entity_id
-          in: query
-          description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
-          required: false
-          schema:
-            type: string   
+        - $ref: '#/components/parameters/entityIdRequiredParam' 
         
       responses:
         '200':
-          description: _gl_chart_of_accounts_ successfully accepted
+          description: _GLChartOfAccounts_ successfully accepted
           content:  
             application/json:
               schema:
-                $ref: '#/components/schemas/GL_Chart_of_Accounts'
+                $ref: '#/components/schemas/GLChartOfAccounts'
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
   
-  /ar_open_balances:
+  /AR/OpenBalances:
     get:
-      operationId: getAROpenAccountsReceivables
+      operationId: GetAROpenAccountsReceivables
       tags: [Accounts Receivable]      
       description: >
         Each record represents the balance expected from the customer for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AR amount in the general ledger (GL) as of the same date.
 
         Should be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.
       parameters:
-        - name: ar_balance_date
+        - name: balanceDate
           in: query
           description: Open receivables on a given date. 
           required: true
@@ -272,61 +267,61 @@ paths:
       
       responses:
         '200':
-          description: _ar_open_balances_ successfully accepted
+          description: __GetAROpenAccountsReceivables__ successfully accepted
           content:  
             application/json:
               schema:
-                $ref: '#/components/schemas/AR_Open_Accounts_Receivables_Items'
+                $ref: '#/components/schemas/AROpenAccountsReceivablesItems'
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
-  /ar_customers:
+  /AR/Customers:
     get:
-      operationId: getARCustomers
+      operationId: GetARCustomers
       tags: [Accounts Receivable]      
       description: >
         Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. 
       parameters:
-        - $ref: '#/components/parameters/customer_account_id_Param'
+        - $ref: '#/components/parameters/CustomerAccountIDParam'
       
       responses:
         '200':
-          description: _ar_customers_ successfully accepted
+          description: __GetARCustomers__ successfully accepted
           content:  
             application/json:
               schema:
                 $ref: '#/components/schemas/Customers'
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
-  /ar_invoices:
+  /AR/Invoices:
     get:
-      operationId: getARInvoices
+      operationId: GetARInvoices
       tags: [Accounts Receivable]      
       description: >
         Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that invoice—one for the items in the invoice associated with each of the three sales orders.
       parameters:
-        - $ref: '#/components/parameters/customer_account_id_Param'
-        - name: start_date
+        - $ref: '#/components/parameters/CustomerAccountIDParam'
+        - name: startDate
           in: query
           description: Returns all invoices with a start date equal or greater than the start date.
           required: true
           schema:
             type: string
             format: date
-        - name: end_date
+        - name: endDate
           in: query
           description: Returns all invoices with an end date equal or less than the end date.
           required: true
@@ -336,19 +331,19 @@ paths:
       
       responses:
         '200':
-          description: _ar_customers_ successfully accepted
+          description: __GetARInvoices__ successfully accepted
           content:  
             application/json:
               schema:
                 $ref: '#/components/schemas/Invoices'
         '400':
-          $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/bad_token'
+          $ref: '#/components/responses/BadToken'
         '405':
-          $ref: '#/components/responses/method_not_allowed'
+          $ref: '#/components/responses/MethodNotAllowed'
         '500':
-          $ref: '#/components/responses/internal_server_error'
+          $ref: '#/components/responses/InternalServerError'
 
 
 components:
@@ -377,180 +372,180 @@ components:
 
 
   parameters:
-    GL_Account_Number_Param:
+    GLAccountNumberParam:
       in: query
-      name: gl_account_number
+      name: GLAccountNumber
       schema:
         type: string
         maxLength: 100
-      description: The GL account number. Shall match the GL_Account_Number used in the Chart of Accounts.
+      description: The GL account number. Shall match the GLAccountNumber used in the Chart of Accounts.
 
-    entity_id_Param:
+    entityIdParam:
       in: query
-      name: entity_id
+      name: entityID
       description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
       required: false
       schema:
         type: string
     
-    customer_account_id_Param:
+    CustomerAccountIDParam:
       in: query
-      name: customer_account_id
+      name: CustomerAccountID
       description: Identifier of the customer from whom payment is expected or to whom unused credits have been applied.  
       required: false
       schema:
         type: string
 
-    entity_id_Required_Param:
+    entityIdRequiredParam:
       in: query
-      name: entity_id
+      name: entityID
       description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
       required: true
       schema:
         type: string
 
   schemas:
-    error_result:
+    ErrorResult:
       type: object
       properties:
         code:
           type: string
           description: Implementation-defined Identifier/Code for the error being returned by the server
-        error_description:
+        ErrorDescription:
           type: string
           description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
-    GL_Journals:
+    GLJournals:
       type: array
       items:
-         $ref: '#/components/schemas/GL_Details'
-    GL_Details: 
+         $ref: '#/components/schemas/GLDetails'
+    GLDetails: 
       type: object
       properties:
         #In AICPA and ISO
-        Journal_ID:
-          $ref: '#/components/schemas/Journal_ID'
+        JournalID:
+          $ref: '#/components/schemas/JournalID'
         #ISO ONLY
-        #Journal_Number:
-        # $ref: '#/components/schemas/Journal_Number'
+        #JournalNumber:
+        # $ref: '#/components/schemas/JournalNumber'
         #In AICPA and ISO
-        Fiscal_Year:
-          $ref: '#/components/schemas/Fiscal_Year'
-        #In AICPA and called Accounting_Period in ISO
+        FiscalYear:
+          $ref: '#/components/schemas/FiscalYear'
+        #In AICPA and called AccountingPeriod in ISO
         Period:
           $ref: '#/components/schemas/Period'
         #In AICPA and ISO
-        Effective_Date:
-          $ref: '#/components/schemas/Effective_Date'
+        EffectiveDate:
+          $ref: '#/components/schemas/EffectiveDate'
         #ISO ONLY
-        #JE_Type_Code:
-        # $ref: '#/components/schemas/JE_Type_Code'
+        #JETypeCode:
+        # $ref: '#/components/schemas/JETypeCode'
         #In AICPA and ISO
-        JE_Header_Description:
-          $ref: '#/components/schemas/JE_Header_Description'
+        JEHeaderDescription:
+          $ref: '#/components/schemas/JEHeaderDescription'
         #In AICPA and ISO
         Source:
           $ref: '#/components/schemas/Source'
         #In AICPA and ISO
-        Business_Unit_Code:
-          $ref: '#/components/schemas/Business_Unit_Code'
+        BusinessUnitCode:
+          $ref: '#/components/schemas/BusinessUnitCode'
         #In AICPA and ISO
-        Reversal_Indicator:
-          $ref: '#/components/schemas/Reversal_Indicator'
+        ReversalIndicator:
+          $ref: '#/components/schemas/ReversalIndicator'
         #In AICPA and ISO
-        Reversal_Journal_ID:
-          $ref: '#/components/schemas/Reversal_Journal_ID'
+        ReversalJournalID:
+          $ref: '#/components/schemas/ReversalJournalID'
         #ISO ONLY 
-        Cancellation_Sign:
-          $ref: '#/components/schemas/Cancellation_Sign'
+        CancellationSign:
+          $ref: '#/components/schemas/CancellationSign'
         # May be this should be changed to Created By not all journals are created by a human which entered implies.
-        # The ISO standard changed it to Created_User_Id. 
-        Entered_By:
-          $ref: '#/components/schemas/Entered_By'
-        #In AICPA and called Created_Date in ISO
-        Entered_Date:
-          $ref: '#/components/schemas/Created_Date'
-        #In AICPA and called Created_Time in ISO
-        Entered_Time:
-          $ref: '#/components/schemas/Created_Time'
+        # The ISO standard changed it to CreatedUserId. 
+        EnteredBy:
+          $ref: '#/components/schemas/EnteredBy'
+        #In AICPA and called CreatedDate in ISO
+        EnteredDate:
+          $ref: '#/components/schemas/CreatedDate'
+        #In AICPA and called CreatedTime in ISO
+        EnteredTime:
+          $ref: '#/components/schemas/CreatedTime'
         #AICPA ONLY
-        Last_Modified_By:
-          $ref: '#/components/schemas/Last_Modified_By'
+        LastModifiedBy:
+          $ref: '#/components/schemas/LastModifiedBy'
         #AICPA ONLY
-        Last_Modified_Date:
-          $ref: '#/components/schemas/Last_Modified_Date'
-        #In AICPA and called Approved_Person_ID in ISO
-        Approved_By:
-          $ref: '#/components/schemas/Approved_Person_ID'
+        LastModifiedDate:
+          $ref: '#/components/schemas/LastModifiedDate'
+        #In AICPA and called ApprovedPersonID in ISO
+        ApprovedBy:
+          $ref: '#/components/schemas/ApprovedPersonID'
         #In AICPA and ISO
-        Approved_Date:
-          $ref: '#/components/schemas/Approved_Date'
+        ApprovedDate:
+          $ref: '#/components/schemas/ApprovedDate'
         #Added for API Specification for cases where have multiple entities.
-        Entity_Identifier:
-          $ref: '#/components/schemas/Entity_Identifier'
-        GL_Line_Items:
+        EntityIdentifier:
+          $ref: '#/components/schemas/EntityIdentifier'
+        GLLineItems:
           type: array
           items:
-            $ref: '#/components/schemas/GL_Line_Item'
+            $ref: '#/components/schemas/GLLineItem'
       required:
-        - Journal_ID
-        - Effective_Date
-        - GL_Line_Items
+        - JournalID
+        - EffectiveDate
+        - GLLineItems
 
       
-    GL_Line_Item:
+    GLLineItem:
       type: object
       properties:
         #In AICPA and ISO
-        GL_Account_Number:
-          $ref: '#/components/schemas/GL_Account_Number'
+        GLAccountNumber:
+          $ref: '#/components/schemas/GLAccountNumber'
         #In AICPA and ISO
-        Journal_ID_Line_Number:
-          $ref: '#/components/schemas/Journal_ID_Line_Number'
+        JournalIDLineNumber:
+          $ref: '#/components/schemas/JournalIDLineNumber'
         #In AICPA and ISO
-        JE_Line_Description:
-          $ref: '#/components/schemas/JE_Line_Description'
-        #Amount in AICPA Functional_Amount in ISO
+        JELineDescription:
+          $ref: '#/components/schemas/JELineDescription'
+        #Amount in AICPA FunctionalAmount in ISO
         Amount:
-          $ref: '#/components/schemas/Functional_Amount'
-        #Amount_Currency in AICPA Functional_Amount in ISO
-        Amount_Currency:
-          $ref: '#/components/schemas/Functional_Currency_Code'
+          $ref: '#/components/schemas/FunctionalAmount'
+        #AmountCurrency in AICPA FunctionalAmount in ISO
+        AmountCurrency:
+          $ref: '#/components/schemas/FunctionalCurrencyCode'
         #In AICPA and ISO
-        Reporting_Amount:
-          $ref: '#/components/schemas/Reporting_Amount'
-        #In AICPA and ISO as Reporting_Currency_Code
-        Reporting_Amount_Currency:
-          $ref: '#/components/schemas/Reporting_Currency_Code'
+        ReportingAmount:
+          $ref: '#/components/schemas/ReportingAmount'
+        #In AICPA and ISO as ReportingCurrencyCode
+        ReportingAmountCurrency:
+          $ref: '#/components/schemas/ReportingCurrencyCode'
         #In AICPA and ISO
-        Local_Amount:
-          $ref: '#/components/schemas/Local_Amount' 
-        #In AICPA and ISO as Local_Currency_Code
-        Local_Amount_Currency:
-          $ref: '#/components/schemas/Local_Currency_Code'
+        LocalAmount:
+          $ref: '#/components/schemas/LocalAmount' 
+        #In AICPA and ISO as LocalCurrencyCode
+        LocalAmountCurrency:
+          $ref: '#/components/schemas/LocalCurrencyCode'
         #ISO ONLY
-        Transaction_Amount:
-          $ref: '#/components/schemas/Transaction_Amount'
+        TransactionAmount:
+          $ref: '#/components/schemas/TransactionAmount'
         #ISO ONLY
-        Transaction_Currency:
-          $ref: '#/components/schemas/Transaction_Currency_Code'
-        #Amount_Credit_Debit_Indicator in AICPA Credit_Debit_Indicator in ISO
-        Amount_Credit_Debit_Indicator:
-          $ref: '#/components/schemas/Credit_Debit_Indicator'
+        TransactionCurrency:
+          $ref: '#/components/schemas/TransactionCurrencyCode'
+        #AmountCreditDebitIndicator in AICPA CreditDebitIndicator in ISO
+        AmountCreditDebitIndicator:
+          $ref: '#/components/schemas/CreditDebitIndicator'
       required:
-        - GL_Account_Number
+        - GLAccountNumber
         - Amount
-        - Amount_Credit_Debit_Indicator
-        - Amount_Currency
+        - AmountCreditDebitIndicator
+        - AmountCurrency
 
-    xbrl_tb_response:
+    XbrlTbResponse:
       type: object
       properties:
         documentInfo:
-          $ref: '#/components/schemas/documentInfo_oim_json'
+          $ref: '#/components/schemas/DocumentInfoOimJson'
         facts:
-            $ref: '#/components/schemas/facts_oim_json'
+            $ref: '#/components/schemas/FactsOimJson'
     
-    documentInfo_oim_json:
+    DocumentInfoOimJson:
       type: object
       properties:
         documentType:
@@ -579,7 +574,7 @@ components:
             example: 
               "http://www.aicpa.org/das/us-gaap/2020-01-31.xsd"
     
-    facts_oim_json:
+    FactsOimJson:
       type: object
       properties:
         value:
@@ -597,8 +592,8 @@ components:
               type: string
             unit:
               type: string
-            GL_Account_Number:
-              $ref: '#/components/schemas/GL_Account_Number'
+            GLAccountNumber:
+              $ref: '#/components/schemas/GLAccountNumber'
       example:
         xfd233befbacbc83e43d510ae01866384c65f23a60482caaa20331642: {"value": "151000",
       "accuracy": -3,
@@ -607,211 +602,211 @@ components:
         "entity": "p3:0001512228",
         "period": "2015-07-01T00:00:00/2016-07-01T00:00:00",
         "unit": "p1:USD",
-        "GL_Account_Number": "12345678"}
+        "GLAccountNumber": "12345678"}
         }
 
-    GL_Account_Balances:
+    GLAccountBalances:
       type: array
       items:
-          $ref: '#/components/schemas/GL_Account_Balance'
-    GL_Account_Balance: 
+          $ref: '#/components/schemas/GLAccountBalance'
+    GLAccountBalance: 
       type: object
       properties:
-        GL_Account_Number:
-          $ref: '#/components/schemas/GL_Account_Number'
+        GLAccountNumber:
+          $ref: '#/components/schemas/GLAccountNumber'
         #Added for API Specification for cases where have multiple entities.
-        Entity_Identifier:
-          $ref: '#/components/schemas/Entity_Identifier'
-        Business_Unit_code:
-          $ref: '#/components/schemas/Business_Unit_Code'
-        Balance_AsOf_Date:
-          $ref: '#/components/schemas/Balance_As_Of_Date'
-        Fiscal_Year:
-          $ref: '#/components/schemas/Fiscal_Year'
+        EntityIdentifier:
+          $ref: '#/components/schemas/EntityIdentifier'
+        BusinessUnitCode:
+          $ref: '#/components/schemas/BusinessUnitCode'
+        BalanceAsOfDate:
+          $ref: '#/components/schemas/BalanceAsOfDate'
+        FiscalYear:
+          $ref: '#/components/schemas/FiscalYear'
         Period:
           $ref: '#/components/schemas/Period'
-        #In AICPA and called Beginning_Functional_Amount in ISO
-        Amount_Beginning:
-          $ref: '#/components/schemas/Beginning_Functional_Amount'
-        #In AICPA and called Beginning_Reporting_Amount in ISO
-        Amount_Beginning_Reporting:
-          $ref: '#/components/schemas/Beginning_Reporting_Amount'
-        #In AICPA and called Beginning_Local_Amount in ISO
-        Amount_Beginning_Local:
-          $ref: '#/components/schemas/Beginning_Local_Amount'
-        #In AICPA and called Functional_Currency_Code in ISO
-        Amount_Currency:
-          $ref: '#/components/schemas/Functional_Currency_Code'
-        #In AICPA and called Reporting_Currency_Code in ISO
-        Amount_Reporting_Currency:
-          $ref: '#/components/schemas/Reporting_Currency_Code'
-        #In AICPA and called Local_Currency_Code in ISO
-        Amount_Local_Currency:
-          $ref: '#/components/schemas/Local_Currency_Code'
-        #In AICPA and called Ending_Functional_Amount in ISO
-        Amount_Ending:
-          $ref: '#/components/schemas/Ending_Functional_Amount'
-        #In AICPA and called Ending_Reporting_Amount in ISO
-        Amount_Ending_Reporting:
-          $ref: '#/components/schemas/Ending_Reporting_Amount'
-         #In AICPA and called Ending_Local_Amount in ISO
-        Amount_Ending_Local:
-          $ref: '#/components/schemas/Ending_Local_Amount'
-        Budget_Flag:
-          $ref: '#/components/schemas/Budget_Flag'
+        #In AICPA and called BeginningFunctionalAmount in ISO
+        AmountBeginning:
+          $ref: '#/components/schemas/BeginningFunctionalAmount'
+        #In AICPA and called BeginningReportingAmount in ISO
+        AmountBeginningReporting:
+          $ref: '#/components/schemas/BeginningReportingAmount'
+        #In AICPA and called BeginningLocalAmount in ISO
+        AmountBeginningLocal:
+          $ref: '#/components/schemas/BeginningLocalAmount'
+        #In AICPA and called FunctionalCurrencyCode in ISO
+        AmountCurrency:
+          $ref: '#/components/schemas/FunctionalCurrencyCode'
+        #In AICPA and called ReportingCurrencyCode in ISO
+        AmountReportingCurrency:
+          $ref: '#/components/schemas/ReportingCurrencyCode'
+        #In AICPA and called LocalCurrencyCode in ISO
+        AmountLocalCurrency:
+          $ref: '#/components/schemas/LocalCurrencyCode'
+        #In AICPA and called EndingFunctionalAmount in ISO
+        AmountEnding:
+          $ref: '#/components/schemas/EndingFunctionalAmount'
+        #In AICPA and called EndingReportingAmount in ISO
+        AmountEndingReporting:
+          $ref: '#/components/schemas/EndingReportingAmount'
+         #In AICPA and called EndingLocalAmount in ISO
+        AmountEndingLocal:
+          $ref: '#/components/schemas/EndingLocalAmount'
+        BudgetFlag:
+          $ref: '#/components/schemas/BudgetFlag'
 
       required:
-        - GL_Account_Number
-        - Amount_Beginning
-        - Amount_Ending
-        - Amount_Currency
-        - Balance_AsOf_Date
+        - GLAccountNumber
+        - AmountBeginning
+        - AmountEnding
+        - AmountCurrency
+        - BalanceAsOfDate
        
     
     Periods:
       type: array
       items:
-          $ref: '#/components/schemas/Periods_Details'
+          $ref: '#/components/schemas/PeriodsDetails'
       example: [
                 {
-                  "Period_Name": "Fiscal Year Ended 2019",
-                  "Start_Date_Period": "2019-01-01",
-                  "End_Date_Period": "2019-12-31",
-                  "Period_Type": "Year",
-                  "Entity_Identifier": 123456789
+                  "PeriodName": "Fiscal Year Ended 2019",
+                  "StartDatePeriod": "2019-01-01",
+                  "EndDatePeriod": "2019-12-31",
+                  "PeriodType": "Year",
+                  "EntityIdentifier": 123456789
                 },
                 {
-                  "Period_Name": "Fiscal Year Ended 2020",
-                  "Start_Date_Period": "2020-01-01",
-                  "End_Date_Period": "2020-12-31",
-                  "Period_Type": "Year",
-                  "Entity_Identifier": 123456789
+                  "PeriodName": "Fiscal Year Ended 2020",
+                  "StartDatePeriod": "2020-01-01",
+                  "EndDatePeriod": "2020-12-31",
+                  "PeriodType": "Year",
+                  "EntityIdentifier": 123456789
                 },
                 {
-                  "Period_Name": "Fiscal Quarter Ended Q1 2020",
-                  "Start_Date_Period": "2020-01-01",
-                  "End_Date_Period": "2020-03-31",
-                  "Period_Type": "Quarter",
-                  "Entity_Identifier": 123456789
+                  "PeriodName": "Fiscal Quarter Ended Q1 2020",
+                  "StartDatePeriod": "2020-01-01",
+                  "EndDatePeriod": "2020-03-31",
+                  "PeriodType": "Quarter",
+                  "EntityIdentifier": 123456789
                 }
               ]
     
-    Periods_Details:
+    PeriodsDetails:
       type: object
       properties:
-        Period_Name:
-          $ref: '#/components/schemas/Period_Name'
-        Start_Date_Period:
-          $ref: '#/components/schemas/Start_Date_Period'
-        End_Date_Period:
-          $ref: '#/components/schemas/End_Date_Period'
-        Period_Type:
-          $ref: '#/components/schemas/Period_Type'
+        PeriodName:
+          $ref: '#/components/schemas/PeriodName'
+        StartDatePeriod:
+          $ref: '#/components/schemas/StartDatePeriod'
+        EndDatePeriod:
+          $ref: '#/components/schemas/EndDatePeriod'
+        PeriodType:
+          $ref: '#/components/schemas/PeriodType'
         #Added for API Specification for cases where have multiple entities.
-        Entity_Identifier:
-          $ref: '#/components/schemas/Entity_Identifier'
+        EntityIdentifier:
+          $ref: '#/components/schemas/EntityIdentifier'
       required:
-        - Period_Name
-        - Start_Date_Period
-        - End_Date_Period
-        - Period_Type
+        - PeriodName
+        - StartDatePeriod
+        - EndDatePeriod
+        - PeriodType
 
     Entities:
       type: array
       items:
-          $ref: '#/components/schemas/Entity_Details'
+          $ref: '#/components/schemas/EntityDetails'
     
-    Entity_Details:
+    EntityDetails:
       type: object
       properties:
-        Entity_Name:
-          $ref: '#/components/schemas/Entity_Name'
-        Entity_Identifier:
-          $ref: '#/components/schemas/Entity_Identifier'
-        GL_Subsidiaries:
-          $ref: '#/components/schemas/GL_Subsidiaries'
+        EntityName:
+          $ref: '#/components/schemas/EntityName'
+        EntityIdentifier:
+          $ref: '#/components/schemas/EntityIdentifier'
+        GLSubsidiaries:
+          $ref: '#/components/schemas/GLSubsidiaries'
       required:
-        - Entity_Name
-        - Entity_Identifier
+        - EntityName
+        - EntityIdentifier
 
-    GL_Subsidiaries:
+    GLSubsidiaries:
       type: array
       items:
-          $ref: '#/components/schemas/Entity_Details'
+          $ref: '#/components/schemas/EntityDetails'
 
 
         
 
-    GL_Chart_of_Accounts:
+    GLChartOfAccounts:
       type: array
       items:
-          $ref: '#/components/schemas/GL_Account_Details'
-    GL_Account_Details:
+          $ref: '#/components/schemas/GLAccountDetails'
+    GLAccountDetails:
       type: object
       properties:
-        Entity_Identifier:
-          $ref: '#/components/schemas/Entity_Identifier'
-        GL_Account_Number:
-          $ref: '#/components/schemas/GL_Account_Number'
-        GL_Account_Name:
-          $ref: '#/components/schemas/GL_Account_Name'
-        FS_Caption:
-          $ref: '#/components/schemas/FS_Caption'
-        Account_Type:
-          $ref: '#/components/schemas/Account_Type'
-        Account_Subtype:
-          $ref: '#/components/schemas/Account_Subtype'
-        GL_Account_Description:
-          $ref: '#/components/schemas/GL_Account_Description'
+        EntityIdentifier:
+          $ref: '#/components/schemas/EntityIdentifier'
+        GLAccountNumber:
+          $ref: '#/components/schemas/GLAccountNumber'
+        GLAccountName:
+          $ref: '#/components/schemas/GLAccountName'
+        FSCaption:
+          $ref: '#/components/schemas/FSCaption'
+        AccountType:
+          $ref: '#/components/schemas/AccountType'
+        AccountSubtype:
+          $ref: '#/components/schemas/AccountSubtype'
+        GLAccountDescription:
+          $ref: '#/components/schemas/GLAccountDescription'
         
-        Parent_GL_Account_Number:
-          $ref: '#/components/schemas/Parent_GL_Account_Number'
-        XBRL_Concept:
-          $ref: '#/components/schemas/XBRL_Concept'
+        ParentGLAccountNumber:
+          $ref: '#/components/schemas/ParentGLAccountNumber'
+        XBRLConcept:
+          $ref: '#/components/schemas/XBRLConcept'
       required:
-        - GL_Account_Number
-        - GL_Account_Name
+        - GLAccountNumber
+        - GLAccountName
 
-    AR_Open_Accounts_Receivables_Items:
+    AROpenAccountsReceivablesItems:
       type: array
       items:
-          $ref: '#/components/schemas/AR_Open_Accounts_Receivables'
+          $ref: '#/components/schemas/AROpenAccountsReceivables'
     
-    AR_Open_Accounts_Receivables: 
+    AROpenAccountsReceivables: 
       type: object
       properties:
-        Customer_Account_ID:
-          $ref: '#/components/schemas/Customer_Account_ID'
-        Transaction_ID:
-          $ref: '#/components/schemas/Transaction_ID'
-        Invoice_ID:
-          $ref: '#/components/schemas/Invoice_ID'
-        Transaction_Type:
-          $ref: '#/components/schemas/Transaction_Type'
-        Transaction_Date:
-          $ref: '#/components/schemas/Transaction_Date'
-        Transaction_Due_Date:
-          $ref: '#/components/schemas/Transaction_Due_Date'
-        Balance_Amount:
-          $ref: '#/components/schemas/Functional_Balance'
-        Balance_Amount_Currency:  
-          $ref: '#/components/schemas/Functional_Currency_Code'
-        Balance_Amount_Reporting:
-          $ref: '#/components/schemas/Reporting_Balance'
-        Balance_Reporting_Currency:
-          $ref: '#/components/schemas/Reporting_Currency_Code'
-        Balance_Amount_Local:
-          $ref: '#/components/schemas/Local_Balance'
-        Balance_Local_Currency:
-          $ref: '#/components/schemas/Local_Currency_Code'
-        Original_Balance_Amount:
-          $ref: '#/components/schemas/Functional_Amount'
-        Original_Balance_Amount_Local:
-          $ref: '#/components/schemas/Local_Amount'
-        Original_Balance_Amount_Reporting:
-          $ref: '#/components/schemas/Reporting_Amount'
-        Amount_Credit_Debit_Indicator:
-          $ref: '#/components/schemas/Credit_Debit_Indicator'
+        CustomerAccountID:
+          $ref: '#/components/schemas/CustomerAccountID'
+        TransactionID:
+          $ref: '#/components/schemas/TransactionID'
+        InvoiceID:
+          $ref: '#/components/schemas/InvoiceID'
+        TransactionType:
+          $ref: '#/components/schemas/TransactionType'
+        TransactionDate:
+          $ref: '#/components/schemas/TransactionDate'
+        TransactionDueDate:
+          $ref: '#/components/schemas/TransactionDueDate'
+        BalanceAmount:
+          $ref: '#/components/schemas/FunctionalBalance'
+        BalanceAmountCurrency:  
+          $ref: '#/components/schemas/FunctionalCurrencyCode'
+        BalanceAmountReporting:
+          $ref: '#/components/schemas/ReportingBalance'
+        BalanceReportingCurrency:
+          $ref: '#/components/schemas/ReportingCurrencyCode'
+        BalanceAmountLocal:
+          $ref: '#/components/schemas/LocalBalance'
+        BalanceLocalCurrency:
+          $ref: '#/components/schemas/LocalCurrencyCode'
+        OriginalBalanceAmount:
+          $ref: '#/components/schemas/FunctionalAmount'
+        OriginalBalanceAmountLocal:
+          $ref: '#/components/schemas/LocalAmount'
+        OriginalBalanceAmountReporting:
+          $ref: '#/components/schemas/ReportingAmount'
+        AmountCreditDebitIndicator:
+          $ref: '#/components/schemas/CreditDebitIndicator'
     Customers:
       type: array
       items:
@@ -819,32 +814,32 @@ components:
     Customer:
       type: object
       properties:
-        Customer_Account_ID:
-          $ref: '#/components/schemas/Customer_Account_ID'
-        Customer_Account_Name:
-          $ref: '#/components/schemas/Customer_Account_Name'
-        Customer_TIN:
-          $ref: '#/components/schemas/Customer_TIN'
-        Customer_Physical_Street_Address1:
-          $ref: '#/components/schemas/Customer_Street_Address1'
-        Customer_Physical_Street_Address2:
-          $ref: '#/components/schemas/Customer_Street_Address2'
-        Customer_Physical_City:
-          $ref: '#/components/schemas/Customer_City'
-        Customer_Physical_ZipPostalCode: 
-          $ref: '#/components/schemas/Customer_Physical_Postal_Code'
-        Customer_Physical_Country:
-          $ref: '#/components/schemas/Customer_Country'
-        Customer_Billing_Address1:
-          $ref: '#/components/schemas/Customer_Billing_Address1'
-        Customer_Billing_Address2:
-          $ref: '#/components/schemas/Customer_Billing_Address2'
-        Customer_Billing_City:
-          $ref: '#/components/schemas/Customer_Billing_City'
-        Customer_Billing_ZipPostalCode:
-          $ref: '#/components/schemas/Customer_Billing_Postal_Code'
-        Customer_Billing_Country:
-          $ref: '#/components/schemas/Customer_Billing_Country'
+        CustomerAccountID:
+          $ref: '#/components/schemas/CustomerAccountID'
+        CustomerAccountName:
+          $ref: '#/components/schemas/CustomerAccountName'
+        CustomerTIN:
+          $ref: '#/components/schemas/CustomerTIN'
+        CustomerPhysicalStreetAddress1:
+          $ref: '#/components/schemas/CustomerStreetAddress1'
+        CustomerPhysicalStreetAddress2:
+          $ref: '#/components/schemas/CustomerStreetAddress2'
+        CustomerPhysicalCity:
+          $ref: '#/components/schemas/CustomerCity'
+        CustomerPhysicalZipPostalCode: 
+          $ref: '#/components/schemas/CustomerPhysicalPostalCode'
+        CustomerPhysicalCountry:
+          $ref: '#/components/schemas/CustomerCountry'
+        CustomerBillingAddress1:
+          $ref: '#/components/schemas/CustomerBillingAddress1'
+        CustomerBillingAddress2:
+          $ref: '#/components/schemas/CustomerBillingAddress2'
+        CustomerBillingCity:
+          $ref: '#/components/schemas/CustomerBillingCity'
+        CustomerBillingZipPostalCode:
+          $ref: '#/components/schemas/CustomerBillingPostalCode'
+        CustomerBillingCountry:
+          $ref: '#/components/schemas/CustomerBillingCountry'
         CustomerEmail:
           $ref: '#/components/schemas/CustomerEmail'
         CustomerDomainAddress:
@@ -858,7 +853,7 @@ components:
         CustomerTermsDueDays:
           $ref: '#/components/schemas/CustomerTermsDueDays'
         CustomerEnteredBy:
-          $ref: '#/components/schemas/Entered_By'
+          $ref: '#/components/schemas/EnteredBy'
 
 
 
@@ -869,120 +864,120 @@ components:
     Invoice:
       type: object
       properties:
-        Invoice_ID:
-          $ref: '#/components/schemas/Invoice_ID'
-        Invoice_Number:
-          $ref: '#/components/schemas/Invoice_Number'
-        Invoice_Date:
-          $ref: '#/components/schemas/Invoice_Date'
-        Invoice_Fiscal_Year:
-          $ref: '#/components/schemas/Fiscal_Year'
-        Invoice_Period: 
+        InvoiceID:
+          $ref: '#/components/schemas/InvoiceID'
+        InvoiceNumber:
+          $ref: '#/components/schemas/InvoiceNumber'
+        InvoiceDate:
+          $ref: '#/components/schemas/InvoiceDate'
+        InvoiceFiscalYear:
+          $ref: '#/components/schemas/FiscalYear'
+        InvoicePeriod: 
           $ref: '#/components/schemas/Period'
-        Invoice_Type_Name:
-          $ref: '#/components/schemas/Invoice_Type_Name'
-        Invoice_Due_Date:
-          $ref: '#/components/schemas/Invoice_Due_Date'
-        Customer_Account_ID:
-          $ref: '#/components/schemas/Customer_Account_ID'
-        Settlement_Method_Code:
-          $ref: '#/components/schemas/Settlement_Method_Code'
-        Invoice_Amount:
-          $ref: '#/components/schemas/Invoice_Transaction_Amount'
-        Invoice_Amount_Currency:
-          $ref: '#/components/schemas/Invoice_Transaction_CUR_Code'
-        Payment_Term_Code:
-          $ref: '#/components/schemas/Payment_Term_Code'
-        Entered_By:
-          $ref: '#/components/schemas/Entered_By'
-        Tax1_Type_Code:
-          $ref: '#/components/schemas/Tax1_Type_Code'
-        Tax1_Transaction_Amount:
-          $ref: '#/components/schemas/Tax1_Transaction_Amount'
+        InvoiceTypeName:
+          $ref: '#/components/schemas/InvoiceTypeName'
+        InvoiceDueDate:
+          $ref: '#/components/schemas/InvoiceDueDate'
+        CustomerAccountID:
+          $ref: '#/components/schemas/CustomerAccountID'
+        SettlementMethodCode:
+          $ref: '#/components/schemas/SettlementMethodCode'
+        InvoiceAmount:
+          $ref: '#/components/schemas/InvoiceTransactionAmount'
+        InvoiceAmountCurrency:
+          $ref: '#/components/schemas/InvoiceTransactionCURCode'
+        PaymentTermCode:
+          $ref: '#/components/schemas/PaymentTermCode'
+        EnteredBy:
+          $ref: '#/components/schemas/EnteredBy'
+        Tax1TypeCode:
+          $ref: '#/components/schemas/Tax1TypeCode'
+        Tax1TransactionAmount:
+          $ref: '#/components/schemas/Tax1TransactionAmount'
 
 
  # This is where all the field properties are defined
 
-    Balance_As_Of_Date:
+    BalanceAsOfDate:
       type: string  
       format: date
       description: The date through which the provided balance reflects account activity. EXAMPLE If a report was run for activity through 2014-12-31 on 2015-01-22, the date recorded would be 20141231. .
       example: "2018-12-31"
 
-    Beginning_Functional_Amount:
+    BeginningFunctionalAmount:
       type: number
       format: float
       nullable: true
       example: 100
       description: Beginning balance amount of the period (same amount as the ending  balance from the prior period after opening journal entries)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
 
-    Beginning_Reporting_Amount:
+    BeginningReportingAmount:
       type: number
       format: float
       nullable: true
       example: 100
       description: Beginning balance amount for the  period (same amount as the ending  balance from the prior period after opening journal entries) recorded in the currency used for  statutory reporting.
 
-    Beginning_Local_Amount:
+    BeginningLocalAmount:
       type: number
       format: float
       nullable: true
       example: 100
       description: Beginning balance amount for the  period in the local currency used for  multi-currency tracking.
 
-    Ending_Functional_Amount:
+    EndingFunctionalAmount:
       type: number
       format: float
       example: 100
       description: Ending balance amount for the period  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.
 
-    Ending_Reporting_Amount:
+    EndingReportingAmount:
       type: number
       format: float
       example: 100
       description: Ending balance amount for the period  in the currency used for statutory  reporting.
 
-    Ending_Local_Amount:
+    EndingLocalAmount:
       type: number
       format: float
       example: 100
       description: Ending balance amount for the period  in local currency used for multi-currency tracking.
 
 
-    Budget_Flag:
+    BudgetFlag:
       type: string
       enum: [budget, actual]
       example: actual
       description: Indicates if the trial balance amount is an actual amount or a budget amount. If this field is missing from the return result then the value is presumed to be actual.
       
-    Journal_ID:
+    JournalID:
       type: string
       maxLength: 100
       description: The unique identifier for the journal entry. Typically auto-generated by the system.
       example: '1234abc'
-      x-AICPA-Audit-Data-Std: 'Journal_ID'
+      x-AICPA-Audit-Data-Std: 'JournalID'
 
-    Journal_Number:
+    JournalNumber:
       type: string
       maxLength: 100
       description: The number of the journal entry; for example, including serial number,document type, and date.
       x-AICPA-Audit-Data-Std: 'none'
     
-    GL_Account_Number:
+    GLAccountNumber:
       type: string
       maxLength: 100
-      description: The GL account number defined in the chart of accounts. Matches AICPA Audit Data Standard element GL_Account_Number.
+      description: The GL account number defined in the chart of accounts. Matches AICPA Audit Data Standard element GLAccountNumber.
       example: 1234-567-890
-      x-AICPA-Audit-Data-Std: 'GL_Account_Number'
+      x-AICPA-Audit-Data-Std: 'GLAccountNumber'
     
-    Fiscal_Year:
+    FiscalYear:
       type: string
       minLength: 4
       maxLength: 4
       description: |
-        Fiscal year in which the Effective_Date occurs. The year shall be shown in four digits as “YYYY”, which is part of the extended format and the “YYYYMM-DD” in ISO 8601:2004. Matches AICPA Audit Data Standard element Fiscal_Year.
+        Fiscal year in which the EffectiveDate occurs. The year shall be shown in four digits as “YYYY”, which is part of the extended format and the “YYYYMM-DD” in ISO 8601:2004. Matches AICPA Audit Data Standard element FiscalYear.
       example: 2019
-      x-AICPA-Audit-Data-Std: 'Fiscal_Year'
+      x-AICPA-Audit-Data-Std: 'FiscalYear'
 
     Period:
       type: string
@@ -991,74 +986,74 @@ components:
       example: Year
       x-AICPA-Audit-Data-Std: 'Period'
 
-    Period_Name:
+    PeriodName:
       type: string
       description: The name of the period as defined by the entity providing the reporting period.
       example: Fiscal Year Ended 2019
 
-    Start_Date_Period:
+    StartDatePeriod:
       type: string
       format: date
       description: The date that the defined reporting period started as defined by the entity providing the reporting period.
       example: '2019-01-01'
 
-    End_Date_Period:
+    EndDatePeriod:
       type: string
       format: date
       description: The date that the defined reporting period ended as defined by the entity providing the reporting period.
       example: '2019-12-31'
     
 
-    Period_Type:
+    PeriodType:
       type: string
       description: The type of period defined. For example Quarter, Year Half Year.
       enum: [Year, Quarter, HalfYear, 52Weeks, 3QCum, Month, 13Months, Other]
       example: 'Year'
 
-    Entity_Name:
+    EntityName:
       type: string
       description: The name of the entity for which the GL information is applicable.
       example: ABC-CO
 
-    Entity_Identifier:
+    EntityIdentifier:
       type: string
       description: The uid of the entity.
       example: 123456789
 
-    Effective_Date:
+    EffectiveDate:
       type: string
       format: date
-      description: The date of the journal entry, no matter when the entry is received or created. This sometimes refers to the accounting date or accounting effective date; for example, if the user wants to see the financial results for the period ending March 5, 20X1, the journal entry may be created on any day during the open period and be assigned to the period ending March 5, 20X1. Matches AICPA Audit Data Standard element Effective_Date.
+      description: The date of the journal entry, no matter when the entry is received or created. This sometimes refers to the accounting date or accounting effective date; for example, if the user wants to see the financial results for the period ending March 5, 20X1, the journal entry may be created on any day during the open period and be assigned to the period ending March 5, 20X1. Matches AICPA Audit Data Standard element EffectiveDate.
       example: "2018-12-31"
-      x-AICPA-Audit-Data-Std: 'Effective_Date'
+      x-AICPA-Audit-Data-Std: 'EffectiveDate'
 
-    Journal_ID_Line_Number:
+    JournalIDLineNumber:
       type: string
       maxLength: 100
       example: 1
-      description: Identifier that is unique for each line within a journal entry. Matches AICPA Audit Data Standard element Journal_ID_Line_Number.
-      x-AICPA-Audit-Data-Std: 'Journal_ID_Line_Number'
+      description: Identifier that is unique for each line within a journal entry. Matches AICPA Audit Data Standard element JournalIDLineNumber.
+      x-AICPA-Audit-Data-Std: 'JournalIDLineNumber'
 
-    JE_Type_Code:
+    JETypeCode:
       type: string
       maxLength: 60
       example:
       description: The code of journal entry type.
       x-AICPA-Audit-Data-Std: 'none'
 
-    JE_Header_Description:
+    JEHeaderDescription:
       type: string
       maxLength: 1000
-      description: Description of the entire journal entry as described by the journal entry header. Matches AICPA Audit Data Standard element JE_Header_Description.
+      description: Description of the entire journal entry as described by the journal entry header. Matches AICPA Audit Data Standard element JEHeaderDescription.
       example: "My first json Journal"
-      x-AICPA-Audit-Data-Std: 'JE_Header_Description'
+      x-AICPA-Audit-Data-Std: 'JEHeaderDescription'
 
-    JE_Line_Description:
+    JELineDescription:
       type: string
       maxLength: 1000
       example: Book to accrual account
-      description: Description of the individual line within the journal entry. Matches AICPA Audit Data Standard element JE_Line_Description.
-      x-AICPA-Audit-Data-Std: 'JE_Line_Description'
+      description: Description of the individual line within the journal entry. Matches AICPA Audit Data Standard element JELineDescription.
+      x-AICPA-Audit-Data-Std: 'JELineDescription'
 
     Source:
       type: string
@@ -1067,56 +1062,56 @@ components:
       description: Code for source from which the journal entry originated. EXAMPLE Sales journal, cash receipts journal, general journal, payroll journal, accountant manual entry, or spreadsheet. Matches AICPA Audit Data Standard element Source.
       x-AICPA-Audit-Data-Std: 'Source'
 
-    Business_Unit_Code:
+    BusinessUnitCode:
       type: string
       maxLength: 25
       example: "WidgetGroup"
-      description: Used to identify the business unit, region, branch, and so on at the level that financial statements are being audited and for which the trial balance is generated. For example, you may use a code aligned with the concept of a reportable segment as defined in Financial Accounting Standards Board (FASB) Accounting Standards Codification (ASC) 280, Segment Reporting. Matches AICPA Audit Data Standard element Business_Unit_Code.
-      x-AICPA-Audit-Data-Std: 'Business_Unit_Code'
+      description: Used to identify the business unit, region, branch, and so on at the level that financial statements are being audited and for which the trial balance is generated. For example, you may use a code aligned with the concept of a reportable segment as defined in Financial Accounting Standards Board (FASB) Accounting Standards Codification (ASC) 280, Segment Reporting. Matches AICPA Audit Data Standard element BusinessUnitCode.
+      x-AICPA-Audit-Data-Std: 'BusinessUnitCode'
 
 
-    Functional_Amount:
+    FunctionalAmount:
       type: number
       format: float
       nullable: true
       example: 100
-      description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Matches AICPA Audit Data Standard element Business_Unit_Code.
+      description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Matches AICPA Audit Data Standard element BusinessUnitCode.
       x-AICPA-Audit-Data-Std: 'Amount'
 
 
-    Reporting_Amount:
+    ReportingAmount:
       type: number
       format: float
       nullable: true
       example: 100      
-      description: Transaction monetary amount recorded in the reporting currency. Matches AICPA Audit Data Standard element Reporting_Amount.
-      x-AICPA-Audit-Data-Std: 'Reporting_Amount'
+      description: Transaction monetary amount recorded in the reporting currency. Matches AICPA Audit Data Standard element ReportingAmount.
+      x-AICPA-Audit-Data-Std: 'ReportingAmount'
 
-    Reporting_Currency_Code:
+    ReportingCurrencyCode:
       type: string
       maxLength: 3
       minLength: 3
       example: "USD"
-      description: The code of currency used for nonconsolidated reporting as opposed to functional, consolidated reporting, local or actual amounts (ISO 4217:2015). Matches AICPA Audit Data Standard element Reporting_Amount_Currency.
-      x-AICPA-Audit-Data-Std: 'Reporting_Amount_Currency'
+      description: The code of currency used for nonconsolidated reporting as opposed to functional, consolidated reporting, local or actual amounts (ISO 4217:2015). Matches AICPA Audit Data Standard element ReportingAmountCurrency.
+      x-AICPA-Audit-Data-Std: 'ReportingAmountCurrency'
 
-    Local_Amount:
+    LocalAmount:
       type: number
       format: float
       nullable: true
       example: 100
-      description: Amount in the local country currency where the transaction originated. Matches AICPA Audit Data Standard element Local_Amount.
-      x-AICPA-Audit-Data-Std: 'Local_Amount'
+      description: Amount in the local country currency where the transaction originated. Matches AICPA Audit Data Standard element LocalAmount.
+      x-AICPA-Audit-Data-Std: 'LocalAmount'
 
-    Local_Currency_Code:
+    LocalCurrencyCode:
       type: string
       maxLength: 3
       minLength: 3
       example: "USD"
-      description: The currency used for local country reporting requirements in ISO-4217 format. Matches AICPA Audit Data Standard element Local_Amount_Currency.
-      x-AICPA-Audit-Data-Std: 'Local_Amount_Currency'      
+      description: The currency used for local country reporting requirements in ISO-4217 format. Matches AICPA Audit Data Standard element LocalAmountCurrency.
+      x-AICPA-Audit-Data-Std: 'LocalAmountCurrency'      
     
-    Transaction_Amount:
+    TransactionAmount:
       type: number
       format: float
       nullable: true
@@ -1124,230 +1119,230 @@ components:
       description: Amount in the transaction currency.
       x-AICPA-Audit-Data-Std: 'none'
 
-    Credit_Debit_Indicator:
+    CreditDebitIndicator:
       type: string
       maxLength: 1
       example: "C"
-      description: This indicates whether the amount is a credit or a debit. EXAMPLE C=credit; D=debit. Matches AICPA Audit Data Standard element Amount_Credit_Debit_Indicator.
+      description: This indicates whether the amount is a credit or a debit. EXAMPLE C=credit; D=debit. Matches AICPA Audit Data Standard element AmountCreditDebitIndicator.
       enum: [C,D]
-      x-AICPA-Audit-Data-Std: 'Amount_Credit_Debit_Indicator'
+      x-AICPA-Audit-Data-Std: 'AmountCreditDebitIndicator'
 
-    Reversal_Indicator:
+    ReversalIndicator:
       type: string
       maxLength: 1
       example: "1"
-      description: Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty (“”) = none of the above or system generated indicators. Matches AICPA Audit Data Standard element Reversal_Indicator.
-      x-AICPA-Audit-Data-Std: 'Reversal_Indicator'
+      description: Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty (“”) = none of the above or system generated indicators. Matches AICPA Audit Data Standard element ReversalIndicator.
+      x-AICPA-Audit-Data-Std: 'ReversalIndicator'
 
-    Reversal_Journal_ID:
+    ReversalJournalID:
       type: string
       maxLength: 100
       example: "sales"
-      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Matches AICPA Audit Data Standard element Reversal_Journal_ID.
-      x-AICPA-Audit-Data-Std: 'Reversal_Journal_ID'
+      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Matches AICPA Audit Data Standard element ReversalJournalID.
+      x-AICPA-Audit-Data-Std: 'ReversalJournalID'
       
-    Cancellation_Sign:
+    CancellationSign:
       type: boolean
       description: The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE False=entry is not cancelled, True=entry is cancelled.
       x-AICPA-Audit-Data-Std: 'none'
       
-    Entered_By:
+    EnteredBy:
       type: string
       maxLength: 25
-      description: The unique identifier for the person or process that created the record. Matches AICPA Audit Data Standard element Entered_By.
+      description: The unique identifier for the person or process that created the record. Matches AICPA Audit Data Standard element EnteredBy.
       example: "John Smith"
-      x-AICPA-Audit-Data-Std: 'Entered_By'
+      x-AICPA-Audit-Data-Std: 'EnteredBy'
     
-    Created_Date:
+    CreatedDate:
       type: string
       format: date
-      description: The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date. Matches AICPA Audit Data Standard element Entered_Date.
+      description: The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date. Matches AICPA Audit Data Standard element EnteredDate.
       example: "2019-01-01"
-      x-AICPA-Audit-Data-Std: 'Entered_Date'
+      x-AICPA-Audit-Data-Std: 'EnteredDate'
       
-    Created_Time:
+    CreatedTime:
       type: string
       format: time
-      description: The time the journal entry was created in the system. Matches AICPA Audit Data Standard element Entered_Time.
+      description: The time the journal entry was created in the system. Matches AICPA Audit Data Standard element EnteredTime.
       example: '2018-12-31'
-      x-AICPA-Audit-Data-Std: 'Entered_Time'
+      x-AICPA-Audit-Data-Std: 'EnteredTime'
 
-    Last_Modified_By:
+    LastModifiedBy:
       type: string
       maxLength: 25
-      description: User_ID (from User_Listing file) for the last person modifying this entry. Matches AICPA Audit Data Standard element Last_Modified_By.
+      description: UserID (from UserListing file) for the last person modifying this entry. Matches AICPA Audit Data Standard element LastModifiedBy.
       example: "Sam Smith"
-      x-AICPA-Audit-Data-Std: 'Last_Modified_By'
+      x-AICPA-Audit-Data-Std: 'LastModifiedBy'
     
-    Last_Modified_Date:
+    LastModifiedDate:
       type: string
       format: date
-      description: The date the entry was last modified before posting. Matches AICPA Audit Data Standard element Last_Modified_Date.
+      description: The date the entry was last modified before posting. Matches AICPA Audit Data Standard element LastModifiedDate.
       example: "2019-01-01"
-      x-AICPA-Audit-Data-Std: 'Last_Modified_Date'
+      x-AICPA-Audit-Data-Std: 'LastModifiedDate'
     
-    Approved_Person_ID:
+    ApprovedPersonID:
       type: string
       maxLength: 25
-      description: The unique identifier for the person who approved the entry. Typically auto-generated by the system.  Matches AICPA Audit Data Standard element Approved_By.
+      description: The unique identifier for the person who approved the entry. Typically auto-generated by the system.  Matches AICPA Audit Data Standard element ApprovedBy.
       example: "123456"
-      x-AICPA-Audit-Data-Std: 'Approved_By'
+      x-AICPA-Audit-Data-Std: 'ApprovedBy'
       
-    Approved_Date:
+    ApprovedDate:
       type: string
       format: date
-      description: The date the entry was approved. Matches AICPA Audit Data Standard element Approved_Date.
+      description: The date the entry was approved. Matches AICPA Audit Data Standard element ApprovedDate.
       example: '2018-12-31'
-      x-AICPA-Audit-Data-Std: 'Approved_Date'
+      x-AICPA-Audit-Data-Std: 'ApprovedDate'
       
 
-    Transaction_Currency_Code:
+    TransactionCurrencyCode:
       type: string 
       maxLength: 3
       minLength: 3
       description: The currency used in actual transaction (ISO 4217:2015).
       example:
 
-    Functional_Currency_Code:
+    FunctionalCurrencyCode:
       type: string
       maxLength: 3
       minLength: 3
       example: "USD"
-      description: The code of functional or group currency related to the amount (ISO 4217:2015). Matches AICPA Audit Data Standard element Amount_Currency.
-      x-AICPA-Audit-Data-Std: 'Amount_Currency'
+      description: The code of functional or group currency related to the amount (ISO 4217:2015). Matches AICPA Audit Data Standard element AmountCurrency.
+      x-AICPA-Audit-Data-Std: 'AmountCurrency'
 
-    GL_Account_Name:
+    GLAccountName:
       type: string
       maxLength: 100
       description: The name of the GL account.
       example:
 
-    FS_Caption:
+    FSCaption:
       type: string
       maxLength: 100
       description: The financial statement caption represents a related group of accounts. EXAMPLE Cash and cash equivalents, accounts payable and cost of sales. The caption can be at the trial balance level.
       example:
 
-    Account_Type:
+    AccountType:
       type: string
       maxLength: 25
       description: The type of account. EXAMPLE Assets, Liabilities, Equity, Revenue and Expense. 
       example: Asset
 
-    Account_Subtype:
+    AccountSubtype:
       type: string
       maxLength: 25
       description: The subtype of the account. EXAMPLE Current assets are the subtype of assets.
       example:
 
-    GL_Account_Description:
+    GLAccountDescription:
       type: string
       maxLength: 256
-      description: Label or description associated with GL_Account_Number.
+      description: Label or description associated with GLAccountNumber.
       example: Finished goods inventory held by the company.
 
-    Parent_GL_Account_Number:
+    ParentGLAccountNumber:
       type: string
       maxLength: 100
-      description: A reference to the GL_Account_Number that is the parent in an account hierarchy. Provided to allow more than the predefined levels of hierarchy in the chart of accounts table.
+      description: A reference to the GLAccountNumber that is the parent in an account hierarchy. Provided to allow more than the predefined levels of hierarchy in the chart of accounts table.
       example:
 
-    XBRL_Concept:
+    XBRLConcept:
       type: string
       description: XBRL concept associated with the account with the namespace in clark notation.
       example: '{http://fasb.org/us-gaap/2020-01-31}InventoryFinishedGoods'
 
 
-    Transaction_ID:
+    TransactionID:
       type: string
       maxLength: 60
       description: The unique identifier for the transaction of an open AR includes invoice and cash received. Typically auto-generated by the system. Unique identifier for each invoice. This ID may need to be created by concatenating fields (for example, document number, document type, and year) to uniquely identify each transaction. The same ID must be used for all tables with invoice data(Invoices_Generated_YYYYMMDD_YYYYMMDD,Open_Accounts_Receivable_YYYYMMDD,AR_Cash_Application_YYYYMMDD_YYYYMMDD, and AR_Adjustments_YYYYMMDD_YYYYMMDD).
 
       example: 1234567890
 
-    Transaction_Type:
+    TransactionType:
       type: string
       maxLength: 60
       description: The code value or indicator of the method by which the transaction debit or credit amount was extinguished or apportioned to the debt by the customer (for example, check, wire transfer, cash, credit memo, invoice, interest-only invoice, and so on). If not provided, defaults to invoice.
       example: 'cash'
       enum: [credit, cash, invoice, adjustment, other ]
 
-    Invoice_ID:
+    InvoiceID:
       type: string
       maxLength: 100
-      description: The unique identifier for the invoice, from which AR is derived. Typically auto-generated by the system. May be set to NULL if adjustment is at customer (not invoice) level. Otherwise shall match the Invoice_ID in the SAL_Invoices_Generated table.
+      description: The unique identifier for the invoice, from which AR is derived. Typically auto-generated by the system. May be set to NULL if adjustment is at customer (not invoice) level. Otherwise shall match the InvoiceID in the SAL_Invoices_Generated table.
       example: 1234567890
 
-    Invoice_Number:
+    InvoiceNumber:
       type: string
       maxLength: 100
       description: Identification number for an internally generated invoice.
       example: 1234567890
 
-    Invoice_Type_Name:
+    InvoiceTypeName:
       type: string
       maxLength: 60
       description: The name of the invoice type. The documents are classified according  to business content.
       example:
 
-    Invoice_Date:
+    InvoiceDate:
       type: string
       format: date
       maxLength: 10
       description: The date of the invoice, regardless of the date the invoice is created. This is the date from which the due date is calculated based on the invoice terms.
       example:
 
-    Invoice_Due_Date:
+    InvoiceDueDate:
       type: string
       format: date
       maxLength: 10
       description: The date payment is due from the customer. Aging of a receivable is usually calculated based on this date.
       example:
 
-    Invoice_Transaction_Amount:
+    InvoiceTransactionAmount:
       type: number
       format: float
       description: The transaction monetary amount  recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency.
       example:
 
-    Invoice_Transaction_CUR_Code:
+    InvoiceTransactionCURCode:
       type: string
       maxLength: 3
-      description: The transactional currency appeared in the invoice (ISO 4217:2015). Shall match the Currency_Code in the BAS_Currency table.
+      description: The transactional currency appeared in the invoice (ISO 4217:2015). Shall match the CurrencyCode in the BAS_Currency table.
       example:
 
-    Payment_Term_Code:
+    PaymentTermCode:
       type: string
       maxLength: 80
-      description: The code of the payment term. Shall match the Payment_Term_Code in the BAS_Payment_Term table; for example, cash on delivery, payment 30 days after delivery date.
+      description: The code of the payment term. Shall match the PaymentTermCode in the BAS_Payment_Term table; for example, cash on delivery, payment 30 days after delivery date.
       example:
 
-    Tax1_Type_Code:
+    Tax1TypeCode:
       type: string
       maxLength: 25
-      description: Code for Tax1 type. This field shall match the Tax_Type_Code in the BAS_Tax_Type table.
+      description: Code for Tax1 type. This field shall match the TaxTypeCode in the BAS_Tax_Type table.
       example:
 
-    Tax1_Transaction_Amount:
+    Tax1TransactionAmount:
       type: number
       format: float
       description: The amount of Tax1 included in the transaction. Recorded in transaction currency.
       example: 
 
-    Settlement_Method_Code:
+    SettlementMethodCode:
       type: string
       maxLength: 60
       example: "sales"
-      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the Settlement_Method_Code in the BAS_Settlement_Method table.
+      description: The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the SettlementMethodCode in the BAS_Settlement_Method table.
       
 
-    Customer_Account_ID:
+    CustomerAccountID:
       type: string
       maxLength: 100
-      description: The unique identifier for the customer payment is expected or to whom unused credits have been applied. Typically auto-generated by the system. Shall match the Customer_Account_ID in the BAS_Customer table.
+      description: The unique identifier for the customer payment is expected or to whom unused credits have been applied. Typically auto-generated by the system. Shall match the CustomerAccountID in the BAS_Customer table.
       example: 123456
 
-    Transaction_Date:
+    TransactionDate:
       type: string
       format: date
       maxLength: 10
@@ -1355,7 +1350,7 @@ components:
       description: The date of the transaction, regardless of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.
       example: '2018-12-31'
 
-    Transaction_Due_Date:
+    TransactionDueDate:
       type: string
       format: date
       maxLength: 10
@@ -1363,90 +1358,90 @@ components:
       description: The date payment is due from the customer. Not all transactions will have a due date. May be set to NULL, if there is no due date. EXAMPLE Credit memos. Aging of a receivable is usually calculated based on this date.
       example: '2018-12-31'
 
-    Functional_Balance:
+    FunctionalBalance:
       type: number
       description: Balance monetary amount recorded in the functional or group currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it. No multicurrency translation should be performed on this amount because all transactions are recorded in a single currency.
       example:
 
-    Transaction_Balance:
+    TransactionBalance:
       type: number
       description: Balance monetary amount recorded in the transaction currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
       example: '253.23'
 
-    Reporting_Balance:
+    ReportingBalance:
       type: number
       description: Balance monetary amount recorded in the reporting currency.
       example: '253.23'
 
-    Local_Balance:
+    LocalBalance:
       type: number
       description: Balance monetary amount in local currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.
       example: '253.23'
 
-    Customer_Account_Name:
+    CustomerAccountName:
       type: string
       maxLength: 100
       description: The name of the customer.
       example:
 
-    Customer_TIN:
+    CustomerTIN:
       type: string
       maxLength: 100
       description: The customer’s tax identification number. This number is usually generated by tax regulator.
       example:
 
-    Customer_Street_Address1:
+    CustomerStreetAddress1:
       type: string
       maxLength: 100
       description: Line 1 of the customer’s physical street address.
 
-    Customer_Street_Address2:
+    CustomerStreetAddress2:
       type: string
       maxLength: 100
       description: Line 2 of the customer’s physical street address.
       example:
 
-    Customer_City:
+    CustomerCity:
       type: string
       maxLength: 100
       description: The physical city where the customer is located.
 
-    Customer_Physical_Postal_Code:
+    CustomerPhysicalPostalCode:
       type: string
       maxLength: 100
       description: The postal code of the city where the customer is physically located.
       example:
 
-    Customer_Country:
+    CustomerCountry:
       type: string
       maxLength: 3
       description: The country code where the customer is physically located (ISO 3166-1).
       example:
 
-    Customer_Billing_Address1:
+    CustomerBillingAddress1:
       type: string
       maxLength: 100
       description: Line 1 of the customer’s billing address.
       example:
   
-    Customer_Billing_Address2:
+    CustomerBillingAddress2:
       type: string
       maxLength: 100
       description: Line 2 of the customer’s billing address.
       example:
 
-    Customer_Billing_City:
+    CustomerBillingCity:
       type: string
       maxLength: 100
       description: The billing city of the customer.
 
-    Customer_Billing_Postal_Code:
+    CustomerBillingPostalCode:
       type: string
       maxLength: 20
       description: The billing postal code of the customer’s city.
       example:
 
-    Customer_Billing_Country:
+    CustomerBillingCountry:
       type: string
       maxLength: 3
       description: The billing country code of the customer (ISO 3166-1).
@@ -1483,62 +1478,63 @@ components:
       example: '30'
 
   responses:
-    bad_request:
+    BadRequest:
       description: >
         Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. 
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_result'
+            $ref: '#/components/schemas/ErrorResult'
           example:
-            code: bad_request
-            error_description: Parameter field invalid.
-    bad_token:
+            code: BadRequest
+            ErrorDescription: Parameter field invalid.
+    BadToken:
       description: The token is invalid, expired, or corrupted.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_result'
+            $ref: '#/components/schemas/ErrorResult'
           example:
-            code: unauthorized,
-            error_description: Cannot convert access token to JSON
-    unauthorized:
+            code: Unauthorized,
+            ErrorDescription: Cannot convert access token to JSON
+    Unauthorized:
       description: >
         Bad credentials, or could not read credentials due to malformed JSON.
          * "Full authentication is required..." -> malformed JSON
-         * "Bad client credentials" -> client_id/client_secret pair invalid
+         * "Bad client credentials" -> clientId/clientSecret pair invalid
          * "Bad credentials" -> username/password pair invalid
       content:
         applications/json:
           schema:
-            $ref: '#/components/schemas/error_result'
+            $ref: '#/components/schemas/ErrorResult'
           example:
-            code: unauthorized
-            error_description: Full authentication is required to access this resource
-    not_found:
+            code: Unauthorized
+            ErrorDescription: Full authentication is required to access this resource
+    NotFound:
       description: This resource doesn't exist or you don't have the permissions to view it.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_result'
+            $ref: '#/components/schemas/ErrorResult'
           example: 
-            code: not_found
-            error_description: An entity with that name could not be found.
-    method_not_allowed:
+            code: NotFound
+            ErrorDescription: An entity with that name could not be found.
+    MethodNotAllowed:
       description: Method not allowed
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_result'
+            $ref: '#/components/schemas/ErrorResult'
           example: 
-            code: method_not_allowed
-            error_description: Request method 'DELETE' not supported
-    internal_server_error:
+            code: MethodNotAllowed
+            ErrorDescription: Request method 'DELETE' not supported
+    InternalServerError:
       description: Internal error, not the fault of the client.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error_result'
+            $ref: '#/components/schemas/ErrorResult'
           example: 
-            code: internal_error
-            error_description: Unknown error, try again later
+            code: internalError
+            ErrorDescription: Unknown error, try again later
+
