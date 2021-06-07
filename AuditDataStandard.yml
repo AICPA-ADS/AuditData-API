@@ -411,7 +411,7 @@ components:
         code:
           type: string
           description: Implementation-defined Identifier/Code for the error being returned by the server
-        ErrorDescription:
+        errorDescription:
           type: string
           description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.
     GLJournals:
@@ -422,120 +422,120 @@ components:
       type: object
       properties:
         #In AICPA and ISO
-        JournalID:
+        journalId:
           $ref: '#/components/schemas/JournalID'
         #ISO ONLY
         #JournalNumber:
         # $ref: '#/components/schemas/JournalNumber'
         #In AICPA and ISO
-        FiscalYear:
+        fiscalYear:
           $ref: '#/components/schemas/FiscalYear'
         #In AICPA and called AccountingPeriod in ISO
-        Period:
+        period:
           $ref: '#/components/schemas/Period'
         #In AICPA and ISO
-        EffectiveDate:
+        effectiveDate:
           $ref: '#/components/schemas/EffectiveDate'
         #ISO ONLY
         #JETypeCode:
         # $ref: '#/components/schemas/JETypeCode'
         #In AICPA and ISO
-        JEHeaderDescription:
+        jeHeaderDescription:
           $ref: '#/components/schemas/JEHeaderDescription'
         #In AICPA and ISO
-        Source:
+        source:
           $ref: '#/components/schemas/Source'
         #In AICPA and ISO
-        BusinessUnitCode:
+        businessUnitCode:
           $ref: '#/components/schemas/BusinessUnitCode'
         #In AICPA and ISO
-        ReversalIndicator:
+        reversalIndicator:
           $ref: '#/components/schemas/ReversalIndicator'
         #In AICPA and ISO
-        ReversalJournalID:
+        reversalJournalId:
           $ref: '#/components/schemas/ReversalJournalID'
         #ISO ONLY 
-        CancellationSign:
+        cancellationSign:
           $ref: '#/components/schemas/CancellationSign'
         # May be this should be changed to Created By not all journals are created by a human which entered implies.
         # The ISO standard changed it to CreatedUserId. 
-        EnteredBy:
+        enteredBy:
           $ref: '#/components/schemas/EnteredBy'
         #In AICPA and called CreatedDate in ISO
-        EnteredDate:
+        enteredDate:
           $ref: '#/components/schemas/CreatedDate'
         #In AICPA and called CreatedTime in ISO
-        EnteredTime:
+        enteredTime:
           $ref: '#/components/schemas/CreatedTime'
         #AICPA ONLY
-        LastModifiedBy:
+        lastModifiedBy:
           $ref: '#/components/schemas/LastModifiedBy'
         #AICPA ONLY
-        LastModifiedDate:
+        lastModifiedDate:
           $ref: '#/components/schemas/LastModifiedDate'
         #In AICPA and called ApprovedPersonID in ISO
-        ApprovedBy:
+        approvedBy:
           $ref: '#/components/schemas/ApprovedPersonID'
         #In AICPA and ISO
-        ApprovedDate:
+        approvedDate:
           $ref: '#/components/schemas/ApprovedDate'
         #Added for API Specification for cases where have multiple entities.
-        EntityIdentifier:
+        entityIdentifier:
           $ref: '#/components/schemas/EntityIdentifier'
-        GLLineItems:
+        glLineItems:
           type: array
           items:
             $ref: '#/components/schemas/GLLineItem'
       required:
-        - JournalID
-        - EffectiveDate
-        - GLLineItems
+        - journalId
+        - effectiveDate
+        - glLineItems
 
       
     GLLineItem:
       type: object
       properties:
         #In AICPA and ISO
-        GLAccountNumber:
+        glAccountNumber:
           $ref: '#/components/schemas/GLAccountNumber'
         #In AICPA and ISO
-        JournalIDLineNumber:
+        journalIDLineNumber:
           $ref: '#/components/schemas/JournalIDLineNumber'
         #In AICPA and ISO
-        JELineDescription:
+        jeLineDescription:
           $ref: '#/components/schemas/JELineDescription'
         #Amount in AICPA FunctionalAmount in ISO
-        Amount:
+        amount:
           $ref: '#/components/schemas/FunctionalAmount'
         #AmountCurrency in AICPA FunctionalAmount in ISO
-        AmountCurrency:
+        amountCurrency:
           $ref: '#/components/schemas/FunctionalCurrencyCode'
         #In AICPA and ISO
-        ReportingAmount:
+        reportingAmount:
           $ref: '#/components/schemas/ReportingAmount'
         #In AICPA and ISO as ReportingCurrencyCode
-        ReportingAmountCurrency:
+        reportingAmountCurrency:
           $ref: '#/components/schemas/ReportingCurrencyCode'
         #In AICPA and ISO
-        LocalAmount:
+        localAmount:
           $ref: '#/components/schemas/LocalAmount' 
         #In AICPA and ISO as LocalCurrencyCode
-        LocalAmountCurrency:
+        localAmountCurrency:
           $ref: '#/components/schemas/LocalCurrencyCode'
         #ISO ONLY
-        TransactionAmount:
+        transactionAmount:
           $ref: '#/components/schemas/TransactionAmount'
         #ISO ONLY
-        TransactionCurrency:
+        transactionCurrency:
           $ref: '#/components/schemas/TransactionCurrencyCode'
         #AmountCreditDebitIndicator in AICPA CreditDebitIndicator in ISO
-        AmountCreditDebitIndicator:
+        amountCreditDebitIndicator:
           $ref: '#/components/schemas/CreditDebitIndicator'
       required:
-        - GLAccountNumber
-        - Amount
-        - AmountCreditDebitIndicator
-        - AmountCurrency
+        - glAccountNumber
+        - amount
+        - amountCreditDebitIndicator
+        - amountCurrency
 
     XbrlTbResponse:
       type: object
@@ -592,17 +592,18 @@ components:
               type: string
             unit:
               type: string
-            GLAccountNumber:
+            glAccountNumber:
               $ref: '#/components/schemas/GLAccountNumber'
       example:
-        xfd233befbacbc83e43d510ae01866384c65f23a60482caaa20331642: {"value": "151000",
-      "accuracy": -3,
-      "aspects": {
-        "concept": "p2:ContractWithCustomers",
-        "entity": "p3:0001512228",
-        "period": "2015-07-01T00:00:00/2016-07-01T00:00:00",
-        "unit": "p1:USD",
-        "GLAccountNumber": "12345678"}
+        xfd233befbacbc83e43d510ae01866384c65f23a60482caaa20331642: {
+        "value": "151000",
+        "accuracy": -3,
+        "aspects": {
+          "concept": "p2:ContractWithCustomers",
+          "entity": "p3:0001512228",
+          "period": "2015-07-01T00:00:00/2016-07-01T00:00:00",
+          "unit": "p1:USD",
+          "glAccountNumber": "12345678"}
         }
 
     GLAccountBalances:
@@ -612,55 +613,55 @@ components:
     GLAccountBalance: 
       type: object
       properties:
-        GLAccountNumber:
+        glAccountNumber:
           $ref: '#/components/schemas/GLAccountNumber'
         #Added for API Specification for cases where have multiple entities.
-        EntityIdentifier:
+        entityIdentifier:
           $ref: '#/components/schemas/EntityIdentifier'
-        BusinessUnitCode:
+        businessUnitCode:
           $ref: '#/components/schemas/BusinessUnitCode'
-        BalanceAsOfDate:
+        balanceAsOfDate:
           $ref: '#/components/schemas/BalanceAsOfDate'
-        FiscalYear:
+        fiscalYear:
           $ref: '#/components/schemas/FiscalYear'
-        Period:
+        period:
           $ref: '#/components/schemas/Period'
         #In AICPA and called BeginningFunctionalAmount in ISO
-        AmountBeginning:
+        amountBeginning:
           $ref: '#/components/schemas/BeginningFunctionalAmount'
         #In AICPA and called BeginningReportingAmount in ISO
-        AmountBeginningReporting:
+        amountBeginningReporting:
           $ref: '#/components/schemas/BeginningReportingAmount'
         #In AICPA and called BeginningLocalAmount in ISO
-        AmountBeginningLocal:
+        amountBeginningLocal:
           $ref: '#/components/schemas/BeginningLocalAmount'
         #In AICPA and called FunctionalCurrencyCode in ISO
-        AmountCurrency:
+        amountCurrency:
           $ref: '#/components/schemas/FunctionalCurrencyCode'
         #In AICPA and called ReportingCurrencyCode in ISO
-        AmountReportingCurrency:
+        amountReportingCurrency:
           $ref: '#/components/schemas/ReportingCurrencyCode'
         #In AICPA and called LocalCurrencyCode in ISO
-        AmountLocalCurrency:
+        amountLocalCurrency:
           $ref: '#/components/schemas/LocalCurrencyCode'
         #In AICPA and called EndingFunctionalAmount in ISO
-        AmountEnding:
+        amountEnding:
           $ref: '#/components/schemas/EndingFunctionalAmount'
         #In AICPA and called EndingReportingAmount in ISO
-        AmountEndingReporting:
+        amountEndingReporting:
           $ref: '#/components/schemas/EndingReportingAmount'
          #In AICPA and called EndingLocalAmount in ISO
-        AmountEndingLocal:
+        amountEndingLocal:
           $ref: '#/components/schemas/EndingLocalAmount'
-        BudgetFlag:
+        budgetFlag:
           $ref: '#/components/schemas/BudgetFlag'
 
       required:
-        - GLAccountNumber
-        - AmountBeginning
-        - AmountEnding
-        - AmountCurrency
-        - BalanceAsOfDate
+        - glAccountNumber
+        - amountBeginning
+        - amountEnding
+        - amountCurrency
+        - balanceAsOfDate
        
     
     Periods:
@@ -669,47 +670,47 @@ components:
           $ref: '#/components/schemas/PeriodsDetails'
       example: [
                 {
-                  "PeriodName": "Fiscal Year Ended 2019",
-                  "StartDatePeriod": "2019-01-01",
-                  "EndDatePeriod": "2019-12-31",
-                  "PeriodType": "Year",
-                  "EntityIdentifier": 123456789
+                  "periodName": "Fiscal Year Ended 2019",
+                  "startDatePeriod": "2019-01-01",
+                  "endDatePeriod": "2019-12-31",
+                  "periodType": "Year",
+                  "entityIdentifier": 123456789
                 },
                 {
-                  "PeriodName": "Fiscal Year Ended 2020",
-                  "StartDatePeriod": "2020-01-01",
-                  "EndDatePeriod": "2020-12-31",
-                  "PeriodType": "Year",
-                  "EntityIdentifier": 123456789
+                  "periodName": "Fiscal Year Ended 2020",
+                  "startDatePeriod": "2020-01-01",
+                  "endDatePeriod": "2020-12-31",
+                  "periodType": "Year",
+                  "entityIdentifier": 123456789
                 },
                 {
-                  "PeriodName": "Fiscal Quarter Ended Q1 2020",
-                  "StartDatePeriod": "2020-01-01",
-                  "EndDatePeriod": "2020-03-31",
-                  "PeriodType": "Quarter",
-                  "EntityIdentifier": 123456789
+                  "periodName": "Fiscal Quarter Ended Q1 2020",
+                  "startDatePeriod": "2020-01-01",
+                  "endDatePeriod": "2020-03-31",
+                  "periodType": "Quarter",
+                  "entityIdentifier": 123456789
                 }
               ]
     
     PeriodsDetails:
       type: object
       properties:
-        PeriodName:
+        periodName:
           $ref: '#/components/schemas/PeriodName'
-        StartDatePeriod:
+        startDatePeriod:
           $ref: '#/components/schemas/StartDatePeriod'
-        EndDatePeriod:
+        endDatePeriod:
           $ref: '#/components/schemas/EndDatePeriod'
-        PeriodType:
+        periodType:
           $ref: '#/components/schemas/PeriodType'
         #Added for API Specification for cases where have multiple entities.
-        EntityIdentifier:
+        entityIdentifier:
           $ref: '#/components/schemas/EntityIdentifier'
       required:
-        - PeriodName
-        - StartDatePeriod
-        - EndDatePeriod
-        - PeriodType
+        - periodName
+        - startDatePeriod
+        - endDatePeriod
+        - periodType
 
     Entities:
       type: array
@@ -719,53 +720,50 @@ components:
     EntityDetails:
       type: object
       properties:
-        EntityName:
+        entityName:
           $ref: '#/components/schemas/EntityName'
-        EntityIdentifier:
+        entityIdentifier:
           $ref: '#/components/schemas/EntityIdentifier'
-        GLSubsidiaries:
+        glSubsidiaries:
           $ref: '#/components/schemas/GLSubsidiaries'
       required:
-        - EntityName
-        - EntityIdentifier
+        - entityName
+        - entityIdentifier
 
     GLSubsidiaries:
       type: array
       items:
           $ref: '#/components/schemas/EntityDetails'
 
-
-        
-
     GLChartOfAccounts:
       type: array
       items:
           $ref: '#/components/schemas/GLAccountDetails'
+
     GLAccountDetails:
       type: object
       properties:
-        EntityIdentifier:
+        entityIdentifier:
           $ref: '#/components/schemas/EntityIdentifier'
-        GLAccountNumber:
+        glAccountNumber:
           $ref: '#/components/schemas/GLAccountNumber'
-        GLAccountName:
+        glAccountName:
           $ref: '#/components/schemas/GLAccountName'
-        FSCaption:
+        fsCaption:
           $ref: '#/components/schemas/FSCaption'
-        AccountType:
+        accountType:
           $ref: '#/components/schemas/AccountType'
-        AccountSubtype:
+        accountSubtype:
           $ref: '#/components/schemas/AccountSubtype'
-        GLAccountDescription:
-          $ref: '#/components/schemas/GLAccountDescription'
-        
-        ParentGLAccountNumber:
+        glAccountDescription:
+          $ref: '#/components/schemas/GLAccountDescription'        
+        parentGLAccountNumber:
           $ref: '#/components/schemas/ParentGLAccountNumber'
-        XBRLConcept:
+        xbrlConcept:
           $ref: '#/components/schemas/XBRLConcept'
       required:
-        - GLAccountNumber
-        - GLAccountName
+        - glAccountNumber
+        - glAccountName
 
     AROpenAccountsReceivablesItems:
       type: array
@@ -775,124 +773,126 @@ components:
     AROpenAccountsReceivables: 
       type: object
       properties:
-        CustomerAccountID:
+        customerAccountId:
           $ref: '#/components/schemas/CustomerAccountID'
-        TransactionID:
+        transactionId:
           $ref: '#/components/schemas/TransactionID'
-        InvoiceID:
+        invoiceId:
           $ref: '#/components/schemas/InvoiceID'
-        TransactionType:
+        transactionType:
           $ref: '#/components/schemas/TransactionType'
-        TransactionDate:
+        transactionDate:
           $ref: '#/components/schemas/TransactionDate'
-        TransactionDueDate:
+        transactionDueDate:
           $ref: '#/components/schemas/TransactionDueDate'
-        BalanceAmount:
+        balanceAmount:
           $ref: '#/components/schemas/FunctionalBalance'
-        BalanceAmountCurrency:  
+        balanceamountCurrency:  
           $ref: '#/components/schemas/FunctionalCurrencyCode'
-        BalanceAmountReporting:
+        balanceAmountReporting:
           $ref: '#/components/schemas/ReportingBalance'
-        BalanceReportingCurrency:
+        balanceReportingCurrency:
           $ref: '#/components/schemas/ReportingCurrencyCode'
-        BalanceAmountLocal:
+        balanceAmountLocal:
           $ref: '#/components/schemas/LocalBalance'
-        BalanceLocalCurrency:
+        balanceLocalCurrency:
           $ref: '#/components/schemas/LocalCurrencyCode'
-        OriginalBalanceAmount:
+        originalBalanceAmount:
           $ref: '#/components/schemas/FunctionalAmount'
-        OriginalBalanceAmountLocal:
+        originalBalanceAmountLocal:
           $ref: '#/components/schemas/LocalAmount'
-        OriginalBalanceAmountReporting:
+        originalBalanceAmountReporting:
           $ref: '#/components/schemas/ReportingAmount'
-        AmountCreditDebitIndicator:
+        amountCreditDebitIndicator:
           $ref: '#/components/schemas/CreditDebitIndicator'
+    
     Customers:
       type: array
       items:
           $ref: '#/components/schemas/Customer'
+    
     Customer:
       type: object
       properties:
-        CustomerAccountID:
+        customerAccountId:
           $ref: '#/components/schemas/CustomerAccountID'
-        CustomerAccountName:
+        customerAccountName:
           $ref: '#/components/schemas/CustomerAccountName'
-        CustomerTIN:
+        customerTIN:
           $ref: '#/components/schemas/CustomerTIN'
-        CustomerPhysicalStreetAddress1:
+        customerPhysicalStreetAddress1:
           $ref: '#/components/schemas/CustomerStreetAddress1'
-        CustomerPhysicalStreetAddress2:
+        customerPhysicalStreetAddress2:
           $ref: '#/components/schemas/CustomerStreetAddress2'
-        CustomerPhysicalCity:
+        customerPhysicalCity:
           $ref: '#/components/schemas/CustomerCity'
-        CustomerPhysicalZipPostalCode: 
+        customerPhysicalZipPostalCode: 
           $ref: '#/components/schemas/CustomerPhysicalPostalCode'
-        CustomerPhysicalCountry:
+        customerPhysicalCountry:
           $ref: '#/components/schemas/CustomerCountry'
-        CustomerBillingAddress1:
+        customerBillingAddress1:
           $ref: '#/components/schemas/CustomerBillingAddress1'
-        CustomerBillingAddress2:
+        customerBillingAddress2:
           $ref: '#/components/schemas/CustomerBillingAddress2'
-        CustomerBillingCity:
+        customerBillingCity:
           $ref: '#/components/schemas/CustomerBillingCity'
-        CustomerBillingZipPostalCode:
+        customerBillingZipPostalCode:
           $ref: '#/components/schemas/CustomerBillingPostalCode'
-        CustomerBillingCountry:
+        customerBillingCountry:
           $ref: '#/components/schemas/CustomerBillingCountry'
-        CustomerEmail:
+        customerEmail:
           $ref: '#/components/schemas/CustomerEmail'
-        CustomerDomainAddress:
+        customerDomainAddress:
           $ref: '#/components/schemas/CustomerDomainAddress'
-        CustomerActiveStatus:
+        customerActiveStatus:
           $ref: '#/components/schemas/CustomerActiveStatus'
-        TransactionCreditLimit:
+        transactionCreditLimit:
           $ref: '#/components/schemas/TransactionCreditLimit'
-        CustomerCreditLimit:
+        customerCreditLimit:
           $ref: '#/components/schemas/CustomerCreditLimit'
-        CustomerTermsDueDays:
+        customerTermsDueDays:
           $ref: '#/components/schemas/CustomerTermsDueDays'
-        CustomerEnteredBy:
+        customerenteredBy:
           $ref: '#/components/schemas/EnteredBy'
-
 
 
     Invoices:
       type: array
       items:
           $ref: '#/components/schemas/Invoice'
+
     Invoice:
       type: object
       properties:
-        InvoiceID:
+        invoiceId:
           $ref: '#/components/schemas/InvoiceID'
-        InvoiceNumber:
+        invoiceNumber:
           $ref: '#/components/schemas/InvoiceNumber'
-        InvoiceDate:
+        invoiceDate:
           $ref: '#/components/schemas/InvoiceDate'
-        InvoiceFiscalYear:
+        invoiceFiscalYear:
           $ref: '#/components/schemas/FiscalYear'
-        InvoicePeriod: 
+        invoicePeriod: 
           $ref: '#/components/schemas/Period'
-        InvoiceTypeName:
+        invoiceTypeName:
           $ref: '#/components/schemas/InvoiceTypeName'
-        InvoiceDueDate:
+        invoiceDueDate:
           $ref: '#/components/schemas/InvoiceDueDate'
-        CustomerAccountID:
+        customerAccountId:
           $ref: '#/components/schemas/CustomerAccountID'
-        SettlementMethodCode:
+        settlementMethodCode:
           $ref: '#/components/schemas/SettlementMethodCode'
-        InvoiceAmount:
+        invoiceAmount:
           $ref: '#/components/schemas/InvoiceTransactionAmount'
-        InvoiceAmountCurrency:
+        invoiceAmountCurrency:
           $ref: '#/components/schemas/InvoiceTransactionCURCode'
-        PaymentTermCode:
+        paymentTermCode:
           $ref: '#/components/schemas/PaymentTermCode'
-        EnteredBy:
+        enteredBy:
           $ref: '#/components/schemas/EnteredBy'
-        Tax1TypeCode:
+        tax1TypeCode:
           $ref: '#/components/schemas/Tax1TypeCode'
-        Tax1TransactionAmount:
+        tax1TransactionAmount:
           $ref: '#/components/schemas/Tax1TransactionAmount'
 
 
