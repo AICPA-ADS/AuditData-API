@@ -374,7 +374,7 @@ components:
   parameters:
     GLAccountNumberParam:
       in: query
-      name: GLAccountNumber
+      name: glAccountNumber
       schema:
         type: string
         maxLength: 100
@@ -390,7 +390,7 @@ components:
     
     CustomerAccountIDParam:
       in: query
-      name: CustomerAccountID
+      name: customerAccountId
       description: Identifier of the customer from whom payment is expected or to whom unused credits have been applied.  
       required: false
       schema:
@@ -398,7 +398,7 @@ components:
 
     entityIdRequiredParam:
       in: query
-      name: entityID
+      name: entityId
       description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
       required: true
       schema:
