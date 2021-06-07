@@ -1,0 +1,93 @@
+#------LICENSE--------
+#MIT License
+#
+#Copyright (c) 2020 AICPA
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Audit Data Open Api Project (AICPA) - Base Context Module
+  description: This is an initial API specification for requesting general context data 
+
+paths:
+  /Periods:
+    get:
+      operationId: GetPeriods
+      tags: [Entities]      
+      description: >
+        Allows requesting the reporting periods of the company. If no parameters are passed all the available entities available to the user in the system are returned.  The end point also allows the user to pass an entity identifier to return the name of the entity.
+      parameters:
+        - name: startDate
+          in: query
+          description: Returns all reporting periods with a start date equal or greater than the start date.
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Returns all reporting periods with an end date equal or less than the end date.
+          required: false
+          schema:
+            type: string
+            format: date
+
+        - $ref: '../shared/parameters/index.yml#/entityIdParam'
+        
+      responses:
+        '200':
+          description: _periods_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '../shared/schemas/index.yml#/Periods'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+        '401':
+          $ref: '../shared/responses/index.yml#/BadToken'
+        '405':
+          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
+        '500':
+          $ref: '../shared/responses/index.yml#/InternalServerError'
+
+  /Entities:
+    get:
+      operationId: GetEntities
+      tags: [Entities]      
+      description: >
+        Allows requesting the reporting entities available from the API.
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/entityIdParam'
+      responses:
+        '200':
+          description: _entities_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '../shared/schemas/index.yml#/Entities'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+        '401':
+          $ref: '../shared/responses/index.yml#/BadToken'
+        '405':
+          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
+        '500':
+          $ref: '../shared/responses/index.yml#/InternalServerError'

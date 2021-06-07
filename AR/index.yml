@@ -1,0 +1,125 @@
+#------LICENSE--------
+#MIT License
+#
+#Copyright (c) 2020 AICPA
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Audit Data Open Api Project (AICPA) - Accounts Receivable Module
+  description: This is an initial API specification for requesting AR data 
+
+paths:
+  /OpenBalances:
+    get:
+      operationId: GetAROpenAccountsReceivables
+      tags: [Accounts Receivable]      
+      description: >
+        Each record represents the balance expected from the customer for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AR amount in the general ledger (GL) as of the same date.
+
+        Should be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.
+      parameters:
+        - name: balanceDate
+          in: query
+          description: Open receivables on a given date. 
+          required: true
+          schema:
+            type: string
+      
+      responses:
+        '200':
+          description: __GetAROpenAccountsReceivables__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '../shared/schemas/index.yml#/AROpenAccountsReceivablesItems'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+        '401':
+          $ref: '../shared/responses/index.yml#/BadToken'
+        '405':
+          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
+        '500':
+          $ref: '../shared/responses/index.yml#/InternalServerError'
+
+  /Customers:
+    get:
+      operationId: GetARCustomers
+      tags: [Accounts Receivable]      
+      description: >
+        Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. 
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/customerAccountIDParam'
+      
+      responses:
+        '200':
+          description: __GetARCustomers__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '../shared/schemas/index.yml#/Customers'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+        '401':
+          $ref: '../shared/responses/index.yml#/BadToken'
+        '405':
+          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
+        '500':
+          $ref: '../shared/responses/index.yml#/InternalServerError'
+
+  /Invoices:
+    get:
+      operationId: GetARInvoices
+      tags: [Accounts Receivable]      
+      description: >
+        Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that invoice—one for the items in the invoice associated with each of the three sales orders.
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/customerAccountIDParam'
+        - name: startDate
+          in: query
+          description: Returns all invoices with a start date equal or greater than the start date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Returns all invoices with an end date equal or less than the end date.
+          required: true
+          schema:
+            type: string
+            format: date
+      
+      responses:
+        '200':
+          description: __GetARInvoices__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: '../shared/schemas/index.yml#/Invoices'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+        '401':
+          $ref: '../shared/responses/index.yml#/BadToken'
+        '405':
+          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
+        '500':
+          $ref: '../shared/responses/index.yml#/InternalServerError'
