@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/GLJournals'
+                $ref: './schemas/index.yml#/GLDetails'
 
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
@@ -101,8 +101,7 @@ paths:
             type: string
             enum: [budget, both]
 
-        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
-            
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'            
         
       responses:
         '200':
@@ -110,10 +109,10 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/GLAccountBalances'
+                $ref: './schemas/index.yml#/GLAccountBalances'
             application/xbrl+json:
               schema:
-                $ref: "../shared/schemas/index.yml#/XbrlTbResponse"
+                $ref: "./schemas/index.yml#/XbrlTbResponse"
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
         '401':
@@ -138,7 +137,7 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/GLChartOfAccounts'
+                $ref: './schemas/index.yml#/GLChartOfAccounts'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
         '401':

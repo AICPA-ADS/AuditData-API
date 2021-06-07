@@ -1,0 +1,95 @@
+#------LICENSE--------
+#MIT License
+#
+#Copyright (c) 2020 AICPA
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+type: object
+properties:
+  #In AICPA and ISO
+  journalId:
+    $ref: '../../shared/schemas/fields.yml#/JournalID'
+  #ISO ONLY
+  #JournalNumber:
+  # $ref: '../../shared/schemas/fields.yml#/JournalNumber'
+  #In AICPA and ISO
+  fiscalYear:
+    $ref: '../../shared/schemas/fields.yml#/FiscalYear'
+  #In AICPA and called AccountingPeriod in ISO
+  period:
+    $ref: '../../shared/schemas/fields.yml#/Period'
+  #In AICPA and ISO
+  effectiveDate:
+    $ref: '../../shared/schemas/fields.yml#/EffectiveDate'
+  #ISO ONLY
+  #JETypeCode:
+  # $ref: '../../shared/schemas/fields.yml#/JETypeCode'
+  #In AICPA and ISO
+  jeHeaderDescription:
+    $ref: '../../shared/schemas/fields.yml#/JEHeaderDescription'
+  #In AICPA and ISO
+  source:
+    $ref: '../../shared/schemas/fields.yml#/Source'
+  #In AICPA and ISO
+  businessUnitCode:
+    $ref: '../../shared/schemas/fields.yml#/BusinessUnitCode'
+  #In AICPA and ISO
+  reversalIndicator:
+    $ref: '../../shared/schemas/fields.yml#/ReversalIndicator'
+  #In AICPA and ISO
+  reversalJournalId:
+    $ref: '../../shared/schemas/fields.yml#/ReversalJournalID'
+  #ISO ONLY 
+  cancellationSign:
+    $ref: '../../shared/schemas/fields.yml#/CancellationSign'
+  # May be this should be changed to Created By not all journals are created by a human which entered implies.
+  # The ISO standard changed it to CreatedUserId. 
+  enteredBy:
+    $ref: '../../shared/schemas/fields.yml#/EnteredBy'
+  #In AICPA and called CreatedDate in ISO
+  enteredDate:
+    $ref: '../../shared/schemas/fields.yml#/CreatedDate'
+  #In AICPA and called CreatedTime in ISO
+  enteredTime:
+    $ref: '../../shared/schemas/fields.yml#/CreatedTime'
+  #AICPA ONLY
+  lastModifiedBy:
+    $ref: '../../shared/schemas/fields.yml#/LastModifiedBy'
+  #AICPA ONLY
+  lastModifiedDate:
+    $ref: '../../shared/schemas/fields.yml#/LastModifiedDate'
+  #In AICPA and called ApprovedPersonID in ISO
+  approvedBy:
+    $ref: '../../shared/schemas/fields.yml#/ApprovedPersonID'
+  #In AICPA and ISO
+  approvedDate:
+    $ref: '../../shared/schemas/fields.yml#/ApprovedDate'
+  #Added for API Specification for cases where have multiple entities.
+  entityIdentifier:
+    $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
+  glLineItems:
+    type: array
+    items:
+      $ref: './GLLineItem.yml'
+
+required:
+  - journalId
+  - effectiveDate
+  - glLineItems

@@ -1,0 +1,74 @@
+#------LICENSE--------
+#MIT License
+#
+#Copyright (c) 2020 AICPA
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+type: object
+properties:
+  glAccountNumber:
+    $ref: '../../shared/schemas/fields.yml#/GLAccountNumber'
+  #Added for API Specification for cases where have multiple entities.
+  entityIdentifier:
+    $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
+  businessUnitCode:
+    $ref: '../../shared/schemas/fields.yml#/BusinessUnitCode'
+  balanceAsOfDate:
+    $ref: '../../shared/schemas/fields.yml#/BalanceAsOfDate'
+  fiscalYear:
+    $ref: '../../shared/schemas/fields.yml#/FiscalYear'
+  period:
+    $ref: '../../shared/schemas/fields.yml#/Period'
+  #In AICPA and called BeginningFunctionalAmount in ISO
+  amountBeginning:
+    $ref: '../../shared/schemas/fields.yml#/BeginningFunctionalAmount'
+  #In AICPA and called BeginningReportingAmount in ISO
+  amountBeginningReporting:
+    $ref: '../../shared/schemas/fields.yml#/BeginningReportingAmount'
+  #In AICPA and called BeginningLocalAmount in ISO
+  amountBeginningLocal:
+    $ref: '../../shared/schemas/fields.yml#/BeginningLocalAmount'
+  #In AICPA and called FunctionalCurrencyCode in ISO
+  amountCurrency:
+    $ref: '../../shared/schemas/fields.yml#/FunctionalCurrencyCode'
+  #In AICPA and called ReportingCurrencyCode in ISO
+  amountReportingCurrency:
+    $ref: '../../shared/schemas/fields.yml#/ReportingCurrencyCode'
+  #In AICPA and called LocalCurrencyCode in ISO
+  amountLocalCurrency:
+    $ref: '../../shared/schemas/fields.yml#/LocalCurrencyCode'
+  #In AICPA and called EndingFunctionalAmount in ISO
+  amountEnding:
+    $ref: '../../shared/schemas/fields.yml#/EndingFunctionalAmount'
+  #In AICPA and called EndingReportingAmount in ISO
+  amountEndingReporting:
+    $ref: '../../shared/schemas/fields.yml#/EndingReportingAmount'
+    #In AICPA and called EndingLocalAmount in ISO
+  amountEndingLocal:
+    $ref: '../../shared/schemas/fields.yml#/EndingLocalAmount'
+  budgetFlag:
+    $ref: '../../shared/schemas/fields.yml#/BudgetFlag'
+
+required:
+  - glAccountNumber
+  - amountBeginning
+  - amountEnding
+  - amountCurrency
+  - balanceAsOfDate
