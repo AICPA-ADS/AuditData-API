@@ -787,7 +787,7 @@ components:
           $ref: '#/components/schemas/TransactionDueDate'
         balanceAmount:
           $ref: '#/components/schemas/FunctionalBalance'
-        balanceamountCurrency:  
+        balanceAmountCurrency:  
           $ref: '#/components/schemas/FunctionalCurrencyCode'
         balanceAmountReporting:
           $ref: '#/components/schemas/ReportingBalance'
@@ -852,7 +852,7 @@ components:
           $ref: '#/components/schemas/CustomerCreditLimit'
         customerTermsDueDays:
           $ref: '#/components/schemas/CustomerTermsDueDays'
-        customerenteredBy:
+        customerEnteredBy:
           $ref: '#/components/schemas/EnteredBy'
 
 
