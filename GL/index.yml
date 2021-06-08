@@ -63,13 +63,6 @@ paths:
 
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'
-
 
   /TrialBalance:
     get:
@@ -115,12 +108,6 @@ paths:
                 $ref: "./schemas/index.yml#/XbrlTbResponse"
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'
 
   /Accounts:
     get:
@@ -140,9 +127,3 @@ paths:
                 $ref: './schemas/index.yml#/GLChartOfAccounts'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'

@@ -53,12 +53,6 @@ paths:
                 $ref: './schemas/index.yml#/AROpenAccountsReceivablesItems'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'
 
   /Customers:
     get:
@@ -78,12 +72,6 @@ paths:
                 $ref: '../Entities/schemas/index.yml#/Customers'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'
 
   /Invoices:
     get:
@@ -117,9 +105,3 @@ paths:
                 $ref: './schemas/index.yml#/ARInvoices'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'

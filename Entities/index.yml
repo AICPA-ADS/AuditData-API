@@ -61,12 +61,6 @@ paths:
                 $ref: '../shared/schemas/index.yml#/Periods'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'
 
   /Entities:
     get:
@@ -85,9 +79,3 @@ paths:
                 $ref: './schemas/index.yml#/Entities'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
-        '401':
-          $ref: '../shared/responses/index.yml#/BadToken'
-        '405':
-          $ref: '../shared/responses/index.yml#/MethodNotAllowed'
-        '500':
-          $ref: '../shared/responses/index.yml#/InternalServerError'
