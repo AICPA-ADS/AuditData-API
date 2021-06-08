@@ -132,7 +132,7 @@ EndDatePeriod:
 PeriodType:
   type: string
   description: The type of period defined. For example Quarter, Year Half Year.
-  enum: [Year, Quarter, HalfYear, 52Weeks, 3QCum, Month, 13Months, Other]
+  enum: [year, quarter, halfYear, 52Weeks, 3QCum, month, 13Months, other]
   example: 'Year'
 
 EntityName:
