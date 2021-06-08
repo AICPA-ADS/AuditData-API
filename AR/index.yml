@@ -50,7 +50,7 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/AROpenAccountsReceivablesItems'
+                $ref: './schemas/index.yml#/AROpenAccountsReceivablesItems'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
         '401':
@@ -75,7 +75,7 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/Customers'
+                $ref: '../Entities/schemas/index.yml#/Customers'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
         '401':
@@ -114,7 +114,7 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/Invoices'
+                $ref: './schemas/index.yml#/ARInvoices'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
         '401':

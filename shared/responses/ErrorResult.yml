@@ -21,15 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Periods:
-  type: array
-  items:
-      $ref: '#/PeriodDetails'
-  example: 
-      $ref: ./examples/Periods.json
-
-PeriodDetails:
-  $ref: PeriodDetails.yml
-
-Invoice:
-  $ref: Invoice.yml
+type: object
+properties:
+  code:
+    type: string
+    description: Implementation-defined Identifier/Code for the error being returned by the server
+  errorDescription:
+    type: string
+    description: Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.

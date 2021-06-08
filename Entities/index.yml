@@ -82,7 +82,7 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../shared/schemas/index.yml#/Entities'
+                $ref: './schemas/index.yml#/Entities'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
         '401':

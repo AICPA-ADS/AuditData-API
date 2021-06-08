@@ -21,15 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Periods:
-  type: array
-  items:
-      $ref: '#/PeriodDetails'
-  example: 
-      $ref: ./examples/Periods.json
-
-PeriodDetails:
-  $ref: PeriodDetails.yml
-
-Invoice:
-  $ref: Invoice.yml
+EntityDetails:
+  type: object
+  properties:
+    entityName:
+      $ref: '../../shared/schemas/fields.yml#/EntityName'
+    entityIdentifier:
+      $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
+    glSubsidiaries:
+      type: array
+      items:
+          $ref: '#/EntityDetails'
+  required:
+    - entityName
+    - entityIdentifier

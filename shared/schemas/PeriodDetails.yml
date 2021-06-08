@@ -21,15 +21,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Periods:
-  type: array
-  items:
-      $ref: '#/PeriodDetails'
-  example: 
-      $ref: ./examples/Periods.json
-
-PeriodDetails:
-  $ref: PeriodDetails.yml
-
-Invoice:
-  $ref: Invoice.yml
+type: object
+properties:
+  periodName:
+    $ref: './fields.yml#/PeriodName'
+  startDatePeriod:
+    $ref: './fields.yml#/StartDatePeriod'
+  endDatePeriod:
+    $ref: './fields.yml#/EndDatePeriod'
+  periodType:
+    $ref: './fields.yml#/PeriodType'
+  #Added for API Specification for cases where have multiple entities.
+  entityIdentifier:
+    $ref: './fields.yml#/EntityIdentifier'
+required:
+  - periodName
+  - startDatePeriod
+  - endDatePeriod
+  - periodType

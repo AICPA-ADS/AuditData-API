@@ -21,15 +21,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Periods:
+Customers:
   type: array
   items:
-      $ref: '#/PeriodDetails'
-  example: 
-      $ref: ./examples/Periods.json
+      $ref: '#/Customer'
 
-PeriodDetails:
-  $ref: PeriodDetails.yml
+Customer:
+  $ref: Customer.yml
 
-Invoice:
-  $ref: Invoice.yml
+Entities:
+  type: array
+  items:
+      $ref: '#/EntityDetails'
+ 
+EntityDetails:
+  $ref: 'EntityDetails.yml#/EntityDetails'

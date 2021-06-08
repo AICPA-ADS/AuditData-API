@@ -21,15 +21,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-Periods:
-  type: array
-  items:
-      $ref: '#/PeriodDetails'
-  example: 
-      $ref: ./examples/Periods.json
-
-PeriodDetails:
-  $ref: PeriodDetails.yml
-
-Invoice:
-  $ref: Invoice.yml
+x-abstract: true
+type: object
+properties:
+  invoiceId:
+    $ref: './fields.yml#/InvoiceID'
+  invoiceNumber:
+    $ref: './fields.yml#/InvoiceNumber'
+  invoiceDate:
+    $ref: './fields.yml#/InvoiceDate'
+  invoiceFiscalYear:
+    $ref: './fields.yml#/FiscalYear'
+  invoicePeriod: 
+    $ref: './fields.yml#/Period'
+  invoiceTypeName:
+    $ref: './fields.yml#/InvoiceTypeName'
+  invoiceDueDate:
+    $ref: './fields.yml#/InvoiceDueDate'
+  customerAccountId:
+    $ref: './fields.yml#/CustomerAccountID'
+  settlementMethodCode:
+    $ref: './fields.yml#/SettlementMethodCode'
+  invoiceAmount:
+    $ref: './fields.yml#/InvoiceTransactionAmount'
+  invoiceAmountCurrency:
+    $ref: './fields.yml#/InvoiceTransactionCURCode'
+  paymentTermCode:
+    $ref: './fields.yml#/PaymentTermCode'
+  enteredBy:
+    $ref: './fields.yml#/EnteredBy'
+  tax1TypeCode:
+    $ref: './fields.yml#/Tax1TypeCode'
+  tax1TransactionAmount:
+    $ref: './fields.yml#/Tax1TransactionAmount'
