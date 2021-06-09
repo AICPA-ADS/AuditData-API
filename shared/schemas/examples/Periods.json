@@ -1,0 +1,23 @@
+[
+    {
+      "periodName": "Fiscal Year Ended 2019",
+      "startDatePeriod": "2019-01-01",
+      "endDatePeriod": "2019-12-31",
+      "periodType": "Year",
+      "entityIdentifier": 123456789
+    },
+    {
+      "periodName": "Fiscal Year Ended 2020",
+      "startDatePeriod": "2020-01-01",
+      "endDatePeriod": "2020-12-31",
+      "periodType": "Year",
+      "entityIdentifier": 123456789
+    },
+    {
+      "periodName": "Fiscal Quarter Ended Q1 2020",
+      "startDatePeriod": "2020-01-01",
+      "endDatePeriod": "2020-03-31",
+      "periodType": "Quarter",
+      "entityIdentifier": 123456789
+    }
+]

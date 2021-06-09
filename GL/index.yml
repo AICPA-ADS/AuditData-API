@@ -1,0 +1,129 @@
+#------LICENSE--------
+#MIT License
+#
+#Copyright (c) 2020 AICPA
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Audit Data Open Api Project (AICPA) - General Ledger Module
+  description: This is an initial API specification for requesting GL data 
+
+paths:
+  /Journals:
+    get:
+      operationId: GetGLDetails
+      tags: [General Ledger]      
+      description: >
+       Allows searching for General Ledger Journal Transactions
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for GL transactions.  Returns all transactions with an `EffectiveDate` after `the startDate`.
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for GL transactions.  Returns all transactions with an `EffectiveDate` before `the endDate`.
+          required: false
+          schema:
+            type: string
+            format: date
+
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
+           
+        
+      responses:
+        '200':
+          description: __GLDetails__ successfully accepted
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/GLDetails'
+
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+
+  /TrialBalance:
+    get:
+      operationId: GetTBDetails
+      tags: [General Ledger]      
+      description: >
+        Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementaiton). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the trial balance.  Returns all the values at the provided `endDate`, which may also be treated as an "as of" date.
+          required: true
+          schema:
+            type: string
+            format: date
+        
+        - name: BudgetFlag
+          in: query
+          description: Flag to indicate if budget data should be returned. If not provided the default is actual data. To get budget data only a parameter of "budget" is used. To get both a parameter of "both" is passed.
+          required: false
+          schema:
+            type: string
+            enum: [budget, both]
+
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'            
+        
+      responses:
+        '200':
+          description: __GetTBDetails__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/GLAccountBalances'
+            application/xbrl+json:
+              schema:
+                $ref: "./schemas/index.yml#/XbrlTbResponse"
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
+
+  /Accounts:
+    get:
+      operationId: GetChartAccounts
+      tags: [General Ledger]      
+      description: >
+        Allows requesting a listing of chart of accounts 
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam' 
+        
+      responses:
+        '200':
+          description: _GLChartOfAccounts_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/GLChartOfAccounts'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
