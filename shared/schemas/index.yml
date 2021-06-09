@@ -33,3 +33,18 @@ PeriodDetails:
 
 Invoice:
   $ref: Invoice.yml
+
+
+# Exports below are only needed to support code generation to explicitly define types included in the
+# base model package
+PeriodType:
+  $ref: 'fields.yml#/PeriodType'
+
+CreditDebitIndicator:
+  $ref: 'fields.yml#/PeriodType'
+
+TransactionType:
+  $ref: 'fields.yml#/PeriodType'
+
+BudgetFlag:
+  $ref: 'fields.yml#/PeriodType'
