@@ -35,4 +35,4 @@ Entities:
       $ref: '#/EntityDetails'
  
 EntityDetails:
-  $ref: './EntityDetails.yml'
+  $ref: './EntityDetails.yml#/components/schemas/EntityDetails'

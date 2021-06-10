@@ -21,14 +21,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-type: object
-properties:
-  entityName:
-    $ref: '../../shared/schemas/fields.yml#/EntityName'
-  entityIdentifier:
-    $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
-  glSubsidiaries:
-    $ref: './index.yml#/Entities'
-required:
-  - entityName
-  - entityIdentifier
+components:
+  schemas:
+    EntityDetails:
+      type: object
+      properties:
+        entityName:
+          $ref: '../../shared/schemas/fields.yml#/EntityName'
+        entityIdentifier:
+          $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
+        glSubsidiaries:
+          type: array
+          items:
+              $ref: '#/components/schemas/EntityDetails'
+      required:
+        - entityName
+        - entityIdentifier
