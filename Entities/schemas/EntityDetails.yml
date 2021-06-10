@@ -21,6 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# This type is needed to avoid a circular ref issue with Swagger UI.
+# The EntityDetails cannot reference itself through an online array-type on the glSubsidiaries property.
+# As a workaround, the inline array is pulled out into a separate type.
+# More info: https://github.com/swagger-api/swagger-ui/issues/5726
+_Subsidiaries:
+  type: array
+  items:
+      $ref: '#/EntityDetails'
+
 EntityDetails:
   type: object
   properties:
@@ -29,9 +38,7 @@ EntityDetails:
     entityIdentifier:
       $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
     glSubsidiaries:
-      type: array
-      items:
-          $ref: '#/EntityDetails'
+      $ref: '#/_Subsidiaries'
   required:
     - entityName
     - entityIdentifier
