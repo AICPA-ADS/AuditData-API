@@ -1,0 +1,45 @@
+name: Build & Push Dotnet Core Packages
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+?(-(preview|beta)?([0-9][0-9][0-9])?)?"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Verify commit exists in origin/master
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+        #  git branch --remote --contains | grep origin/master      
+      - name: Set VERSION variable from tag
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Extract release notes
+        run: |
+          git log --no-walk --tags --pretty=format:"%d %s" | perl -pe 's| \(.*tag: v(\d+.\d+.\d+(-preview\d{3})?)(, .*?)*\)|\n## \1\n|g' >> RELEASE-NOTES.md
+      - name: Clone Build Scripts
+        run: |
+          git clone --no-tags --depth=1 https://github.com/AICPA-ADS/AuditData-API-Packages.git ./_scripts
+          ls
+      - name: Setup .NET Core SDK 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.x.x'
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_PAT}}
+      - name: Build
+        run: |
+          pushd ./_scripts
+          bash generate-model.sh cs ../ ${VERSION} /tmp/ads-build/
+          bash generate-client.sh cs ../ ${VERSION} /tmp/ads-build/
+          popd 
+      - name: Push
+        run: |
+            ls ./_scripts/dist/cs
+            dotnet nuget push --api-key "${{secrets.NUGET_PAT}}" ./_scripts/dist/cs/*${VERSION}.nupkg
+      
