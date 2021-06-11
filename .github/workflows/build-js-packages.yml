@@ -33,8 +33,8 @@ jobs:
       - name: Build
         run: |
           pushd ./_scripts
-          bash generate-model.sh js ../ ${VERSION} /tmp/ads-build/
-          bash generate-client.sh js ../ ${VERSION} /tmp/ads-build/
+          bash generate-model.sh ts ../ ${VERSION} /tmp/ads-build/
+          bash generate-client.sh ts ../ ${VERSION} /tmp/ads-build/
           popd 
       - name: Push
         run: |
