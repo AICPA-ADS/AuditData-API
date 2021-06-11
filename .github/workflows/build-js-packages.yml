@@ -1,4 +1,4 @@
-name: Build & Push Dotnet Core Packages
+name: Build & Publish JS Packages
 
 on:
   push:
@@ -26,19 +26,19 @@ jobs:
       - name: Clone Build Scripts
         run: |
           git clone --no-tags --depth=1 https://github.com/AICPA-ADS/AuditData-API-Packages.git ./_scripts
-      - name: Setup .NET Core SDK 5
-        uses: actions/setup-dotnet@v1
+      - name: Setup node
+        uses: actions/setup-node@v2
         with:
-          dotnet-version: '5.x.x'
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_PAT}}
+          node-version: '12'
       - name: Build
         run: |
           pushd ./_scripts
-          bash generate-model.sh cs ../ ${VERSION} /tmp/ads-build/
-          bash generate-client.sh cs ../ ${VERSION} /tmp/ads-build/
+          bash generate-model.sh js ../ ${VERSION} /tmp/ads-build/
+          bash generate-client.sh js ../ ${VERSION} /tmp/ads-build/
           popd 
       - name: Push
         run: |
-            dotnet nuget push --api-key "${{secrets.NUGET_PAT}}" -s https://api.nuget.org/v3/index.json ./_scripts/dist/cs/*${VERSION}.nupkg
-      
+            npm publish ./_scripts/dist/js/aicpa-ads-auditdata-model-${VERSION}.tgz --tag ${VERSION} --access public
+            npm publish ./_scripts/dist/js/aicpa-ads-auditdata-client-${VERSION}.tgz --tag ${VERSION} --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}      
