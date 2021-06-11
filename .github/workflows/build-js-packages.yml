@@ -34,12 +34,11 @@ jobs:
         run: |
           pushd ./_scripts
           bash generate-model.sh ts ../ ${VERSION} /tmp/ads-build/
-          bash generate-client.sh ts ../ ${VERSION} /tmp/ads-build/ || true
-          cat /tmp/ads-build/ts-client/model/ObjectSerializer.ts
+          bash generate-client.sh ts ../ ${VERSION} /tmp/ads-build/
           popd 
       - name: Push
         run: |
-            npm publish ./_scripts/dist/js/aicpa-ads-auditdata-model-${VERSION}.tgz --tag ${VERSION} --access public
-            npm publish ./_scripts/dist/js/aicpa-ads-auditdata-client-${VERSION}.tgz --tag ${VERSION} --access public
+            npm publish ./_scripts/dist/js/aicpa-ads-auditdata-model-${VERSION}.tgz --access public
+            npm publish ./_scripts/dist/js/aicpa-ads-auditdata-client-${VERSION}.tgz --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}      
