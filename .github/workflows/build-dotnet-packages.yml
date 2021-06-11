@@ -42,5 +42,5 @@ jobs:
       - name: Push
         run: |
             ls ./_scripts/dist/cs
-            dotnet nuget push --api-key "${{secrets.NUGET_PAT}}" ./_scripts/dist/cs/*${VERSION}.nupkg
+            dotnet nuget push --api-key "${{secrets.NUGET_PAT}}" -s https://api.nuget.org/v3/index.json ./_scripts/dist/cs/*${VERSION}.nupkg
       
