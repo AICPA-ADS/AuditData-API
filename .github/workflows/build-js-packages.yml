@@ -3,7 +3,7 @@ name: Build & Publish JS Packages
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]"
+      - "v[0-9]+.[0-9]+.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9][0-9][0-9]"
 
 jobs:
@@ -41,4 +41,4 @@ jobs:
             npm publish ./_scripts/dist/js/aicpa-ads-auditdata-model-${VERSION}.tgz --access public
             npm publish ./_scripts/dist/js/aicpa-ads-auditdata-client-${VERSION}.tgz --access public
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}      
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}      

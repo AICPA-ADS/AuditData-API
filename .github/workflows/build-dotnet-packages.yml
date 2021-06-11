@@ -3,7 +3,7 @@ name: Build & Push Dotnet Core Packages
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]"
+      - "v[0-9]+.[0-9]+.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9][0-9][0-9]"
 
 jobs:
