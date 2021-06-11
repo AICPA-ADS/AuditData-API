@@ -35,6 +35,7 @@ jobs:
           pushd ./_scripts
           bash generate-model.sh ts ../ ${VERSION} /tmp/ads-build/
           bash generate-client.sh ts ../ ${VERSION} /tmp/ads-build/
+          cat /tmp/ads-build/ts-client/model/ObjectSerializer.ts
           popd 
       - name: Push
         run: |
