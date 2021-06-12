@@ -1,0 +1,34 @@
+name: Build & Publish JS Packages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Verify commit exists in origin/master
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*      
+      - name: Clone Build Scripts
+        run: |
+          git clone --no-tags --depth=1 https://github.com/AICPA-ADS/AuditData-API-Packages.git ./_scripts      
+      - name: Build
+        run: |
+          pushd ./_scripts
+          bash generate-combined-spec.sh ../ 
+          popd 
+      - name: Publish
+        uses: JamesIves/github-pages-deploy-action@3.6.2
+        with:
+          branch: main
+          folder: ./_scripts/dist/oas
+          repository-name: AICPA-ADS/aicpa-ads.github.io
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          dry-run: true
