@@ -25,9 +25,9 @@ jobs:
           bash generate-combined-spec.sh ../ 
           popd 
       - name: Publish
-        uses: JamesIves/github-pages-deploy-action@3.6.2
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: main
           folder: _scripts/dist/oas
-          REPOSITORY_NAME: AICPA-ADS/aicpa-ads.github.io
-          SSH: ${{ secrets.DEPLOY_KEY }}
+          repository-name: AICPA-ADS/aicpa-ads.github.io
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
