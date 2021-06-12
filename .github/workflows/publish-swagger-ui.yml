@@ -28,7 +28,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           branch: main
-          folder: ./_scripts/dist/oas
+          folder: _scripts/dist/oas
           repository-name: AICPA-ADS/aicpa-ads.github.io
           ssh-key: ${{ secrets.DEPLOY_KEY }}
           dry-run: true
