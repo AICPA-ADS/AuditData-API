@@ -29,6 +29,5 @@ jobs:
         with:
           branch: main
           folder: _scripts/dist/oas
-          repository-name: AICPA-ADS/aicpa-ads.github.io
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
-          dry-run: true
+          REPOSITORY_NAME: AICPA-ADS/aicpa-ads.github.io
+          SSH: ${{ secrets.DEPLOY_KEY }}
