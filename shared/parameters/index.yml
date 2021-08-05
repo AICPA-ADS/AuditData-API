@@ -30,7 +30,7 @@ entityIdParam:
     type: string
 
 entityIdRequiredParam:
-  in: query
+  in: path
   name: entityId
   description: Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return. 
   required: true

@@ -43,6 +43,8 @@ paths:
           required: true
           schema:
             type: string
+
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
       
       responses:
         '200':
@@ -62,6 +64,7 @@ paths:
         Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. 
       parameters:
         - $ref: '../shared/parameters/index.yml#/customerAccountIDParam'
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
       
       responses:
         '200':
@@ -78,7 +81,7 @@ paths:
       operationId: GetARInvoices
       tags: [Accounts Receivable]      
       description: >
-        Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that invoice—one for the items in the invoice associated with each of the three sales orders.
+        Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that one invoice. The invoice will include the associated three sales orders.
       parameters:
         - $ref: '../shared/parameters/index.yml#/customerAccountIDParam'
         - name: startDate
@@ -95,6 +98,7 @@ paths:
           schema:
             type: string
             format: date
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
       
       responses:
         '200':

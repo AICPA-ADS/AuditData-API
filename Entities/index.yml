@@ -49,8 +49,7 @@ paths:
           schema:
             type: string
             format: date
-
-        - $ref: '../shared/parameters/index.yml#/entityIdParam'
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
         
       responses:
         '200':
