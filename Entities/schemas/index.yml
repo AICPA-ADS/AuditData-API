@@ -29,6 +29,14 @@ Customers:
 Customer:
   $ref: Customer.yml
 
+Suppliers:
+  type: array
+  items:
+      $ref: '#/Supplier'
+
+Supplier:
+  $ref: Supplier.yml
+
 Entities:
   type: array
   items:

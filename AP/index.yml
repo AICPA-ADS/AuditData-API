@@ -74,7 +74,7 @@ paths:
           content:  
             application/json:
               schema:
-                $ref: '../Entities/schemas/index.yml#/Customers'
+                $ref: '../Entities/schemas/index.yml#/Suppliers'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
 
