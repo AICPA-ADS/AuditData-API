@@ -74,8 +74,8 @@ paths:
   /Entities/{entityId}/AP/OpenBalances:
     $ref: './AP/index.yml#/paths/~1OpenBalances'
 
-  /Entities/{entityId}/AP/Customers:
-    $ref: './AP/index.yml#/paths/~1Supplier'
+  /Entities/{entityId}/AP/Suppliers:
+    $ref: './AP/index.yml#/paths/~1Suppliers'
 
   /Entities/{entityId}/AP/Invoices:
     $ref: './AP/index.yml#/paths/~1Invoices'
