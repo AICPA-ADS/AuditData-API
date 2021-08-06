@@ -52,3 +52,11 @@ customerAccountIDParam:
   required: false
   schema:
     type: string
+
+supplierAccountIDParam:
+  in: query
+  name: supplierAccountId
+  description: Identifier of the supplier to whom payment is expected or from whom unused credits have been applied.  
+  required: false
+  schema:
+    type: string

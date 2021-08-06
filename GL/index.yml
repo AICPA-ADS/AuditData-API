@@ -69,7 +69,7 @@ paths:
       operationId: GetTBDetails
       tags: [General Ledger]      
       description: >
-        Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementaiton). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
+        Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementation). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.
       parameters:
         - name: startDate
           in: query
