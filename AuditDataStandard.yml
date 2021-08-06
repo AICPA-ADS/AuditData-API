@@ -43,6 +43,8 @@ tags:
     description: Used to request General Ledger Information
   - name: Accounts Receivable
     description: Used to request AR Information
+  - name: Accounts Payable
+    description: Used to request AP Information
 
 paths:
   /Entities:
@@ -68,6 +70,15 @@ paths:
 
   /Entities/{entityId}/AR/Invoices:
     $ref: './AR/index.yml#/paths/~1Invoices'
+
+  /Entities/{entityId}/AP/OpenBalances:
+    $ref: './AP/index.yml#/paths/~1OpenBalances'
+
+  /Entities/{entityId}/AP/Customers:
+    $ref: './AP/index.yml#/paths/~1Supplier'
+
+  /Entities/{entityId}/AP/Invoices:
+    $ref: './AP/index.yml#/paths/~1Invoices'
 
 # Security schemes are included below to support generation of 
 # authentication code in the AuditData Client packages.
