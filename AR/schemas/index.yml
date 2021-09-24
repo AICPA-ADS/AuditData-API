@@ -43,4 +43,17 @@ ARInvoice:
       required:
         - invoiceId
         - invoiceNumber
+
+ARCashReceipts:
+  type: array
+  items:
+      $ref: '#/ARCashReceipt'
+
+ARCashReceipt: 
+  $ref: ARCashReceipt.yml
+
+
+
+
+
       

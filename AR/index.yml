@@ -109,3 +109,37 @@ paths:
                 $ref: './schemas/index.yml#/ARInvoices'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
+
+  /CashReceived:
+    get:
+      operationId: GetCashReceived
+      tags: [Accounts Receivable]      
+      description: >
+        Cash received contains all payment transactions (check, wire transfer, cash, and so on) received during the period. Each record represents a single cash receipt.
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/customerAccountIDParam'
+        - name: startDate
+          in: query
+          description: Returns all receipts with a start date equal or greater than the start date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Returns all receipts with an end date equal or less than the end date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
+      
+      responses:
+        '200':
+          description: __GetCashReceived__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/ARCashReceipts'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'

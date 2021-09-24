@@ -607,3 +607,17 @@ CustomerTermsDueDays:
   type: number
   description: The number of days allowed to meet the obligation before an invoice becomes overdue.
   example: '30'
+
+ReferenceNumber:
+  type: string
+  description: Identification number for an internally or externally generated transaction (for example, check number, wire transfer number, or original document ID)
+  example: 'AK-2345'
+
+ReferenceDate:
+  type: string  
+  format: date
+  description: Date on an externally generated transaction (for example, check date or wire transfer date).
+  example: "2018-12-31"
+
+
+
