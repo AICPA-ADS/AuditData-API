@@ -33,12 +33,25 @@ properties:
   #Receipt_Date
   transactionDate:
     $ref: '../../shared/schemas/fields.yml#/TransactionDate'
+
+  #Receipt_Fiscal_Year
+  #NOT USED
+
+  #Receipt_Fiscal_Period
+  #NOT USED
+
   #Reference_Number
   ReferenceNumber:
     $ref: '../../shared/schemas/fields.yml#/ReferenceNumber'
   #Reference_Date
   ReferenceDate:
     $ref: '../../shared/schemas/fields.yml#/ReferenceDate'
+
+  # Amount_Credit_Debit_Indicator
+  # Discuss how  this is necessary
+  # amountCreditDebitIndicator:
+  #  $ref: '../../shared/schemas/fields.yml#/CreditDebitIndicator'
+
   #Receipt_Amount
   balanceAmount:
     $ref: '../../shared/schemas/fields.yml#/FunctionalBalance'
@@ -63,5 +76,6 @@ properties:
   balanceLocalCurrency:
     $ref: '../../shared/schemas/fields.yml#/LocalCurrencyCode'
 
-  # amountCreditDebitIndicator:
-  #  $ref: '../../shared/schemas/fields.yml#/CreditDebitIndicator'
+  #Entered_By 
+  EnteredBy:
+    $ref: '../../shared/schemas/fields.yml#/EnteredBy'
