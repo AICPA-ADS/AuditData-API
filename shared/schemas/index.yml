@@ -26,7 +26,7 @@ Periods:
   items:
       $ref: '#/PeriodDetails'
   example: 
-      $ref: ./examples/Periods.json
+      $ref: ./examples/Periods.yml
 
 PeriodDetails:
   $ref: PeriodDetails.yml
