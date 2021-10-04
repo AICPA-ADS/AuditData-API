@@ -71,6 +71,9 @@ paths:
   /Entities/{entityId}/AR/Invoices:
     $ref: './AR/index.yml#/paths/~1Invoices'
 
+  /Entities/{entityId}/AR/CashReceived:
+    $ref: './AR/index.yml#/paths/~1CashReceived'
+
   /Entities/{entityId}/AP/OpenBalances:
     $ref: './AP/index.yml#/paths/~1OpenBalances'
 
