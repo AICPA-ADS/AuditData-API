@@ -26,7 +26,6 @@ Periods:
   items:
       $ref: '#/PeriodDetails'
   example: 
-    application/json:
       $ref: ./examples/Periods.json
 
 PeriodDetails:
