@@ -54,3 +54,6 @@ properties:
     $ref: './fields.yml#/Tax1TypeCode'
   tax1TransactionAmount:
     $ref: './fields.yml#/Tax1TransactionAmount'
+required:
+  - invoiceId
+  - invoiceNumber

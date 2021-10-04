@@ -38,11 +38,6 @@ ARInvoice:
   allOf:     
     # Combines the shared Invoice type and additional props
     - $ref: '../../shared/schemas/index.yml#/Invoice'
-    - type: object
-      properties:
-      required:
-        - invoiceId
-        - invoiceNumber
 
 ARCashReceipts:
   type: array
