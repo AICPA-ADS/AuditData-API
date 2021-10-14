@@ -23,38 +23,66 @@
 
 type: object
 properties:
-  customerAccountId:
-    $ref: '../../shared/schemas/fields.yml#/CustomerAccountID'
+
+  #Supplier_Account_ID
+  supplierAccountId:
+    $ref: '../../shared/schemas/fields.yml#/SupplierAccountID'
+  #Payment_ID
   transactionId:
     $ref: '../../shared/schemas/fields.yml#/TransactionID'
-  invoiceId:
-    $ref: '../../shared/schemas/fields.yml#/InvoiceID'
-  transactionType:
-    $ref: '../../shared/schemas/fields.yml#/TransactionType'
+  #Payment_Date
   transactionDate:
     $ref: '../../shared/schemas/fields.yml#/TransactionDate'
-  transactionDueDate:
-    $ref: '../../shared/schemas/fields.yml#/TransactionDueDate'
-  balanceAmount:
-    $ref: '../../shared/schemas/fields.yml#/FunctionalBalance'
-  balanceAmountCurrency:  
-    $ref: '../../shared/schemas/fields.yml#/FunctionalCurrencyCode'
-  balanceAmountReporting:
-    $ref: '../../shared/schemas/fields.yml#/ReportingBalance'
-  balanceReportingCurrency:
-    $ref: '../../shared/schemas/fields.yml#/ReportingCurrencyCode'
-  balanceAmountLocal:
-    $ref: '../../shared/schemas/fields.yml#/LocalBalance'
-  balanceLocalCurrency:
-    $ref: '../../shared/schemas/fields.yml#/LocalCurrencyCode'
-  originalBalanceAmount:
+
+  #Payment_Fiscal_Year
+  #NOT USED
+
+  #Payment_Period
+  #NOT USED
+
+  #Reference_Number
+  referenceNumber:
+    $ref: '../../shared/schemas/fields.yml#/ReferenceNumber'
+  #Reference_Date
+  referenceDate:
+    $ref: '../../shared/schemas/fields.yml#/ReferenceDate'
+
+  # Amount_Credit_Debit_Indicator
+  # Discussed how  this is not necessary
+  # amountCreditDebitIndicator:
+  #  $ref: '../../shared/schemas/fields.yml#/CreditDebitIndicator'
+
+  #Payment_Type
+  paymentType:
+    $ref: '../../shared/schemas/fields.yml#/PaymentType'
+
+  #Payment_Amount
+  paymentAmount:
     $ref: '../../shared/schemas/fields.yml#/FunctionalAmount'
-  originalBalanceAmountLocal:
-    $ref: '../../shared/schemas/fields.yml#/LocalAmount'
-  originalBalanceAmountReporting:
+
+  #Payment_Amount_Currency
+  paymentAmountCurrency:  
+    $ref: '../../shared/schemas/fields.yml#/FunctionalCurrencyCode'
+
+  #Payment_Amount_Reporting
+  paymentAmountReporting:
     $ref: '../../shared/schemas/fields.yml#/ReportingAmount'
-  amountCreditDebitIndicator:
-    $ref: '../../shared/schemas/fields.yml#/CreditDebitIndicator'
+
+  #Payment_Amount_Reporting_Currency
+  paymentAmountReportingCurrency:
+    $ref: '../../shared/schemas/fields.yml#/ReportingCurrencyCode'
+
+  #Payment_Amount_Local 
+  paymentAmountLocal:
+    $ref: '../../shared/schemas/fields.yml#/LocalAmount'
+
+  #Payment_Amount_Local_Currency  
+  paymentAmountLocalCurrency:
+    $ref: '../../shared/schemas/fields.yml#/LocalCurrencyCode'
+
+  #Entered_By 
+  EnteredBy:
+    $ref: '../../shared/schemas/fields.yml#/EnteredBy'
   #NEW
   sourceSystem:
     $ref: '../../shared/schemas/fields.yml#/SourceSystem'

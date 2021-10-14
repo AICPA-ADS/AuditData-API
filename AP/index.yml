@@ -111,3 +111,37 @@ paths:
                 $ref: './schemas/index.yml#/APInvoices'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
+  
+  /PaymentsMade:
+    get:
+      operationId: GetPaymentsMade
+      tags: [Accounts Payable]      
+      description: >
+        The payments made contains all payment transactions (check, wire transfer, cash, and so on) made during the period. Each record represents a single cash receipt.
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/supplierAccountIDParam'
+        - name: startDate
+          in: query
+          description: Returns all payments with a start date equal or greater than the start date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Returns all payments with an end date equal or less than the end date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
+      
+      responses:
+        '200':
+          description: __GetPaymentsMade__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/APPaymentsMade'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'

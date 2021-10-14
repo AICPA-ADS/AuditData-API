@@ -42,9 +42,11 @@ tags:
   - name: General Ledger
     description: Used to request General Ledger Information
   - name: Accounts Receivable
-    description: Used to request AR Information
+    description: Used to request Accounts Receivable Information
   - name: Accounts Payable
-    description: Used to request AP Information
+    description: Used to request Accounts Payable Information
+  - name: Inventory
+    description: Used to request Inventory Information
 
 paths:
   /Entities:
@@ -82,6 +84,12 @@ paths:
 
   /Entities/{entityId}/AP/Invoices:
     $ref: './AP/index.yml#/paths/~1Invoices'
+
+  /Entities/{entityId}/AP/PaymentsMade:
+    $ref: './AP/index.yml#/paths/~1PaymentsMade'
+
+  /Entities/{entityId}/Inventory/InventoryOnHand:
+    $ref: './Inventory/index.yml#/paths/~1InventoryOnHand'
 
 # Security schemes are included below to support generation of 
 # authentication code in the AuditData Client packages.

@@ -63,3 +63,6 @@ properties:
     $ref: '../../shared/schemas/fields.yml#/CustomerTermsDueDays'
   supplierEnteredBy:
     $ref: '../../shared/schemas/fields.yml#/EnteredBy'
+  #NEW
+  sourceSystem:
+    $ref: '../../shared/schemas/fields.yml#/SourceSystem'

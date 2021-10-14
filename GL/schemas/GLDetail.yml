@@ -84,6 +84,9 @@ properties:
   #Added for API Specification for cases where have multiple entities.
   entityIdentifier:
     $ref: '../../shared/schemas/fields.yml#/EntityIdentifier'
+  #NEW
+  sourceSystem:
+    $ref: '../../shared/schemas/fields.yml#/SourceSystem'
   glLineItems:
     type: array
     items:

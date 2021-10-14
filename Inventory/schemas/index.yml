@@ -21,29 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-APOpenAccountsPayableItems:
+InventoryOnHandItems:
   type: array
   items:
-      $ref: '#/APOpenAccountsPayable'
+      $ref: '#/InventoryOnHand'
 
-APOpenAccountsPayable: 
-  $ref: APOpenAccountsPayable.yml
+InventoryOnHand: 
+  $ref: InventoryOnHand.yml
 
-APPaymentsMadeItems:
-  type: array
-  items:
-      $ref: '#/APPaymentsMade'
 
-APPaymentsMade: 
-  $ref: APPaymentsMade.yml
 
-APInvoices:
-  type: array
-  items:
-      $ref: '#/APInvoice'
 
-APInvoice:
-  allOf:     
-    # Combines the shared Invoice type and additional props
-    - $ref: '../../shared/schemas/index.yml#/Invoice'
+
+
       

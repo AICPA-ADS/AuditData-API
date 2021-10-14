@@ -115,7 +115,7 @@ paths:
       operationId: GetCashReceived
       tags: [Accounts Receivable]      
       description: >
-        Cash received contains all payment transactions (check, wire transfer, cash, and so on) received during the period. Each record represents a single cash receipt.
+        Payments received contains all payment transactions (check, wire transfer, cash, and so on) received during the period. Each record represents a single receipt.
       parameters:
         - $ref: '../shared/parameters/index.yml#/customerAccountIDParam'
         - name: startDate

@@ -53,29 +53,32 @@ properties:
   #  $ref: '../../shared/schemas/fields.yml#/CreditDebitIndicator'
 
   #Receipt_Amount
-  balanceAmount:
-    $ref: '../../shared/schemas/fields.yml#/FunctionalBalance'
+  receiptAmount:
+    $ref: '../../shared/schemas/fields.yml#/FunctionalAmount'
 
   #Receipt_Amount_Currency
-  balanceAmountCurrency:  
+  receiptAmountCurrency:  
     $ref: '../../shared/schemas/fields.yml#/FunctionalCurrencyCode'
 
   #Receipt_Amount_Reporting
-  balanceAmountReporting:
-    $ref: '../../shared/schemas/fields.yml#/ReportingBalance'
+  receiptAmountReporting:
+    $ref: '../../shared/schemas/fields.yml#/ReportingAmount'
 
   #Receipt_Amount_Reporting_Currency
-  balanceReportingCurrency:
+  receiptAmountReportingCurrency:
     $ref: '../../shared/schemas/fields.yml#/ReportingCurrencyCode'
 
   #Receipt_Amount_Local 
-  balanceAmountLocal:
-    $ref: '../../shared/schemas/fields.yml#/LocalBalance'
+  receiptAmountLocal:
+    $ref: '../../shared/schemas/fields.yml#/LocalAmount'
 
   #Receipt_Amount_Local_Currency  
-  balanceLocalCurrency:
+  receiptAmountLocalCurrency:
     $ref: '../../shared/schemas/fields.yml#/LocalCurrencyCode'
 
   #Entered_By 
   EnteredBy:
     $ref: '../../shared/schemas/fields.yml#/EnteredBy'
+  #NEW
+  sourceSystem:
+    $ref: '../../shared/schemas/fields.yml#/SourceSystem'

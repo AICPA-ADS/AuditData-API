@@ -289,7 +289,7 @@ CreatedTime:
   type: string
   format: time
   description: The time the journal entry was created in the system. Matches AICPA Audit Data Standard element EnteredTime.
-  example: '2018-12-31'
+  example: '01:32'
   x-AICPA-Audit-Data-Std: 'EnteredTime'
 
 LastModifiedBy:
@@ -618,6 +618,50 @@ ReferenceDate:
   format: date
   description: Date on an externally generated transaction (for example, check date or wire transfer date).
   example: "2018-12-31"
+
+PaymentType:
+  type: string  
+  description: The method by which the transaction amount was extinguished or apportioned to the debt by the supplier (for example, check, wire transfer, cash)
+  example: "cash"
+
+SourceSystem:
+  type: string  
+  description: Identifies the system that the data was sourced from.
+  example: "XERO - Company J"
+
+
+InventoryProductID:
+  type: string  
+  description: Inventory product identifier.
+  example: "SKU-12345"
+
+LocationID:
+  type: string  
+  description: Inventory location identifier.
+  example: "A1234"
+
+InventoryQuantity:
+  type: number
+  description: Count as expressed in the UOM.
+  example: '30'
+
+InventoryStockingUOM:
+  type: string  
+  description: Unit of measure used associated with the quantity used for stocking inventory.
+  example: "pounds"
+
+InventoryCostMethod:
+  type: string  
+  description: Description of costing practice, such as LIFO, FIFO, Average, Standard, and specific identification.
+  example: "LIFO"
+
+InventoryCost:
+  type: number
+  description: Cost per unit using the inventory cost method.
+  example: '23.33'
+
+
+  
 
 
 

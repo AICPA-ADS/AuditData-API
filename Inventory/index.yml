@@ -21,29 +21,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-APOpenAccountsPayableItems:
-  type: array
-  items:
-      $ref: '#/APOpenAccountsPayable'
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Audit Data Open Api Project (AICPA) - Accounts Receivable Module
+  description: This is an initial API specification for requesting Inventory data 
 
-APOpenAccountsPayable: 
-  $ref: APOpenAccountsPayable.yml
+paths:
+  /InventoryOnHand:
+    get:
+      operationId: GetInventoryOnHand
+      tags: [Inventory]      
+      description: >
+        Captures the on-hand inventory quantities of items by location and amounts as of the specified date.
 
-APPaymentsMadeItems:
-  type: array
-  items:
-      $ref: '#/APPaymentsMade'
+        Should be able to pass a date and get back a list of all inventory on hand at that date.
+      parameters:
+        - name: balanceDate
+          in: query
+          description: Inventory on hand on a given date. 
+          required: true
+          schema:
+            type: string
 
-APPaymentsMade: 
-  $ref: APPaymentsMade.yml
-
-APInvoices:
-  type: array
-  items:
-      $ref: '#/APInvoice'
-
-APInvoice:
-  allOf:     
-    # Combines the shared Invoice type and additional props
-    - $ref: '../../shared/schemas/index.yml#/Invoice'
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
       
+      responses:
+        '200':
+          description: __GetInventoryOnHand__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/InventoryOnHandItems'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'
