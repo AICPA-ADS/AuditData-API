@@ -635,6 +635,11 @@ InventoryProductID:
   description: Inventory product identifier.
   example: "SKU-12345"
 
+InventoryDescription:
+  type: string  
+  description: Description of Inventory item.
+  example: "Titanium Oxide"
+
 LocationID:
   type: string  
   description: Inventory location identifier.
@@ -647,8 +652,8 @@ InventoryQuantity:
 
 InventoryStockingUOM:
   type: string  
-  description: Unit of measure used associated with the quantity used for stocking inventory.
-  example: "pounds"
+  description: Unit of measure used associated with the quantity used for stocking inventory. Use the Stand UOM measures defined in the XBRL units of measure registry at https://www.xbrl.org/utr/utr.xml.
+  example: "kg"
 
 InventoryCostMethod:
   type: string  
