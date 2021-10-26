@@ -43,7 +43,5 @@ APInvoices:
       $ref: '#/APInvoice'
 
 APInvoice:
-  allOf:     
-    # Combines the shared Invoice type and additional props
-    - $ref: '../../shared/schemas/index.yml#/Invoice'
+  $ref: APInvoice.yml
       

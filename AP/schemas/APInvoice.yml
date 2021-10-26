@@ -1,0 +1,62 @@
+#------LICENSE--------
+#MIT License
+#
+#Copyright (c) 2020 AICPA
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+x-abstract: true
+type: object
+properties:
+  invoiceId:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceID'
+  invoiceNumber:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceNumber'
+  invoiceDate:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceDate'
+  invoiceFiscalYear:
+    $ref: '../../shared/schemas/fields.yml#/FiscalYear'
+  invoicePeriod: 
+    $ref: '../../shared/schemas/fields.yml#/Period'
+  invoiceTypeName:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceTypeName'
+  invoiceDueDate:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceDueDate'
+  supplierAccountId:
+    $ref: '../../shared/schemas/fields.yml#/SupplierAccountID'
+  settlementMethodCode:
+    $ref: '../../shared/schemas/fields.yml#/SettlementMethodCode'
+  invoiceAmount:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceTransactionAmount'
+  invoiceAmountCurrency:
+    $ref: '../../shared/schemas/fields.yml#/InvoiceTransactionCURCode'
+  paymentTermCode:
+    $ref: '../../shared/schemas/fields.yml#/PaymentTermCode'
+  enteredBy:
+    $ref: '../../shared/schemas/fields.yml#/EnteredBy'
+  tax1TypeCode:
+    $ref: '../../shared/schemas/fields.yml#/Tax1TypeCode'
+  tax1TransactionAmount:
+    $ref: '../../shared/schemas/fields.yml#/Tax1TransactionAmount'
+  #NEW
+  sourceSystem:
+    $ref: '../../shared/schemas/fields.yml#/SourceSystem'
+required:
+  - invoiceId
+  - invoiceNumber
