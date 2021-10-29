@@ -91,6 +91,9 @@ paths:
   /Entities/{entityId}/Inventory/InventoryOnHand:
     $ref: './Inventory/index.yml#/paths/~1InventoryOnHand'
 
+  /Entities/{entityId}/Inventory/InventoryTransactions:
+    $ref: './Inventory/index.yml#/paths/~1InventoryTransactions'
+
 # Security schemes are included below to support generation of 
 # authentication code in the AuditData Client packages.
 # The standard takes no position on authentication schemes, which
