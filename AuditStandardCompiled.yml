@@ -1,764 +1,1057 @@
 {
-  "openapi" : "3.0.0",
-  "info" : {
-    "description" : "This is an initial API specification for requesting data for performing audits",
-    "title" : "Audit Data Open Api Project (AICPA)",
-    "version" : "1.0.0"
-  },
-  "servers" : [ {
-    "url" : "/AuditDataOpenAPI/v1.0"
-  } ],
-  "security" : [ {
-    "basicAuth" : [ ]
-  }, {
-    "implicitAuth" : [ "read" ]
-  }, {
-    "bearerAuth" : [ ]
-  }, {
-    "apiKeyAuth" : [ "read" ]
-  }, {
-    "openIdAuth" : [ "read" ]
-  } ],
-  "tags" : [ {
-    "description" : "Used across modules.",
-    "name" : "Entities"
-  }, {
-    "description" : "Used to request General Ledger Information",
-    "name" : "General Ledger"
-  }, {
-    "description" : "Used to request AR Information",
-    "name" : "Accounts Receivable"
-  }, {
-    "description" : "Used to request AP Information",
-    "name" : "Accounts Payable"
-  } ],
-  "paths" : {
-    "/Entities" : {
-      "get" : {
-        "description" : "Allows requesting the reporting entities available from the API.\n",
-        "operationId" : "GetEntities",
-        "parameters" : [ {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "query",
-          "name" : "entityID",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Entities"
-                }
-              }
-            },
-            "description" : "_entities_ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Entities" ]
-      }
-    },
-    "/Entities/{entityId}/Periods" : {
-      "get" : {
-        "description" : "Allows requesting the reporting periods of the company. If no parameters are passed all the available entities available to the user in the system are returned.  The end point also allows the user to pass an entity identifier to return the name of the entity.\n",
-        "operationId" : "GetPeriods",
-        "parameters" : [ {
-          "description" : "Returns all reporting periods with a start date equal or greater than the start date.",
-          "in" : "query",
-          "name" : "startDate",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all reporting periods with an end date equal or less than the end date.",
-          "in" : "query",
-          "name" : "endDate",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Periods"
-                }
-              }
-            },
-            "description" : "_periods_ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Entities" ]
-      }
-    },
-    "/Entities/{entityId}/GL/Journals" : {
-      "get" : {
-        "description" : "Allows searching for General Ledger Journal Transactions\n",
-        "operationId" : "GetGLDetails",
-        "parameters" : [ {
-          "description" : "Start date for GL transactions.  Returns all transactions with an `EffectiveDate` after `the startDate`.",
-          "in" : "query",
-          "name" : "startDate",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "End date for GL transactions.  Returns all transactions with an `EffectiveDate` before `the endDate`.",
-          "in" : "query",
-          "name" : "endDate",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GLDetails"
-                }
-              }
-            },
-            "description" : "__GLDetails__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "General Ledger" ]
-      }
-    },
-    "/Entities/{entityId}/GL/TrialBalance" : {
-      "get" : {
-        "description" : "Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementation). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.\n",
-        "operationId" : "GetTBDetails",
-        "parameters" : [ {
-          "description" : "Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.",
-          "in" : "query",
-          "name" : "startDate",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "End date for the trial balance.  Returns all the values at the provided `endDate`, which may also be treated as an \"as of\" date.",
-          "in" : "query",
-          "name" : "endDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Flag to indicate if budget data should be returned. If not provided the default is actual data. To get budget data only a parameter of \"budget\" is used. To get both a parameter of \"both\" is passed.",
-          "in" : "query",
-          "name" : "BudgetFlag",
-          "required" : false,
-          "schema" : {
-            "enum" : [ "budget", "both" ],
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GLAccountBalances"
-                }
-              },
-              "application/xbrl+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/XbrlTbResponse"
-                }
-              }
-            },
-            "description" : "__GetTBDetails__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "General Ledger" ]
-      }
-    },
-    "/Entities/{entityId}/GL/Accounts" : {
-      "get" : {
-        "description" : "Allows requesting a listing of chart of accounts \n",
-        "operationId" : "GetChartAccounts",
-        "parameters" : [ {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GLChartOfAccounts"
-                }
-              }
-            },
-            "description" : "_GLChartOfAccounts_ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "General Ledger" ]
-      }
-    },
-    "/Entities/{entityId}/AR/OpenBalances" : {
-      "get" : {
-        "description" : "Each record represents the balance expected from the customer for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AR amount in the general ledger (GL) as of the same date.\nShould be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.\n",
-        "operationId" : "GetAROpenAccountsReceivables",
-        "parameters" : [ {
-          "description" : "Open receivables on a given date.",
-          "in" : "query",
-          "name" : "balanceDate",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/AROpenAccountsReceivablesItems"
-                }
-              }
-            },
-            "description" : "__GetAROpenAccountsReceivables__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Receivable" ]
-      }
-    },
-    "/Entities/{entityId}/AR/Customers" : {
-      "get" : {
-        "description" : "Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. \n",
-        "operationId" : "GetARCustomers",
-        "parameters" : [ {
-          "description" : "Identifier of the customer from whom payment is expected or to whom unused credits have been applied.",
-          "in" : "query",
-          "name" : "customerAccountId",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Customers"
-                }
-              }
-            },
-            "description" : "__GetARCustomers__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Receivable" ]
-      }
-    },
-    "/Entities/{entityId}/AR/Invoices" : {
-      "get" : {
-        "description" : "Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that one invoice. The invoice will include the associated three sales orders.\n",
-        "operationId" : "GetARInvoices",
-        "parameters" : [ {
-          "description" : "Identifier of the customer from whom payment is expected or to whom unused credits have been applied.",
-          "in" : "query",
-          "name" : "customerAccountId",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all invoices with a start date equal or greater than the start date.",
-          "in" : "query",
-          "name" : "startDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all invoices with an end date equal or less than the end date.",
-          "in" : "query",
-          "name" : "endDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ARInvoices"
-                }
-              }
-            },
-            "description" : "__GetARInvoices__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Receivable" ]
-      }
-    },
-    "/Entities/{entityId}/AR/CashReceived" : {
-      "get" : {
-        "description" : "Cash received contains all payment transactions (check, wire transfer, cash, and so on) received during the period. Each record represents a single cash receipt.\n",
-        "operationId" : "GetCashReceived",
-        "parameters" : [ {
-          "description" : "Identifier of the customer from whom payment is expected or to whom unused credits have been applied.",
-          "in" : "query",
-          "name" : "customerAccountId",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all receipts with a start date equal or greater than the start date.",
-          "in" : "query",
-          "name" : "startDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all receipts with an end date equal or less than the end date.",
-          "in" : "query",
-          "name" : "endDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ARCashReceipts"
-                }
-              }
-            },
-            "description" : "__GetCashReceived__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Receivable" ]
-      }
-    },
-    "/Entities/{entityId}/AP/OpenBalances" : {
-      "get" : {
-        "description" : "\nEach record represents the balance due to the supplier for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AP amount in the general ledger (GL) as of the same date. \nShould be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.\n",
-        "operationId" : "GetAPOpenAccountsPayable",
-        "parameters" : [ {
-          "description" : "Open payables on a given date.",
-          "in" : "query",
-          "name" : "balanceDate",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/APOpenAccountsPayableItems"
-                }
-              }
-            },
-            "description" : "__GetAPOpenAccountsPayables__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Payable" ]
-      }
-    },
-    "/Entities/{entityId}/AP/Suppliers" : {
-      "get" : {
-        "description" : "Allows the retrieval of the supplier listing for the entity. Supplier information can be requested based on a supplier ID. \n",
-        "operationId" : "GetAPSuppliers",
-        "parameters" : [ {
-          "description" : "Identifier of the supplier to whom payment is expected or from whom unused credits have been applied.",
-          "in" : "query",
-          "name" : "supplierAccountId",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Suppliers"
-                }
-              }
-            },
-            "description" : "__GetAPSuppliers__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Payable" ]
-      }
-    },
-    "/Entities/{entityId}/AP/Invoices" : {
-      "get" : {
-        "description" : "Invoices has one record for each purchase order associated with each invoice. For example, if an invoice includes items from three purchase orders, there will be three records for that one invoice. The invoice will include the associated three purchase orders.\n",
-        "operationId" : "GetAPInvoices",
-        "parameters" : [ {
-          "description" : "Identifier of the supplier to whom payment is expected or from whom unused credits have been applied.",
-          "in" : "query",
-          "name" : "supplierAccountId",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all invoices with a start date equal or greater than the start date.",
-          "in" : "query",
-          "name" : "startDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Returns all invoices with an end date equal or less than the end date.",
-          "in" : "query",
-          "name" : "endDate",
-          "required" : true,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "description" : "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
-          "in" : "path",
-          "name" : "entityId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/APInvoices"
-                }
-              }
-            },
-            "description" : "__GetAPInvoices__ successfully accepted"
-          },
-          "400" : {
-            "content" : {
-              "applications/json" : {
-                "example" : {
-                  "code" : "BadRequest",
-                  "ErrorDescription" : "Parameter field invalid."
-                },
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorResult"
-                }
-              }
-            },
-            "description" : "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
-          }
-        },
-        "tags" : [ "Accounts Payable" ]
-      }
-    }
-  },
-  "components" : {
-    "schemas" : {
-      "Entities" : {
-        "items" : {
-          "$ref" : "#/components/schemas/EntityDetails"
-        },
-        "type" : "array"
-      },
-      "EntityDetails" : {
-        "properties" : {
-          "entityName" : {
-            "$ref" : "#/components/schemas/EntityName"
-          },
-          "entityIdentifier" : {
-            "$ref" : "#/components/schemas/EntityIdentifier"
-          },
-          "glSubsidiaries" : {
-            "$ref" : "#/components/schemas/_Subsidiaries"
-          }
-        },
-        "required" : [ "entityIdentifier", "entityName" ],
-        "type" : "object"
-      },
-      "_Subsidiaries" : {
-        "items" : {
-          "$ref" : "#/components/schemas/EntityDetails"
-        },
-        "type" : "array"
-      },
-      "ErrorResult" : {
-        "properties" : {
-          "code" : {
-            "description" : "Implementation-defined Identifier/Code for the error being returned by the server",
-            "type" : "string"
-          },
-          "errorDescription" : {
-            "description" : "Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective actiont to eliminate the error, if possible.",
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "Periods" : {
+"openapi": "3.0.0",
+"info": {
+"description": "This is an initial API specification for requesting data for performing audits",
+"title": "Audit Data Open Api Project (AICPA)",
+"version": "1.0.0"
+},
+"servers": [
+{
+"url": "/AuditDataOpenAPI/v1.0"
+}
+],
+"security": [
+{
+"basicAuth": []
+},
+{
+"implicitAuth": [
+"read"
+]
+},
+{
+"bearerAuth": []
+},
+{
+"apiKeyAuth": [
+"read"
+]
+},
+{
+"openIdAuth": [
+"read"
+]
+}
+],
+"tags": [
+{
+"description": "Used across modules.",
+"name": "Entities"
+},
+{
+"description": "Used to request General Ledger Information",
+"name": "General Ledger"
+},
+{
+"description": "Used to request Accounts Receivable Information",
+"name": "Accounts Receivable"
+},
+{
+"description": "Used to request Accounts Payable Information",
+"name": "Accounts Payable"
+},
+{
+"description": "Used to request Inventory Information",
+"name": "Inventory"
+}
+],
+"paths": {
+"/Entities": {
+"get": {
+"description": "Allows requesting the reporting entities available from the API.\n",
+"operationId": "GetEntities",
+"parameters": [
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "query",
+"name": "entityID",
+"required": false,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Entities"
+}
+}
+},
+"description": "_entities_ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Entities"
+]
+}
+},
+"/Entities/{entityId}/Periods": {
+"get": {
+"description": "Allows requesting the reporting periods of the company. If no parameters are passed all the available entities available to the user in the system are returned.  The end point also allows the user to pass an entity identifier to return the name of the entity.\n",
+"operationId": "GetPeriods",
+"parameters": [
+{
+"description": "Returns all reporting periods with a start date equal or greater than the start date.",
+"in": "query",
+"name": "startDate",
+"required": false,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Returns all reporting periods with an end date equal or less than the end date.",
+"in": "query",
+"name": "endDate",
+"required": false,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Periods"
+}
+}
+},
+"description": "_periods_ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Entities"
+]
+}
+},
+"/Entities/{entityId}/GL/Journals": {
+"get": {
+"description": "Allows searching for General Ledger Journal Transactions\n",
+"operationId": "GetGLDetails",
+"parameters": [
+{
+"description": "Start date for GL transactions.  Returns all transactions with an `EffectiveDate` after `the startDate`.",
+"in": "query",
+"name": "startDate",
+"required": false,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "End date for GL transactions.  Returns all transactions with an `EffectiveDate` before `the endDate`.",
+"in": "query",
+"name": "endDate",
+"required": false,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/GLDetails"
+}
+}
+},
+"description": "__GLDetails__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"General Ledger"
+]
+}
+},
+"/Entities/{entityId}/GL/TrialBalance": {
+"get": {
+"description": "Allows searching for General Ledger Trial Balance Totals. Returns JSON responses (required for all implementation). Optionally, returns XBRL-formatted JSON documents, which should be requested by the calling client using the `Accept: application/xbrl+json` HTTP header.\n",
+"operationId": "GetTBDetails",
+"parameters": [
+{
+"description": "Start date (No time) for Trial Balance.  Returns balances at the start of the year after opening adjustments to retained earnings and adjustments for changes in accounting standards.",
+"in": "query",
+"name": "startDate",
+"required": false,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "End date for the trial balance.  Returns all the values at the provided `endDate`, which may also be treated as an \"as of\" date.",
+"in": "query",
+"name": "endDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Flag to indicate if budget data should be returned. If not provided the default is actual data. To get budget data only a parameter of \"budget\" is used. To get both a parameter of \"both\" is passed.",
+"in": "query",
+"name": "BudgetFlag",
+"required": false,
+"schema": {
+"enum": [
+"budget",
+"both"
+],
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/GLAccountBalances"
+}
+},
+"application/xbrl+json": {
+"schema": {
+"$ref": "#/components/schemas/XbrlTbResponse"
+}
+}
+},
+"description": "__GetTBDetails__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"General Ledger"
+]
+}
+},
+"/Entities/{entityId}/GL/Accounts": {
+"get": {
+"description": "Allows requesting a listing of chart of accounts \n",
+"operationId": "GetChartAccounts",
+"parameters": [
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/GLChartOfAccounts"
+}
+}
+},
+"description": "_GLChartOfAccounts_ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"General Ledger"
+]
+}
+},
+"/Entities/{entityId}/AR/OpenBalances": {
+"get": {
+"description": "Each record represents the balance expected from the customer for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AR amount in the general ledger (GL) as of the same date.\nShould be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.\n",
+"operationId": "GetAROpenAccountsReceivables",
+"parameters": [
+{
+"description": "Open receivables on a given date.",
+"in": "query",
+"name": "balanceDate",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/AROpenAccountsReceivablesItems"
+}
+}
+},
+"description": "__GetAROpenAccountsReceivables__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Receivable"
+]
+}
+},
+"/Entities/{entityId}/AR/Customers": {
+"get": {
+"description": "Allows the retrieval of the customer listing for the entity. Customer information can be requested based on a customer ID. \n",
+"operationId": "GetARCustomers",
+"parameters": [
+{
+"description": "Identifier of the customer from whom payment is expected or to whom unused credits have been applied.",
+"in": "query",
+"name": "customerAccountId",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Customers"
+}
+}
+},
+"description": "__GetARCustomers__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Receivable"
+]
+}
+},
+"/Entities/{entityId}/AR/Invoices": {
+"get": {
+"description": "Invoices has one record for each sales order associated with each invoice. For example, if an invoice includes items from three sales orders, there will be three records for that one invoice. The invoice will include the associated three sales orders.\n",
+"operationId": "GetARInvoices",
+"parameters": [
+{
+"description": "Identifier of the customer from whom payment is expected or to whom unused credits have been applied.",
+"in": "query",
+"name": "customerAccountId",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Returns all invoices with a start date equal or greater than the start date.",
+"in": "query",
+"name": "startDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Returns all invoices with an end date equal or less than the end date.",
+"in": "query",
+"name": "endDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ARInvoices"
+}
+}
+},
+"description": "__GetARInvoices__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Receivable"
+]
+}
+},
+"/Entities/{entityId}/AR/CashReceived": {
+"get": {
+"description": "Payments received contains all payment transactions (check, wire transfer, cash, and so on) received during the period. Each record represents a single receipt.\n",
+"operationId": "GetCashReceived",
+"parameters": [
+{
+"description": "Identifier of the customer from whom payment is expected or to whom unused credits have been applied.",
+"in": "query",
+"name": "customerAccountId",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Returns all receipts with a start date equal or greater than the start date.",
+"in": "query",
+"name": "startDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Returns all receipts with an end date equal or less than the end date.",
+"in": "query",
+"name": "endDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ARCashReceipts"
+}
+}
+},
+"description": "__GetCashReceived__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Receivable"
+]
+}
+},
+"/Entities/{entityId}/AP/OpenBalances": {
+"get": {
+"description": "\nEach record represents the balance due to the supplier for one uniquely identifiable transaction. This file should be at the summary level (by invoice), not at the detailed level (by invoice line item). The sum total of the transaction amounts as of the specified date should reconcile to the total AP amount in the general ledger (GL) as of the same date. \nShould be able to pass a date and get back a list of all the invoices amounts that were outstanding at that date.\n",
+"operationId": "GetAPOpenAccountsPayable",
+"parameters": [
+{
+"description": "Open payables on a given date.",
+"in": "query",
+"name": "balanceDate",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/APOpenAccountsPayableItems"
+}
+}
+},
+"description": "__GetAPOpenAccountsPayables__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Payable"
+]
+}
+},
+"/Entities/{entityId}/AP/Suppliers": {
+"get": {
+"description": "Allows the retrieval of the supplier listing for the entity. Supplier information can be requested based on a supplier ID. \n",
+"operationId": "GetAPSuppliers",
+"parameters": [
+{
+"description": "Identifier of the supplier to whom payment is expected or from whom unused credits have been applied.",
+"in": "query",
+"name": "supplierAccountId",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Suppliers"
+}
+}
+},
+"description": "__GetAPSuppliers__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Payable"
+]
+}
+},
+"/Entities/{entityId}/AP/Invoices": {
+"get": {
+"description": "Invoices has one record for each purchase order associated with each invoice. For example, if an invoice includes items from three purchase orders, there will be three records for that one invoice. The invoice will include the associated three purchase orders.\n",
+"operationId": "GetAPInvoices",
+"parameters": [
+{
+"description": "Identifier of the supplier to whom payment is expected or from whom unused credits have been applied.",
+"in": "query",
+"name": "supplierAccountId",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Returns all invoices with a start date equal or greater than the start date.",
+"in": "query",
+"name": "startDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Returns all invoices with an end date equal or less than the end date.",
+"in": "query",
+"name": "endDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/APInvoices"
+}
+}
+},
+"description": "__GetAPInvoices__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Payable"
+]
+}
+},
+"/Entities/{entityId}/AP/PaymentsMade": {
+"get": {
+"description": "The payments made contains all payment transactions (check, wire transfer, cash, and so on) made during the period. Each record represents a single cash receipt.\n",
+"operationId": "GetPaymentsMade",
+"parameters": [
+{
+"description": "Identifier of the supplier to whom payment is expected or from whom unused credits have been applied.",
+"in": "query",
+"name": "supplierAccountId",
+"required": false,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Returns all payments with a start date equal or greater than the start date.",
+"in": "query",
+"name": "startDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Returns all payments with an end date equal or less than the end date.",
+"in": "query",
+"name": "endDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/APPaymentsMade"
+}
+}
+},
+"description": "__GetPaymentsMade__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Accounts Payable"
+]
+}
+},
+"/Entities/{entityId}/Inventory/InventoryOnHand": {
+"get": {
+"description": "Captures the on-hand inventory quantities of items by location and amounts as of the specified date.\nShould be able to pass a date and get back a list of all inventory on hand at that date.\n",
+"operationId": "GetInventoryOnHand",
+"parameters": [
+{
+"description": "Inventory on hand on a given date.",
+"in": "query",
+"name": "balanceDate",
+"required": true,
+"schema": {
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/InventoryOnHandItems"
+}
+}
+},
+"description": "__GetInventoryOnHand__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Inventory"
+]
+}
+},
+"/Entities/{entityId}/Inventory/InventoryTransactions": {
+"get": {
+"description": "Captures all transaction history (for example, receipts, shipments, transfers, returns, adjustments) affecting inventory accounts during the time period specified.\nShould be able to pass a start and end date and get back a list of all transactions during the period.\n",
+"operationId": "GetInventoryTransactions",
+"parameters": [
+{
+"description": "Returns all invoices with a start date equal or greater than the start date.",
+"in": "query",
+"name": "startDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Returns all invoices with an end date equal or less than the end date.",
+"in": "query",
+"name": "endDate",
+"required": true,
+"schema": {
+"format": "date",
+"type": "string"
+}
+},
+{
+"description": "Entity Identifier.  UID of the entity. Can be defined by the implementer of the API does not imply that a standard identifier is used. If no entity id identifier is provided and the requested system has multiple entities the API implementer determines entity to return.",
+"in": "path",
+"name": "entityId",
+"required": true,
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/InventoryTransactionItems"
+}
+}
+},
+"description": "__GetInventoryTransactions__ successfully accepted"
+},
+"400": {
+"content": {
+"applications/json": {
+"example": {
+"code": "BadRequest",
+"ErrorDescription": "Parameter field invalid."
+},
+"schema": {
+"$ref": "#/components/schemas/ErrorResult"
+}
+}
+},
+"description": "Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. \n"
+}
+},
+"tags": [
+"Inventory"
+]
+}
+}
+},
+"components": {
+"schemas": {
+"Entities": {
+"items": {
+"$ref": "#/components/schemas/EntityDetails"
+},
+"type": "array"
+},
+"EntityDetails": {
+"properties": {
+"entityName": {
+"$ref": "#/components/schemas/EntityName"
+},
+"entityIdentifier": {
+"$ref": "#/components/schemas/EntityIdentifier"
+},
+"glSubsidiaries": {
+"$ref": "#/components/schemas/_Subsidiaries"
+}
+},
+"required": [
+"entityIdentifier",
+"entityName"
+],
+"type": "object"
+},
+"_Subsidiaries": {
+"items": {
+"$ref": "#/components/schemas/EntityDetails"
+},
+"type": "array"
+},
+"ErrorResult": {
+"properties": {
+"code": {
+"description": "Implementation-defined Identifier/Code for the error being returned by the server",
+"type": "string"
+},
+"errorDescription": {
+"description": "Provides additional human-readable description of the error. Implementation should include diagnostic detail to help the calling client to take corrective action to eliminate the error, if possible.",
+"type": "string"
+}
+},
+"type": "object"
+},
+"Periods" : {
         "example" : 
            
           [
@@ -783,1270 +1076,1638 @@
                 "periodType": "Quarter",
                 "entityIdentifier": 123456789
               }
-          ]
-        ,
-        "items" : {
-          "$ref" : "#/components/schemas/PeriodDetails"
-        },
-        "type" : "array"
-      },
-      "PeriodDetails" : {
-        "properties" : {
-          "periodName" : {
-            "$ref" : "#/components/schemas/PeriodName"
-          },
-          "startDatePeriod" : {
-            "$ref" : "#/components/schemas/StartDatePeriod"
-          },
-          "endDatePeriod" : {
-            "$ref" : "#/components/schemas/EndDatePeriod"
-          },
-          "periodType" : {
-            "$ref" : "#/components/schemas/PeriodType"
-          },
-          "entityIdentifier" : {
-            "$ref" : "#/components/schemas/EntityIdentifier"
-          }
-        },
-        "required" : [ "endDatePeriod", "periodName", "periodType", "startDatePeriod" ],
-        "type" : "object"
-      },
-      "GLDetails" : {
-        "items" : {
-          "$ref" : "#/components/schemas/GLDetail"
-        },
-        "type" : "array"
-      },
-      "GLAccountBalances" : {
-        "items" : {
-          "$ref" : "#/components/schemas/GLAccountBalance"
-        },
-        "type" : "array"
-      },
-      "GLAccountBalance" : {
-        "properties" : {
-          "glAccountNumber" : {
-            "$ref" : "#/components/schemas/GLAccountNumber"
-          },
-          "entityIdentifier" : {
-            "$ref" : "#/components/schemas/EntityIdentifier"
-          },
-          "businessUnitCode" : {
-            "$ref" : "#/components/schemas/BusinessUnitCode"
-          },
-          "balanceAsOfDate" : {
-            "$ref" : "#/components/schemas/BalanceAsOfDate"
-          },
-          "fiscalYear" : {
-            "$ref" : "#/components/schemas/FiscalYear"
-          },
-          "period" : {
-            "$ref" : "#/components/schemas/Period"
-          },
-          "amountBeginning" : {
-            "$ref" : "#/components/schemas/BeginningFunctionalAmount"
-          },
-          "amountBeginningReporting" : {
-            "$ref" : "#/components/schemas/BeginningReportingAmount"
-          },
-          "amountBeginningLocal" : {
-            "$ref" : "#/components/schemas/BeginningLocalAmount"
-          },
-          "amountCurrency" : {
-            "$ref" : "#/components/schemas/FunctionalCurrencyCode"
-          },
-          "amountReportingCurrency" : {
-            "$ref" : "#/components/schemas/ReportingCurrencyCode"
-          },
-          "amountLocalCurrency" : {
-            "$ref" : "#/components/schemas/LocalCurrencyCode"
-          },
-          "amountEnding" : {
-            "$ref" : "#/components/schemas/EndingFunctionalAmount"
-          },
-          "amountEndingReporting" : {
-            "$ref" : "#/components/schemas/EndingReportingAmount"
-          },
-          "amountEndingLocal" : {
-            "$ref" : "#/components/schemas/EndingLocalAmount"
-          },
-          "budgetFlag" : {
-            "$ref" : "#/components/schemas/BudgetFlag"
-          }
-        },
-        "required" : [ "amountBeginning", "amountCurrency", "amountEnding", "balanceAsOfDate", "glAccountNumber" ],
-        "type" : "object"
-      },
-      "XbrlTbResponse" : {
-        "properties" : {
-          "documentInfo" : {
-            "$ref" : "#/components/schemas/DocumentInfoOimJson"
-          },
-          "facts" : {
-            "$ref" : "#/components/schemas/FactsOimJson"
-          }
-        },
-        "type" : "object"
-      },
-      "GLChartOfAccounts" : {
-        "items" : {
-          "$ref" : "#/components/schemas/GLAccountDetails"
-        },
-        "type" : "array"
-      },
-      "GLAccountDetails" : {
-        "properties" : {
-          "entityIdentifier" : {
-            "$ref" : "#/components/schemas/EntityIdentifier"
-          },
-          "glAccountNumber" : {
-            "$ref" : "#/components/schemas/GLAccountNumber"
-          },
-          "glAccountName" : {
-            "$ref" : "#/components/schemas/GLAccountName"
-          },
-          "fsCaption" : {
-            "$ref" : "#/components/schemas/FSCaption"
-          },
-          "accountType" : {
-            "$ref" : "#/components/schemas/AccountType"
-          },
-          "accountSubtype" : {
-            "$ref" : "#/components/schemas/AccountSubtype"
-          },
-          "glAccountDescription" : {
-            "$ref" : "#/components/schemas/GLAccountDescription"
-          },
-          "parentGLAccountNumber" : {
-            "$ref" : "#/components/schemas/ParentGLAccountNumber"
-          },
-          "xbrlConcept" : {
-            "$ref" : "#/components/schemas/XBRLConcept"
-          }
-        },
-        "required" : [ "glAccountName", "glAccountNumber" ],
-        "type" : "object"
-      },
-      "AROpenAccountsReceivablesItems" : {
-        "items" : {
-          "$ref" : "#/components/schemas/AROpenAccountsReceivables"
-        },
-        "type" : "array"
-      },
-      "AROpenAccountsReceivables" : {
-        "properties" : {
-          "customerAccountId" : {
-            "$ref" : "#/components/schemas/CustomerAccountID"
-          },
-          "transactionId" : {
-            "$ref" : "#/components/schemas/TransactionID"
-          },
-          "invoiceId" : {
-            "$ref" : "#/components/schemas/InvoiceID"
-          },
-          "transactionType" : {
-            "$ref" : "#/components/schemas/TransactionType"
-          },
-          "transactionDate" : {
-            "$ref" : "#/components/schemas/TransactionDate"
-          },
-          "transactionDueDate" : {
-            "$ref" : "#/components/schemas/TransactionDueDate"
-          },
-          "balanceAmount" : {
-            "$ref" : "#/components/schemas/FunctionalBalance"
-          },
-          "balanceAmountCurrency" : {
-            "$ref" : "#/components/schemas/FunctionalCurrencyCode"
-          },
-          "balanceAmountReporting" : {
-            "$ref" : "#/components/schemas/ReportingBalance"
-          },
-          "balanceReportingCurrency" : {
-            "$ref" : "#/components/schemas/ReportingCurrencyCode"
-          },
-          "balanceAmountLocal" : {
-            "$ref" : "#/components/schemas/LocalBalance"
-          },
-          "balanceLocalCurrency" : {
-            "$ref" : "#/components/schemas/LocalCurrencyCode"
-          },
-          "originalBalanceAmount" : {
-            "$ref" : "#/components/schemas/FunctionalAmount"
-          },
-          "originalBalanceAmountLocal" : {
-            "$ref" : "#/components/schemas/LocalAmount"
-          },
-          "originalBalanceAmountReporting" : {
-            "$ref" : "#/components/schemas/ReportingAmount"
-          },
-          "amountCreditDebitIndicator" : {
-            "$ref" : "#/components/schemas/CreditDebitIndicator"
-          }
-        },
-        "type" : "object"
-      },
-      "Customers" : {
-        "items" : {
-          "$ref" : "#/components/schemas/Customer"
-        },
-        "type" : "array"
-      },
-      "Customer" : {
-        "properties" : {
-          "customerAccountId" : {
-            "$ref" : "#/components/schemas/CustomerAccountID"
-          },
-          "customerAccountName" : {
-            "$ref" : "#/components/schemas/CustomerAccountName"
-          },
-          "customerTIN" : {
-            "$ref" : "#/components/schemas/CustomerTIN"
-          },
-          "customerPhysicalStreetAddress1" : {
-            "$ref" : "#/components/schemas/CustomerStreetAddress1"
-          },
-          "customerPhysicalStreetAddress2" : {
-            "$ref" : "#/components/schemas/CustomerStreetAddress2"
-          },
-          "customerPhysicalCity" : {
-            "$ref" : "#/components/schemas/CustomerCity"
-          },
-          "customerPhysicalZipPostalCode" : {
-            "$ref" : "#/components/schemas/CustomerPhysicalPostalCode"
-          },
-          "customerPhysicalCountry" : {
-            "$ref" : "#/components/schemas/CustomerCountry"
-          },
-          "customerBillingAddress1" : {
-            "$ref" : "#/components/schemas/CustomerBillingAddress1"
-          },
-          "customerBillingAddress2" : {
-            "$ref" : "#/components/schemas/CustomerBillingAddress2"
-          },
-          "customerBillingCity" : {
-            "$ref" : "#/components/schemas/CustomerBillingCity"
-          },
-          "customerBillingZipPostalCode" : {
-            "$ref" : "#/components/schemas/CustomerBillingPostalCode"
-          },
-          "customerBillingCountry" : {
-            "$ref" : "#/components/schemas/CustomerBillingCountry"
-          },
-          "customerEmail" : {
-            "$ref" : "#/components/schemas/CustomerEmail"
-          },
-          "customerDomainAddress" : {
-            "$ref" : "#/components/schemas/CustomerDomainAddress"
-          },
-          "customerActiveStatus" : {
-            "$ref" : "#/components/schemas/CustomerActiveStatus"
-          },
-          "transactionCreditLimit" : {
-            "$ref" : "#/components/schemas/TransactionCreditLimit"
-          },
-          "customerCreditLimit" : {
-            "$ref" : "#/components/schemas/CustomerCreditLimit"
-          },
-          "customerTermsDueDays" : {
-            "$ref" : "#/components/schemas/CustomerTermsDueDays"
-          },
-          "customerEnteredBy" : {
-            "$ref" : "#/components/schemas/EnteredBy"
-          }
-        },
-        "type" : "object"
-      },
-      "ARInvoices" : {
-        "items" : {
-          "$ref" : "#/components/schemas/ARInvoice"
-        },
-        "type" : "array"
-      },
-      "ARInvoice" : {
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/Invoice"
-        } ]
-      },
-      "ARCashReceipts" : {
-        "items" : {
-          "$ref" : "#/components/schemas/ARCashReceipt"
-        },
-        "type" : "array"
-      },
-      "ARCashReceipt" : {
-        "properties" : {
-          "customerAccountId" : {
-            "$ref" : "#/components/schemas/CustomerAccountID"
-          },
-          "transactionId" : {
-            "$ref" : "#/components/schemas/TransactionID"
-          },
-          "transactionDate" : {
-            "$ref" : "#/components/schemas/TransactionDate"
-          },
-          "ReferenceNumber" : {
-            "$ref" : "#/components/schemas/ReferenceNumber"
-          },
-          "ReferenceDate" : {
-            "$ref" : "#/components/schemas/ReferenceDate"
-          },
-          "balanceAmount" : {
-            "$ref" : "#/components/schemas/FunctionalBalance"
-          },
-          "balanceAmountCurrency" : {
-            "$ref" : "#/components/schemas/FunctionalCurrencyCode"
-          },
-          "balanceAmountReporting" : {
-            "$ref" : "#/components/schemas/ReportingBalance"
-          },
-          "balanceReportingCurrency" : {
-            "$ref" : "#/components/schemas/ReportingCurrencyCode"
-          },
-          "balanceAmountLocal" : {
-            "$ref" : "#/components/schemas/LocalBalance"
-          },
-          "balanceLocalCurrency" : {
-            "$ref" : "#/components/schemas/LocalCurrencyCode"
-          },
-          "EnteredBy" : {
-            "$ref" : "#/components/schemas/EnteredBy"
-          }
-        },
-        "type" : "object"
-      },
-      "APOpenAccountsPayableItems" : {
-        "items" : {
-          "$ref" : "#/components/schemas/APOpenAccountsPayable"
-        },
-        "type" : "array"
-      },
-      "APOpenAccountsPayable" : {
-        "properties" : {
-          "supplierAccountId" : {
-            "$ref" : "#/components/schemas/SupplierAccountID"
-          },
-          "transactionId" : {
-            "$ref" : "#/components/schemas/TransactionID"
-          },
-          "invoiceId" : {
-            "$ref" : "#/components/schemas/InvoiceID"
-          },
-          "transactionType" : {
-            "$ref" : "#/components/schemas/TransactionType"
-          },
-          "transactionDate" : {
-            "$ref" : "#/components/schemas/TransactionDate"
-          },
-          "transactionDueDate" : {
-            "$ref" : "#/components/schemas/TransactionDueDate"
-          },
-          "balanceAmount" : {
-            "$ref" : "#/components/schemas/FunctionalBalance"
-          },
-          "balanceAmountCurrency" : {
-            "$ref" : "#/components/schemas/FunctionalCurrencyCode"
-          },
-          "balanceAmountReporting" : {
-            "$ref" : "#/components/schemas/ReportingBalance"
-          },
-          "balanceReportingCurrency" : {
-            "$ref" : "#/components/schemas/ReportingCurrencyCode"
-          },
-          "balanceAmountLocal" : {
-            "$ref" : "#/components/schemas/LocalBalance"
-          },
-          "balanceLocalCurrency" : {
-            "$ref" : "#/components/schemas/LocalCurrencyCode"
-          },
-          "originalBalanceAmount" : {
-            "$ref" : "#/components/schemas/FunctionalAmount"
-          },
-          "originalBalanceAmountLocal" : {
-            "$ref" : "#/components/schemas/LocalAmount"
-          },
-          "originalBalanceAmountReporting" : {
-            "$ref" : "#/components/schemas/ReportingAmount"
-          },
-          "amountCreditDebitIndicator" : {
-            "$ref" : "#/components/schemas/CreditDebitIndicator"
-          }
-        },
-        "type" : "object"
-      },
-      "Suppliers" : {
-        "items" : {
-          "$ref" : "#/components/schemas/Supplier"
-        },
-        "type" : "array"
-      },
-      "Supplier" : {
-        "properties" : {
-          "supplierAccountId" : {
-            "$ref" : "#/components/schemas/SupplierAccountID"
-          },
-          "supplierAccountName" : {
-            "$ref" : "#/components/schemas/CustomerAccountName"
-          },
-          "supplierTIN" : {
-            "$ref" : "#/components/schemas/CustomerTIN"
-          },
-          "supplierPhysicalStreetAddress1" : {
-            "$ref" : "#/components/schemas/CustomerStreetAddress1"
-          },
-          "supplierPhysicalStreetAddress2" : {
-            "$ref" : "#/components/schemas/CustomerStreetAddress2"
-          },
-          "supplierPhysicalCity" : {
-            "$ref" : "#/components/schemas/CustomerCity"
-          },
-          "supplierPhysicalZipPostalCode" : {
-            "$ref" : "#/components/schemas/CustomerPhysicalPostalCode"
-          },
-          "supplierPhysicalCountry" : {
-            "$ref" : "#/components/schemas/CustomerCountry"
-          },
-          "supplierBillingAddress1" : {
-            "$ref" : "#/components/schemas/CustomerBillingAddress1"
-          },
-          "supplierBillingAddress2" : {
-            "$ref" : "#/components/schemas/CustomerBillingAddress2"
-          },
-          "supplierBillingCity" : {
-            "$ref" : "#/components/schemas/CustomerBillingCity"
-          },
-          "supplierBillingZipPostalCode" : {
-            "$ref" : "#/components/schemas/CustomerBillingPostalCode"
-          },
-          "supplierBillingCountry" : {
-            "$ref" : "#/components/schemas/CustomerBillingCountry"
-          },
-          "supplierEmail" : {
-            "$ref" : "#/components/schemas/CustomerEmail"
-          },
-          "supplierDomainAddress" : {
-            "$ref" : "#/components/schemas/CustomerDomainAddress"
-          },
-          "supplierActiveStatus" : {
-            "$ref" : "#/components/schemas/CustomerActiveStatus"
-          },
-          "transactionCreditLimit" : {
-            "$ref" : "#/components/schemas/TransactionCreditLimit"
-          },
-          "supplierCreditLimit" : {
-            "$ref" : "#/components/schemas/CustomerCreditLimit"
-          },
-          "supplierTermsDueDays" : {
-            "$ref" : "#/components/schemas/CustomerTermsDueDays"
-          },
-          "supplierEnteredBy" : {
-            "$ref" : "#/components/schemas/EnteredBy"
-          }
-        },
-        "type" : "object"
-      },
-      "APInvoices" : {
-        "items" : {
-          "$ref" : "#/components/schemas/APInvoice"
-        },
-        "type" : "array"
-      },
-      "APInvoice" : {
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/Invoice"
-        } ]
-      },
-      "EntityName" : {
-        "description" : "The name of the entity for which the GL information is applicable.",
-        "example" : "ABC-CO",
-        "type" : "string"
-      },
-      "EntityIdentifier" : {
-        "description" : "The uid of the entity.",
-        "example" : "123456789",
-        "type" : "string"
-      },
-      "PeriodName" : {
-        "description" : "The name of the period as defined by the entity providing the reporting period.",
-        "example" : "Fiscal Year Ended 2019",
-        "type" : "string"
-      },
-      "StartDatePeriod" : {
-        "description" : "The date that the defined reporting period started as defined by the entity providing the reporting period.",
-        "example" : "2019-01-01",
-        "format" : "date",
-        "type" : "string"
-      },
-      "EndDatePeriod" : {
-        "description" : "The date that the defined reporting period ended as defined by the entity providing the reporting period.",
-        "example" : "2019-12-31",
-        "format" : "date",
-        "type" : "string"
-      },
-      "PeriodType" : {
-        "description" : "The type of period defined. For example Quarter, Year Half Year.",
-        "enum" : [ "year", "quarter", "halfYear", "52Weeks", "3QCum", "month", "13Months", "other" ],
-        "example" : "Year",
-        "type" : "string"
-      },
-      "GLDetail" : {
-        "properties" : {
-          "journalId" : {
-            "$ref" : "#/components/schemas/JournalID"
-          },
-          "fiscalYear" : {
-            "$ref" : "#/components/schemas/FiscalYear"
-          },
-          "period" : {
-            "$ref" : "#/components/schemas/Period"
-          },
-          "effectiveDate" : {
-            "$ref" : "#/components/schemas/EffectiveDate"
-          },
-          "jeHeaderDescription" : {
-            "$ref" : "#/components/schemas/JEHeaderDescription"
-          },
-          "source" : {
-            "$ref" : "#/components/schemas/Source"
-          },
-          "businessUnitCode" : {
-            "$ref" : "#/components/schemas/BusinessUnitCode"
-          },
-          "reversalIndicator" : {
-            "$ref" : "#/components/schemas/ReversalIndicator"
-          },
-          "reversalJournalId" : {
-            "$ref" : "#/components/schemas/ReversalJournalID"
-          },
-          "cancellationSign" : {
-            "$ref" : "#/components/schemas/CancellationSign"
-          },
-          "enteredBy" : {
-            "$ref" : "#/components/schemas/EnteredBy"
-          },
-          "enteredDate" : {
-            "$ref" : "#/components/schemas/CreatedDate"
-          },
-          "enteredTime" : {
-            "$ref" : "#/components/schemas/CreatedTime"
-          },
-          "lastModifiedBy" : {
-            "$ref" : "#/components/schemas/LastModifiedBy"
-          },
-          "lastModifiedDate" : {
-            "$ref" : "#/components/schemas/LastModifiedDate"
-          },
-          "approvedBy" : {
-            "$ref" : "#/components/schemas/ApprovedPersonID"
-          },
-          "approvedDate" : {
-            "$ref" : "#/components/schemas/ApprovedDate"
-          },
-          "entityIdentifier" : {
-            "$ref" : "#/components/schemas/EntityIdentifier"
-          },
-          "glLineItems" : {
-            "items" : {
-              "$ref" : "#/components/schemas/GLLineItem"
-            },
-            "type" : "array"
-          }
-        },
-        "required" : [ "effectiveDate", "glLineItems", "journalId" ],
-        "type" : "object"
-      },
-      "GLAccountNumber" : {
-        "description" : "The GL account number defined in the chart of accounts. Matches AICPA Audit Data Standard element GLAccountNumber.",
-        "example" : "1234-567-890",
-        "maxLength" : 100,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "GLAccountNumber"
-      },
-      "BusinessUnitCode" : {
-        "description" : "Used to identify the business unit, region, branch, and so on at the level that financial statements are being audited and for which the trial balance is generated. For example, you may use a code aligned with the concept of a reportable segment as defined in Financial Accounting Standards Board (FASB) Accounting Standards Codification (ASC) 280, Segment Reporting. Matches AICPA Audit Data Standard element BusinessUnitCode.",
-        "example" : "WidgetGroup",
-        "maxLength" : 25,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "BusinessUnitCode"
-      },
-      "BalanceAsOfDate" : {
-        "description" : "The date through which the provided balance reflects account activity. EXAMPLE If a report was run for activity through 2014-12-31 on 2015-01-22, the date recorded would be 20141231. .",
-        "example" : "2018-12-31",
-        "format" : "date",
-        "type" : "string"
-      },
-      "FiscalYear" : {
-        "description" : "Fiscal year in which the EffectiveDate occurs. The year shall be shown in four digits as “YYYY”, which is part of the extended format and the “YYYYMM-DD” in ISO 8601:2004. Matches AICPA Audit Data Standard element FiscalYear.\n",
-        "example" : "2019",
-        "maxLength" : 4,
-        "minLength" : 4,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "FiscalYear"
-      },
-      "Period" : {
-        "description" : "Fiscal period in which the effective date occurs. This is the period defined by the company and is not a standardized format. Examples include W1–W53 for weekly periods, M1–M12 for monthly periods,  Q1–Q4 for quarterly periods and Year for Year. Matches AICPA Audit Data Standard element Period.",
-        "example" : "Year",
-        "maxLength" : 15,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "Period"
-      },
-      "BeginningFunctionalAmount" : {
-        "description" : "Beginning balance amount of the period (same amount as the ending  balance from the prior period after opening journal entries)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number"
-      },
-      "BeginningReportingAmount" : {
-        "description" : "Beginning balance amount for the  period (same amount as the ending  balance from the prior period after opening journal entries) recorded in the currency used for  statutory reporting.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number"
-      },
-      "BeginningLocalAmount" : {
-        "description" : "Beginning balance amount for the  period in the local currency used for  multi-currency tracking.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number"
-      },
-      "FunctionalCurrencyCode" : {
-        "description" : "The code of functional or group currency related to the amount (ISO 4217:2015). Matches AICPA Audit Data Standard element AmountCurrency.",
-        "example" : "USD",
-        "maxLength" : 3,
-        "minLength" : 3,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "AmountCurrency"
-      },
-      "ReportingCurrencyCode" : {
-        "description" : "The code of currency used for nonconsolidated reporting as opposed to functional, consolidated reporting, local or actual amounts (ISO 4217:2015). Matches AICPA Audit Data Standard element ReportingAmountCurrency.",
-        "example" : "USD",
-        "maxLength" : 3,
-        "minLength" : 3,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "ReportingAmountCurrency"
-      },
-      "LocalCurrencyCode" : {
-        "description" : "The currency used for local country reporting requirements in ISO-4217 format. Matches AICPA Audit Data Standard element LocalAmountCurrency.",
-        "example" : "USD",
-        "maxLength" : 3,
-        "minLength" : 3,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "LocalAmountCurrency"
-      },
-      "EndingFunctionalAmount" : {
-        "description" : "Ending balance amount for the period  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.",
-        "example" : 100,
-        "format" : "float",
-        "type" : "number"
-      },
-      "EndingReportingAmount" : {
-        "description" : "Ending balance amount for the period  in the currency used for statutory  reporting.",
-        "example" : 100,
-        "format" : "float",
-        "type" : "number"
-      },
-      "EndingLocalAmount" : {
-        "description" : "Ending balance amount for the period  in local currency used for multi-currency tracking.",
-        "example" : 100,
-        "format" : "float",
-        "type" : "number"
-      },
-      "BudgetFlag" : {
-        "description" : "Indicates if the trial balance amount is an actual amount or a budget amount. If this field is missing from the return result then the value is presumed to be actual.",
-        "enum" : [ "budget", "actual" ],
-        "example" : "actual",
-        "type" : "string"
-      },
-      "DocumentInfoOimJson" : {
-        "properties" : {
-          "documentType" : {
-            "example" : "http://www.xbrl.org/WGWD/YYYY-MM-DD/xbrl-json",
-            "type" : "string"
-          },
-          "features" : {
-            "$ref" : "#/components/schemas/DocumentInfoOimJson_features"
-          },
-          "prefixes" : {
-            "additionalProperties" : {
-              "type" : "string"
-            },
-            "example" : {
-              "xbrl" : "http://www.xbrl.org/WGWD/YYYY-MM-DD/oim",
-              "p1" : "http://www.xbrl.org/2003/iso4217",
-              "p2" : "http://aicpa.org/das/us-gaap/2020-01-31",
-              "p3" : "http://www.xbrl.org/2003/instance"
-            },
-            "type" : "object"
-          },
-          "taxonomy" : {
-            "items" : {
-              "example" : "http://www.aicpa.org/das/us-gaap/2020-01-31.xsd",
-              "type" : "string"
-            },
-            "type" : "array"
-          }
-        },
-        "type" : "object"
-      },
-      "FactsOimJson" : {
-        "example" : {
-          "xfd233befbacbc83e43d510ae01866384c65f23a60482caaa20331642" : {
-            "value" : "151000",
-            "accuracy" : -3,
-            "aspects" : {
-              "concept" : "p2:ContractWithCustomers",
-              "entity" : "p3:0001512228",
-              "period" : "2015-07-01T00:00:00/2016-07-01T00:00:00",
-              "unit" : "p1:USD",
-              "glAccountNumber" : "12345678"
-            }
-          }
-        },
-        "properties" : {
-          "value" : {
-            "type" : "string"
-          },
-          "accuracy" : {
-            "type" : "integer"
-          },
-          "aspects" : {
-            "$ref" : "#/components/schemas/FactsOimJson_aspects"
-          }
-        },
-        "type" : "object"
-      },
-      "GLAccountName" : {
-        "description" : "The name of the GL account.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "FSCaption" : {
-        "description" : "The financial statement caption represents a related group of accounts. EXAMPLE Cash and cash equivalents, accounts payable and cost of sales. The caption can be at the trial balance level.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "AccountType" : {
-        "description" : "The type of account. EXAMPLE Assets, Liabilities, Equity, Revenue and Expense.",
-        "example" : "Asset",
-        "maxLength" : 25,
-        "type" : "string"
-      },
-      "AccountSubtype" : {
-        "description" : "The subtype of the account. EXAMPLE Current assets are the subtype of assets.",
-        "maxLength" : 25,
-        "type" : "string"
-      },
-      "GLAccountDescription" : {
-        "description" : "Label or description associated with GLAccountNumber.",
-        "example" : "Finished goods inventory held by the company.",
-        "maxLength" : 256,
-        "type" : "string"
-      },
-      "ParentGLAccountNumber" : {
-        "description" : "A reference to the GLAccountNumber that is the parent in an account hierarchy. Provided to allow more than the predefined levels of hierarchy in the chart of accounts table.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "XBRLConcept" : {
-        "description" : "XBRL concept associated with the account with the namespace in clark notation.",
-        "example" : "{http://fasb.org/us-gaap/2020-01-31}InventoryFinishedGoods",
-        "type" : "string"
-      },
-      "CustomerAccountID" : {
-        "description" : "The unique identifier for the customer payment is expected or to whom unused credits have been applied. Typically auto-generated by the system.",
-        "example" : "123456",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "TransactionID" : {
-        "description" : "The unique identifier for the transaction of an open AR includes invoice and cash received. Typically auto-generated by the system. Unique identifier for each invoice. This ID may need to be created by concatenating fields (for example, document number, document type, and year) to uniquely identify each transaction. The same ID must be used for all tables with invoice data(Invoices_Generated_YYYYMMDD_YYYYMMDD,Open_Accounts_Receivable_YYYYMMDD,AR_Cash_Application_YYYYMMDD_YYYYMMDD, and AR_Adjustments_YYYYMMDD_YYYYMMDD).",
-        "example" : "1234567890",
-        "maxLength" : 60,
-        "type" : "string"
-      },
-      "InvoiceID" : {
-        "description" : "The unique identifier for the invoice, from which AR is derived. Typically auto-generated by the system. May be set to NULL if adjustment is at customer (not invoice) level. Otherwise shall match the InvoiceID in the SAL_Invoices_Generated table.",
-        "example" : "1234567890",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "TransactionType" : {
-        "description" : "The code value or indicator of the method by which the transaction debit or credit amount was extinguished or apportioned to the debt by the customer (for example, check, wire transfer, cash, credit memo, invoice, interest-only invoice, and so on). If not provided, defaults to invoice.",
-        "enum" : [ "credit", "cash", "invoice", "adjustment", "other" ],
-        "example" : "cash",
-        "maxLength" : 60,
-        "type" : "string"
-      },
-      "TransactionDate" : {
-        "description" : "The date of the transaction, regardless of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.",
-        "example" : "2018-12-31",
-        "format" : "date",
-        "maxLength" : 10,
-        "minLength" : 10,
-        "type" : "string"
-      },
-      "TransactionDueDate" : {
-        "description" : "The date payment is due from the customer. Not all transactions will have a due date. May be set to NULL, if there is no due date. EXAMPLE Credit memos. Aging of a receivable is usually calculated based on this date.",
-        "example" : "2018-12-31",
-        "format" : "date",
-        "maxLength" : 10,
-        "minLength" : 10,
-        "type" : "string"
-      },
-      "FunctionalBalance" : {
-        "description" : "Balance monetary amount recorded in the functional or group currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it. No multicurrency translation should be performed on this amount because all transactions are recorded in a single currency.",
-        "type" : "number"
-      },
-      "ReportingBalance" : {
-        "description" : "Balance monetary amount recorded in the reporting currency.",
-        "example" : 253.23,
-        "type" : "number"
-      },
-      "LocalBalance" : {
-        "description" : "Balance monetary amount in local currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.",
-        "example" : 253.23,
-        "type" : "number"
-      },
-      "FunctionalAmount" : {
-        "description" : "Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Matches AICPA Audit Data Standard element BusinessUnitCode.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number",
-        "x-AICPA-Audit-Data-Std" : "Amount"
-      },
-      "LocalAmount" : {
-        "description" : "Amount in the local country currency where the transaction originated. Matches AICPA Audit Data Standard element LocalAmount.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number",
-        "x-AICPA-Audit-Data-Std" : "LocalAmount"
-      },
-      "ReportingAmount" : {
-        "description" : "Transaction monetary amount recorded in the reporting currency. Matches AICPA Audit Data Standard element ReportingAmount.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number",
-        "x-AICPA-Audit-Data-Std" : "ReportingAmount"
-      },
-      "CreditDebitIndicator" : {
-        "description" : "This indicates whether the amount is a credit or a debit. EXAMPLE C=credit; D=debit. Matches AICPA Audit Data Standard element AmountCreditDebitIndicator.",
-        "enum" : [ "C", "D" ],
-        "example" : "C",
-        "maxLength" : 1,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "AmountCreditDebitIndicator"
-      },
-      "CustomerAccountName" : {
-        "description" : "The name of the customer.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerTIN" : {
-        "description" : "The customer’s tax identification number. This number is usually generated by tax regulator.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerStreetAddress1" : {
-        "description" : "Line 1 of the customer’s physical street address.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerStreetAddress2" : {
-        "description" : "Line 2 of the customer’s physical street address.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerCity" : {
-        "description" : "The physical city where the customer is located.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerPhysicalPostalCode" : {
-        "description" : "The postal code of the city where the customer is physically located.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerCountry" : {
-        "description" : "The country code where the customer is physically located (ISO 3166-1).",
-        "maxLength" : 3,
-        "type" : "string"
-      },
-      "CustomerBillingAddress1" : {
-        "description" : "Line 1 of the customer’s billing address.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerBillingAddress2" : {
-        "description" : "Line 2 of the customer’s billing address.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerBillingCity" : {
-        "description" : "The billing city of the customer.",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "CustomerBillingPostalCode" : {
-        "description" : "The billing postal code of the customer’s city.",
-        "maxLength" : 20,
-        "type" : "string"
-      },
-      "CustomerBillingCountry" : {
-        "description" : "The billing country code of the customer (ISO 3166-1).",
-        "maxLength" : 3,
-        "type" : "string"
-      },
-      "CustomerEmail" : {
-        "description" : "Email address of the primary customer contact.",
-        "example" : "joeSmith@example.com",
-        "type" : "string"
-      },
-      "CustomerDomainAddress" : {
-        "description" : "Web domain address of the customer.",
-        "example" : "www.example.com",
-        "type" : "string"
-      },
-      "CustomerActiveStatus" : {
-        "description" : "Indicates if the customer is active.",
-        "type" : "boolean"
-      },
-      "TransactionCreditLimit" : {
-        "description" : "The per invoice credit limit established for this customer.",
-        "example" : 2500,
-        "type" : "number"
-      },
-      "CustomerCreditLimit" : {
-        "description" : "The credit limit for this customer’s total outstanding balance.",
-        "example" : 2500,
-        "type" : "number"
-      },
-      "CustomerTermsDueDays" : {
-        "description" : "The number of days allowed to meet the obligation before an invoice becomes overdue.",
-        "example" : 30,
-        "type" : "number"
-      },
-      "EnteredBy" : {
-        "description" : "The unique identifier for the person or process that created the record. Matches AICPA Audit Data Standard element EnteredBy.",
-        "example" : "John Smith",
-        "maxLength" : 25,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "EnteredBy"
-      },
-      "Invoice" : {
-        "properties" : {
-          "invoiceId" : {
-            "$ref" : "#/components/schemas/InvoiceID"
-          },
-          "invoiceNumber" : {
-            "$ref" : "#/components/schemas/InvoiceNumber"
-          },
-          "invoiceDate" : {
-            "$ref" : "#/components/schemas/InvoiceDate"
-          },
-          "invoiceFiscalYear" : {
-            "$ref" : "#/components/schemas/FiscalYear"
-          },
-          "invoicePeriod" : {
-            "$ref" : "#/components/schemas/Period"
-          },
-          "invoiceTypeName" : {
-            "$ref" : "#/components/schemas/InvoiceTypeName"
-          },
-          "invoiceDueDate" : {
-            "$ref" : "#/components/schemas/InvoiceDueDate"
-          },
-          "customerAccountId" : {
-            "$ref" : "#/components/schemas/CustomerAccountID"
-          },
-          "settlementMethodCode" : {
-            "$ref" : "#/components/schemas/SettlementMethodCode"
-          },
-          "invoiceAmount" : {
-            "$ref" : "#/components/schemas/InvoiceTransactionAmount"
-          },
-          "invoiceAmountCurrency" : {
-            "$ref" : "#/components/schemas/InvoiceTransactionCURCode"
-          },
-          "paymentTermCode" : {
-            "$ref" : "#/components/schemas/PaymentTermCode"
-          },
-          "enteredBy" : {
-            "$ref" : "#/components/schemas/EnteredBy"
-          },
-          "tax1TypeCode" : {
-            "$ref" : "#/components/schemas/Tax1TypeCode"
-          },
-          "tax1TransactionAmount" : {
-            "$ref" : "#/components/schemas/Tax1TransactionAmount"
-          }
-        },
-        "required" : [ "invoiceId", "invoiceNumber" ],
-        "type" : "object",
-        "x-abstract" : true
-      },
-      "ReferenceNumber" : {
-        "description" : "Identification number for an internally or externally generated transaction (for example, check number, wire transfer number, or original document ID)",
-        "example" : "AK-2345",
-        "type" : "string"
-      },
-      "ReferenceDate" : {
-        "description" : "Date on an externally generated transaction (for example, check date or wire transfer date).",
-        "example" : "2018-12-31",
-        "format" : "date",
-        "type" : "string"
-      },
-      "SupplierAccountID" : {
-        "description" : "The unique identifier of the supplier to whom payment is expected or from whom unused credits have been applied. Typically auto-generated by the system.",
-        "example" : "123456",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "JournalID" : {
-        "description" : "The unique identifier for the journal entry. Typically auto-generated by the system.",
-        "example" : "1234abc",
-        "maxLength" : 100,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "JournalID"
-      },
-      "EffectiveDate" : {
-        "description" : "The date of the journal entry, no matter when the entry is received or created. This sometimes refers to the accounting date or accounting effective date; for example, if the user wants to see the financial results for the period ending March 5, 20X1, the journal entry may be created on any day during the open period and be assigned to the period ending March 5, 20X1. Matches AICPA Audit Data Standard element EffectiveDate.",
-        "example" : "2018-12-31",
-        "format" : "date",
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "EffectiveDate"
-      },
-      "JEHeaderDescription" : {
-        "description" : "Description of the entire journal entry as described by the journal entry header. Matches AICPA Audit Data Standard element JEHeaderDescription.",
-        "example" : "My first json Journal",
-        "maxLength" : 1000,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "JEHeaderDescription"
-      },
-      "Source" : {
-        "description" : "Code for source from which the journal entry originated. EXAMPLE Sales journal, cash receipts journal, general journal, payroll journal, accountant manual entry, or spreadsheet. Matches AICPA Audit Data Standard element Source.",
-        "example" : "Sales journal",
-        "maxLength" : 25,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "Source"
-      },
-      "ReversalIndicator" : {
-        "description" : "Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty (“”) = none of the above or system generated indicators. Matches AICPA Audit Data Standard element ReversalIndicator.",
-        "example" : "1",
-        "maxLength" : 1,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "ReversalIndicator"
-      },
-      "ReversalJournalID" : {
-        "description" : "The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Matches AICPA Audit Data Standard element ReversalJournalID.",
-        "example" : "sales",
-        "maxLength" : 100,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "ReversalJournalID"
-      },
-      "CancellationSign" : {
-        "description" : "The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE False=entry is not cancelled, True=entry is cancelled.",
-        "type" : "boolean",
-        "x-AICPA-Audit-Data-Std" : "none"
-      },
-      "CreatedDate" : {
-        "description" : "The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date. Matches AICPA Audit Data Standard element EnteredDate.",
-        "example" : "2019-01-01",
-        "format" : "date",
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "EnteredDate"
-      },
-      "CreatedTime" : {
-        "description" : "The time the journal entry was created in the system. Matches AICPA Audit Data Standard element EnteredTime.",
-        "example" : "2018-12-31",
-        "format" : "time",
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "EnteredTime"
-      },
-      "LastModifiedBy" : {
-        "description" : "UserID (from UserListing file) for the last person modifying this entry. Matches AICPA Audit Data Standard element LastModifiedBy.",
-        "example" : "Sam Smith",
-        "maxLength" : 25,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "LastModifiedBy"
-      },
-      "LastModifiedDate" : {
-        "description" : "The date the entry was last modified before posting. Matches AICPA Audit Data Standard element LastModifiedDate.",
-        "example" : "2019-01-01",
-        "format" : "date",
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "LastModifiedDate"
-      },
-      "ApprovedPersonID" : {
-        "description" : "The unique identifier for the person who approved the entry. Typically auto-generated by the system.  Matches AICPA Audit Data Standard element ApprovedBy.",
-        "example" : "123456",
-        "maxLength" : 25,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "ApprovedBy"
-      },
-      "ApprovedDate" : {
-        "description" : "The date the entry was approved. Matches AICPA Audit Data Standard element ApprovedDate.",
-        "example" : "2018-12-31",
-        "format" : "date",
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "ApprovedDate"
-      },
-      "GLLineItem" : {
-        "properties" : {
-          "glAccountNumber" : {
-            "$ref" : "#/components/schemas/GLAccountNumber"
-          },
-          "journalIDLineNumber" : {
-            "$ref" : "#/components/schemas/JournalIDLineNumber"
-          },
-          "jeLineDescription" : {
-            "$ref" : "#/components/schemas/JELineDescription"
-          },
-          "amount" : {
-            "$ref" : "#/components/schemas/FunctionalAmount"
-          },
-          "amountCurrency" : {
-            "$ref" : "#/components/schemas/FunctionalCurrencyCode"
-          },
-          "reportingAmount" : {
-            "$ref" : "#/components/schemas/ReportingAmount"
-          },
-          "reportingAmountCurrency" : {
-            "$ref" : "#/components/schemas/ReportingCurrencyCode"
-          },
-          "localAmount" : {
-            "$ref" : "#/components/schemas/LocalAmount"
-          },
-          "localAmountCurrency" : {
-            "$ref" : "#/components/schemas/LocalCurrencyCode"
-          },
-          "transactionAmount" : {
-            "$ref" : "#/components/schemas/TransactionAmount"
-          },
-          "transactionCurrency" : {
-            "$ref" : "#/components/schemas/TransactionCurrencyCode"
-          },
-          "amountCreditDebitIndicator" : {
-            "$ref" : "#/components/schemas/CreditDebitIndicator"
-          }
-        },
-        "required" : [ "amount", "amountCreditDebitIndicator", "amountCurrency", "glAccountNumber" ],
-        "type" : "object"
-      },
-      "InvoiceNumber" : {
-        "description" : "Identification number for an internally generated invoice.",
-        "example" : "1234567890",
-        "maxLength" : 100,
-        "type" : "string"
-      },
-      "InvoiceDate" : {
-        "description" : "The date of the invoice, regardless of the date the invoice is created. This is the date from which the due date is calculated based on the invoice terms.",
-        "format" : "date",
-        "maxLength" : 10,
-        "type" : "string"
-      },
-      "InvoiceTypeName" : {
-        "description" : "The name of the invoice type. The documents are classified according  to business content.",
-        "maxLength" : 60,
-        "type" : "string"
-      },
-      "InvoiceDueDate" : {
-        "description" : "The date payment is due from the customer. Aging of a receivable is usually calculated based on this date.",
-        "format" : "date",
-        "maxLength" : 10,
-        "type" : "string"
-      },
-      "SettlementMethodCode" : {
-        "description" : "The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the SettlementMethodCode in the BAS_Settlement_Method table.",
-        "example" : "sales",
-        "maxLength" : 60,
-        "type" : "string"
-      },
-      "InvoiceTransactionAmount" : {
-        "description" : "The transaction monetary amount  recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency.",
-        "format" : "float",
-        "type" : "number"
-      },
-      "InvoiceTransactionCURCode" : {
-        "description" : "The transactional currency appeared in the invoice (ISO 4217:2015). Shall match the CurrencyCode in the BAS_Currency table.",
-        "maxLength" : 3,
-        "type" : "string"
-      },
-      "PaymentTermCode" : {
-        "description" : "The code of the payment term. Shall match the PaymentTermCode in the BAS_Payment_Term table; for example, cash on delivery, payment 30 days after delivery date.",
-        "maxLength" : 80,
-        "type" : "string"
-      },
-      "Tax1TypeCode" : {
-        "description" : "Code for Tax1 type. This field shall match the TaxTypeCode in the BAS_Tax_Type table.",
-        "maxLength" : 25,
-        "type" : "string"
-      },
-      "Tax1TransactionAmount" : {
-        "description" : "The amount of Tax1 included in the transaction. Recorded in transaction currency.",
-        "format" : "float",
-        "type" : "number"
-      },
-      "JournalIDLineNumber" : {
-        "description" : "Identifier that is unique for each line within a journal entry. Matches AICPA Audit Data Standard element JournalIDLineNumber.",
-        "example" : "1",
-        "maxLength" : 100,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "JournalIDLineNumber"
-      },
-      "JELineDescription" : {
-        "description" : "Description of the individual line within the journal entry. Matches AICPA Audit Data Standard element JELineDescription.",
-        "example" : "Book to accrual account",
-        "maxLength" : 1000,
-        "type" : "string",
-        "x-AICPA-Audit-Data-Std" : "JELineDescription"
-      },
-      "TransactionAmount" : {
-        "description" : "Amount in the transaction currency.",
-        "example" : 100,
-        "format" : "float",
-        "nullable" : true,
-        "type" : "number",
-        "x-AICPA-Audit-Data-Std" : "none"
-      },
-      "TransactionCurrencyCode" : {
-        "description" : "The currency used in actual transaction (ISO 4217:2015).",
-        "maxLength" : 3,
-        "minLength" : 3,
-        "type" : "string"
-      },
-      "DocumentInfoOimJson_features" : {
-        "properties" : {
-          "xbrl:canonicalValues" : {
-            "type" : "boolean"
-          }
-        },
-        "type" : "object"
-      },
-      "FactsOimJson_aspects" : {
-        "properties" : {
-          "concept" : {
-            "type" : "string"
-          },
-          "entity" : {
-            "type" : "string"
-          },
-          "period" : {
-            "type" : "string"
-          },
-          "unit" : {
-            "type" : "string"
-          },
-          "glAccountNumber" : {
-            "$ref" : "#/components/schemas/GLAccountNumber"
-          }
-        },
-        "type" : "object"
-      }
-    }
-  }
+          ],
+"items": {
+"$ref": "#/components/schemas/PeriodDetails"
+},
+"type": "array"
+},
+"PeriodDetails": {
+"properties": {
+"periodName": {
+"$ref": "#/components/schemas/PeriodName"
+},
+"startDatePeriod": {
+"$ref": "#/components/schemas/StartDatePeriod"
+},
+"endDatePeriod": {
+"$ref": "#/components/schemas/EndDatePeriod"
+},
+"periodType": {
+"$ref": "#/components/schemas/PeriodType"
+},
+"entityIdentifier": {
+"$ref": "#/components/schemas/EntityIdentifier"
+}
+},
+"required": [
+"endDatePeriod",
+"periodName",
+"periodType",
+"startDatePeriod"
+],
+"type": "object"
+},
+"GLDetails": {
+"items": {
+"$ref": "#/components/schemas/GLDetail"
+},
+"type": "array"
+},
+"GLAccountBalances": {
+"items": {
+"$ref": "#/components/schemas/GLAccountBalance"
+},
+"type": "array"
+},
+"GLAccountBalance": {
+"properties": {
+"glAccountNumber": {
+"$ref": "#/components/schemas/GLAccountNumber"
+},
+"entityIdentifier": {
+"$ref": "#/components/schemas/EntityIdentifier"
+},
+"businessUnitCode": {
+"$ref": "#/components/schemas/BusinessUnitCode"
+},
+"balanceAsOfDate": {
+"$ref": "#/components/schemas/BalanceAsOfDate"
+},
+"fiscalYear": {
+"$ref": "#/components/schemas/FiscalYear"
+},
+"period": {
+"$ref": "#/components/schemas/Period"
+},
+"amountBeginning": {
+"$ref": "#/components/schemas/BeginningFunctionalAmount"
+},
+"amountBeginningReporting": {
+"$ref": "#/components/schemas/BeginningReportingAmount"
+},
+"amountBeginningLocal": {
+"$ref": "#/components/schemas/BeginningLocalAmount"
+},
+"amountCurrency": {
+"$ref": "#/components/schemas/FunctionalCurrencyCode"
+},
+"amountReportingCurrency": {
+"$ref": "#/components/schemas/ReportingCurrencyCode"
+},
+"amountLocalCurrency": {
+"$ref": "#/components/schemas/LocalCurrencyCode"
+},
+"amountEnding": {
+"$ref": "#/components/schemas/EndingFunctionalAmount"
+},
+"amountEndingReporting": {
+"$ref": "#/components/schemas/EndingReportingAmount"
+},
+"amountEndingLocal": {
+"$ref": "#/components/schemas/EndingLocalAmount"
+},
+"budgetFlag": {
+"$ref": "#/components/schemas/BudgetFlag"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"amountBeginning",
+"amountCurrency",
+"amountEnding",
+"balanceAsOfDate",
+"glAccountNumber"
+],
+"type": "object"
+},
+"XbrlTbResponse": {
+"properties": {
+"documentInfo": {
+"$ref": "#/components/schemas/DocumentInfoOimJson"
+},
+"facts": {
+"$ref": "#/components/schemas/FactsOimJson"
+}
+},
+"type": "object"
+},
+"GLChartOfAccounts": {
+"items": {
+"$ref": "#/components/schemas/GLAccountDetails"
+},
+"type": "array"
+},
+"GLAccountDetails": {
+"properties": {
+"entityIdentifier": {
+"$ref": "#/components/schemas/EntityIdentifier"
+},
+"glAccountNumber": {
+"$ref": "#/components/schemas/GLAccountNumber"
+},
+"glAccountName": {
+"$ref": "#/components/schemas/GLAccountName"
+},
+"fsCaption": {
+"$ref": "#/components/schemas/FSCaption"
+},
+"accountType": {
+"$ref": "#/components/schemas/AccountType"
+},
+"accountSubtype": {
+"$ref": "#/components/schemas/AccountSubtype"
+},
+"glAccountDescription": {
+"$ref": "#/components/schemas/GLAccountDescription"
+},
+"parentGLAccountNumber": {
+"$ref": "#/components/schemas/ParentGLAccountNumber"
+},
+"xbrlConcept": {
+"$ref": "#/components/schemas/XBRLConcept"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"glAccountName",
+"glAccountNumber"
+],
+"type": "object"
+},
+"AROpenAccountsReceivablesItems": {
+"items": {
+"$ref": "#/components/schemas/AROpenAccountsReceivables"
+},
+"type": "array"
+},
+"AROpenAccountsReceivables": {
+"properties": {
+"customerAccountId": {
+"$ref": "#/components/schemas/CustomerAccountID"
+},
+"transactionId": {
+"$ref": "#/components/schemas/TransactionID"
+},
+"invoiceId": {
+"$ref": "#/components/schemas/InvoiceID"
+},
+"transactionType": {
+"$ref": "#/components/schemas/TransactionType"
+},
+"transactionDate": {
+"$ref": "#/components/schemas/TransactionDate"
+},
+"transactionDueDate": {
+"$ref": "#/components/schemas/TransactionDueDate"
+},
+"balanceAmount": {
+"$ref": "#/components/schemas/FunctionalBalance"
+},
+"balanceAmountCurrency": {
+"$ref": "#/components/schemas/FunctionalCurrencyCode"
+},
+"balanceAmountReporting": {
+"$ref": "#/components/schemas/ReportingBalance"
+},
+"balanceReportingCurrency": {
+"$ref": "#/components/schemas/ReportingCurrencyCode"
+},
+"balanceAmountLocal": {
+"$ref": "#/components/schemas/LocalBalance"
+},
+"balanceLocalCurrency": {
+"$ref": "#/components/schemas/LocalCurrencyCode"
+},
+"originalBalanceAmount": {
+"$ref": "#/components/schemas/FunctionalAmount"
+},
+"originalBalanceAmountLocal": {
+"$ref": "#/components/schemas/LocalAmount"
+},
+"originalBalanceAmountReporting": {
+"$ref": "#/components/schemas/ReportingAmount"
+},
+"amountCreditDebitIndicator": {
+"$ref": "#/components/schemas/CreditDebitIndicator"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"balanceAmount",
+"customerAccountId",
+"invoiceId",
+"transactionDate",
+"transactionId"
+],
+"type": "object"
+},
+"Customers": {
+"items": {
+"$ref": "#/components/schemas/Customer"
+},
+"type": "array"
+},
+"Customer": {
+"properties": {
+"customerAccountId": {
+"$ref": "#/components/schemas/CustomerAccountID"
+},
+"customerAccountName": {
+"$ref": "#/components/schemas/CustomerAccountName"
+},
+"customerTIN": {
+"$ref": "#/components/schemas/CustomerTIN"
+},
+"customerPhysicalStreetAddress1": {
+"$ref": "#/components/schemas/CustomerStreetAddress1"
+},
+"customerPhysicalStreetAddress2": {
+"$ref": "#/components/schemas/CustomerStreetAddress2"
+},
+"customerPhysicalCity": {
+"$ref": "#/components/schemas/CustomerCity"
+},
+"customerPhysicalZipPostalCode": {
+"$ref": "#/components/schemas/CustomerPhysicalPostalCode"
+},
+"customerPhysicalCountry": {
+"$ref": "#/components/schemas/CustomerCountry"
+},
+"customerBillingAddress1": {
+"$ref": "#/components/schemas/CustomerBillingAddress1"
+},
+"customerBillingAddress2": {
+"$ref": "#/components/schemas/CustomerBillingAddress2"
+},
+"customerBillingCity": {
+"$ref": "#/components/schemas/CustomerBillingCity"
+},
+"customerBillingZipPostalCode": {
+"$ref": "#/components/schemas/CustomerBillingPostalCode"
+},
+"customerBillingCountry": {
+"$ref": "#/components/schemas/CustomerBillingCountry"
+},
+"customerEmail": {
+"$ref": "#/components/schemas/CustomerEmail"
+},
+"customerDomainAddress": {
+"$ref": "#/components/schemas/CustomerDomainAddress"
+},
+"customerActiveStatus": {
+"$ref": "#/components/schemas/CustomerActiveStatus"
+},
+"transactionCreditLimit": {
+"$ref": "#/components/schemas/TransactionCreditLimit"
+},
+"customerCreditLimit": {
+"$ref": "#/components/schemas/CustomerCreditLimit"
+},
+"customerTermsDueDays": {
+"$ref": "#/components/schemas/CustomerTermsDueDays"
+},
+"customerEnteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"type": "object"
+},
+"ARInvoices": {
+"items": {
+"$ref": "#/components/schemas/ARInvoice"
+},
+"type": "array"
+},
+"ARInvoice": {
+"allOf": [
+{
+"$ref": "#/components/schemas/Invoice"
+}
+]
+},
+"ARCashReceipts": {
+"items": {
+"$ref": "#/components/schemas/ARCashReceipt"
+},
+"type": "array"
+},
+"ARCashReceipt": {
+"properties": {
+"customerAccountId": {
+"$ref": "#/components/schemas/CustomerAccountID"
+},
+"transactionId": {
+"$ref": "#/components/schemas/TransactionID"
+},
+"transactionDate": {
+"$ref": "#/components/schemas/TransactionDate"
+},
+"ReferenceNumber": {
+"$ref": "#/components/schemas/ReferenceNumber"
+},
+"referenceDate": {
+"$ref": "#/components/schemas/ReferenceDate"
+},
+"receiptAmount": {
+"$ref": "#/components/schemas/FunctionalAmount"
+},
+"receiptAmountCurrency": {
+"$ref": "#/components/schemas/FunctionalCurrencyCode"
+},
+"receiptAmountReporting": {
+"$ref": "#/components/schemas/ReportingAmount"
+},
+"receiptAmountReportingCurrency": {
+"$ref": "#/components/schemas/ReportingCurrencyCode"
+},
+"receiptAmountLocal": {
+"$ref": "#/components/schemas/LocalAmount"
+},
+"receiptAmountLocalCurrency": {
+"$ref": "#/components/schemas/LocalCurrencyCode"
+},
+"enteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"customerAccountId",
+"receiptAmount",
+"transactionDate",
+"transactionId"
+],
+"type": "object"
+},
+"APOpenAccountsPayableItems": {
+"items": {
+"$ref": "#/components/schemas/APOpenAccountsPayable"
+},
+"type": "array"
+},
+"APOpenAccountsPayable": {
+"properties": {
+"supplierAccountId": {
+"$ref": "#/components/schemas/SupplierAccountID"
+},
+"transactionId": {
+"$ref": "#/components/schemas/TransactionID"
+},
+"invoiceId": {
+"$ref": "#/components/schemas/InvoiceID"
+},
+"transactionType": {
+"$ref": "#/components/schemas/TransactionType"
+},
+"transactionDate": {
+"$ref": "#/components/schemas/TransactionDate"
+},
+"transactionDueDate": {
+"$ref": "#/components/schemas/TransactionDueDate"
+},
+"balanceAmount": {
+"$ref": "#/components/schemas/FunctionalBalance"
+},
+"balanceAmountCurrency": {
+"$ref": "#/components/schemas/FunctionalCurrencyCode"
+},
+"balanceAmountReporting": {
+"$ref": "#/components/schemas/ReportingBalance"
+},
+"balanceReportingCurrency": {
+"$ref": "#/components/schemas/ReportingCurrencyCode"
+},
+"balanceAmountLocal": {
+"$ref": "#/components/schemas/LocalBalance"
+},
+"balanceLocalCurrency": {
+"$ref": "#/components/schemas/LocalCurrencyCode"
+},
+"originalBalanceAmount": {
+"$ref": "#/components/schemas/FunctionalAmount"
+},
+"originalBalanceAmountLocal": {
+"$ref": "#/components/schemas/LocalAmount"
+},
+"originalBalanceAmountReporting": {
+"$ref": "#/components/schemas/ReportingAmount"
+},
+"amountCreditDebitIndicator": {
+"$ref": "#/components/schemas/CreditDebitIndicator"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"balanceAmount",
+"invoiceId",
+"supplierAccountId",
+"transactionDate",
+"transactionId"
+],
+"type": "object"
+},
+"Suppliers": {
+"items": {
+"$ref": "#/components/schemas/Supplier"
+},
+"type": "array"
+},
+"Supplier": {
+"properties": {
+"supplierAccountId": {
+"$ref": "#/components/schemas/SupplierAccountID"
+},
+"supplierAccountName": {
+"$ref": "#/components/schemas/CustomerAccountName"
+},
+"supplierTIN": {
+"$ref": "#/components/schemas/CustomerTIN"
+},
+"supplierPhysicalStreetAddress1": {
+"$ref": "#/components/schemas/CustomerStreetAddress1"
+},
+"supplierPhysicalStreetAddress2": {
+"$ref": "#/components/schemas/CustomerStreetAddress2"
+},
+"supplierPhysicalCity": {
+"$ref": "#/components/schemas/CustomerCity"
+},
+"supplierPhysicalZipPostalCode": {
+"$ref": "#/components/schemas/CustomerPhysicalPostalCode"
+},
+"supplierPhysicalCountry": {
+"$ref": "#/components/schemas/CustomerCountry"
+},
+"supplierBillingAddress1": {
+"$ref": "#/components/schemas/CustomerBillingAddress1"
+},
+"supplierBillingAddress2": {
+"$ref": "#/components/schemas/CustomerBillingAddress2"
+},
+"supplierBillingCity": {
+"$ref": "#/components/schemas/CustomerBillingCity"
+},
+"supplierBillingZipPostalCode": {
+"$ref": "#/components/schemas/CustomerBillingPostalCode"
+},
+"supplierBillingCountry": {
+"$ref": "#/components/schemas/CustomerBillingCountry"
+},
+"supplierEmail": {
+"$ref": "#/components/schemas/CustomerEmail"
+},
+"supplierDomainAddress": {
+"$ref": "#/components/schemas/CustomerDomainAddress"
+},
+"supplierActiveStatus": {
+"$ref": "#/components/schemas/CustomerActiveStatus"
+},
+"transactionCreditLimit": {
+"$ref": "#/components/schemas/TransactionCreditLimit"
+},
+"supplierCreditLimit": {
+"$ref": "#/components/schemas/CustomerCreditLimit"
+},
+"supplierTermsDueDays": {
+"$ref": "#/components/schemas/CustomerTermsDueDays"
+},
+"supplierEnteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"type": "object"
+},
+"APInvoices": {
+"items": {
+"$ref": "#/components/schemas/APInvoice"
+},
+"type": "array"
+},
+"APInvoice": {
+"properties": {
+"invoiceId": {
+"$ref": "#/components/schemas/InvoiceID"
+},
+"invoiceNumber": {
+"$ref": "#/components/schemas/InvoiceNumber"
+},
+"invoiceDate": {
+"$ref": "#/components/schemas/InvoiceDate"
+},
+"invoiceFiscalYear": {
+"$ref": "#/components/schemas/FiscalYear"
+},
+"invoicePeriod": {
+"$ref": "#/components/schemas/Period"
+},
+"invoiceTypeName": {
+"$ref": "#/components/schemas/InvoiceTypeName"
+},
+"invoiceDueDate": {
+"$ref": "#/components/schemas/InvoiceDueDate"
+},
+"supplierAccountId": {
+"$ref": "#/components/schemas/SupplierAccountID"
+},
+"settlementMethodCode": {
+"$ref": "#/components/schemas/SettlementMethodCode"
+},
+"invoiceAmount": {
+"$ref": "#/components/schemas/InvoiceTransactionAmount"
+},
+"invoiceAmountCurrency": {
+"$ref": "#/components/schemas/InvoiceTransactionCURCode"
+},
+"paymentTermCode": {
+"$ref": "#/components/schemas/PaymentTermCode"
+},
+"enteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"tax1TypeCode": {
+"$ref": "#/components/schemas/Tax1TypeCode"
+},
+"tax1TransactionAmount": {
+"$ref": "#/components/schemas/Tax1TransactionAmount"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"invoiceId",
+"invoiceNumber"
+],
+"type": "object",
+"x-abstract": true
+},
+"APPaymentsMade": {
+"properties": {
+"supplierAccountId": {
+"$ref": "#/components/schemas/SupplierAccountID"
+},
+"transactionId": {
+"$ref": "#/components/schemas/TransactionID"
+},
+"transactionDate": {
+"$ref": "#/components/schemas/TransactionDate"
+},
+"referenceNumber": {
+"$ref": "#/components/schemas/ReferenceNumber"
+},
+"referenceDate": {
+"$ref": "#/components/schemas/ReferenceDate"
+},
+"paymentType": {
+"$ref": "#/components/schemas/PaymentType"
+},
+"paymentAmount": {
+"$ref": "#/components/schemas/FunctionalAmount"
+},
+"paymentAmountCurrency": {
+"$ref": "#/components/schemas/FunctionalCurrencyCode"
+},
+"paymentAmountReporting": {
+"$ref": "#/components/schemas/ReportingAmount"
+},
+"paymentAmountReportingCurrency": {
+"$ref": "#/components/schemas/ReportingCurrencyCode"
+},
+"paymentAmountLocal": {
+"$ref": "#/components/schemas/LocalAmount"
+},
+"paymentAmountLocalCurrency": {
+"$ref": "#/components/schemas/LocalCurrencyCode"
+},
+"enteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"paymentAmount",
+"supplierAccountId",
+"transactionDate",
+"transactionId"
+],
+"type": "object"
+},
+"InventoryOnHandItems": {
+"items": {
+"$ref": "#/components/schemas/InventoryOnHand"
+},
+"type": "array"
+},
+"InventoryOnHand": {
+"properties": {
+"inventoryProductId": {
+"$ref": "#/components/schemas/InventoryProductID"
+},
+"inventoryDescription": {
+"$ref": "#/components/schemas/InventoryDescription"
+},
+"inventoryBarCode": {
+"$ref": "#/components/schemas/Inventory_Bar_Code"
+},
+"locationID": {
+"$ref": "#/components/schemas/LocationID"
+},
+"inventoryQuantity": {
+"$ref": "#/components/schemas/InventoryQuantity"
+},
+"inventoryStockingUOM": {
+"$ref": "#/components/schemas/InventoryStockingUOM"
+},
+"inventoryCostMethod": {
+"$ref": "#/components/schemas/InventoryCostMethod"
+},
+"inventoryCost": {
+"$ref": "#/components/schemas/InventoryCost"
+},
+"balanceAsOfDate": {
+"$ref": "#/components/schemas/BalanceAsOfDate"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"inventoryCost",
+"inventoryProductId",
+"inventoryQuantity",
+"inventoryStockingUOM"
+],
+"type": "object"
+},
+"InventoryTransactionItems": {
+"items": {
+"$ref": "#/components/schemas/InventoryTransaction"
+},
+"type": "array"
+},
+"InventoryTransaction": {
+"$ref": "#/components/schemas/InventoryTransactions"
+},
+"InventoryTransactions": {
+"properties": {
+"inventoryProductId": {
+"$ref": "#/components/schemas/InventoryProductID"
+},
+"transactionType": {
+"$ref": "#/components/schemas/InventoryTransactionType"
+},
+"transactionDate": {
+"$ref": "#/components/schemas/TransactionDate"
+},
+"transactionQuantity": {
+"$ref": "#/components/schemas/TransactionQuantity"
+},
+"transactionDescription": {
+"$ref": "#/components/schemas/TransactionDescription"
+},
+"inventoryGLLineDebitAccount": {
+"$ref": "#/components/schemas/GLAccountNumber"
+},
+"inventoryGLLineCreditAccount": {
+"$ref": "#/components/schemas/GLAccountNumber"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"inventoryProductId"
+],
+"type": "object"
+},
+"EntityName": {
+"description": "The name of the entity for which the GL information is applicable.",
+"example": "ABC-CO",
+"type": "string"
+},
+"EntityIdentifier": {
+"description": "The uid of the entity.",
+"example": "123456789",
+"type": "string"
+},
+"PeriodName": {
+"description": "The name of the period as defined by the entity providing the reporting period.",
+"example": "Fiscal Year Ended 2019",
+"type": "string"
+},
+"StartDatePeriod": {
+"description": "The date that the defined reporting period started as defined by the entity providing the reporting period.",
+"example": "2019-01-01",
+"format": "date",
+"type": "string"
+},
+"EndDatePeriod": {
+"description": "The date that the defined reporting period ended as defined by the entity providing the reporting period.",
+"example": "2019-12-31",
+"format": "date",
+"type": "string"
+},
+"PeriodType": {
+"description": "The type of period defined. For example Quarter, Year Half Year.",
+"enum": [
+"year",
+"quarter",
+"halfYear",
+"52Weeks",
+"3QCum",
+"month",
+"13Months",
+"other"
+],
+"example": "Year",
+"type": "string"
+},
+"GLDetail": {
+"properties": {
+"journalId": {
+"$ref": "#/components/schemas/JournalID"
+},
+"fiscalYear": {
+"$ref": "#/components/schemas/FiscalYear"
+},
+"period": {
+"$ref": "#/components/schemas/Period"
+},
+"effectiveDate": {
+"$ref": "#/components/schemas/EffectiveDate"
+},
+"jeHeaderDescription": {
+"$ref": "#/components/schemas/JEHeaderDescription"
+},
+"source": {
+"$ref": "#/components/schemas/Source"
+},
+"businessUnitCode": {
+"$ref": "#/components/schemas/BusinessUnitCode"
+},
+"reversalIndicator": {
+"$ref": "#/components/schemas/ReversalIndicator"
+},
+"reversalJournalId": {
+"$ref": "#/components/schemas/ReversalJournalID"
+},
+"cancellationSign": {
+"$ref": "#/components/schemas/CancellationSign"
+},
+"enteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"enteredDate": {
+"$ref": "#/components/schemas/CreatedDate"
+},
+"enteredTime": {
+"$ref": "#/components/schemas/CreatedTime"
+},
+"lastModifiedBy": {
+"$ref": "#/components/schemas/LastModifiedBy"
+},
+"lastModifiedDate": {
+"$ref": "#/components/schemas/LastModifiedDate"
+},
+"approvedBy": {
+"$ref": "#/components/schemas/ApprovedPersonID"
+},
+"approvedDate": {
+"$ref": "#/components/schemas/ApprovedDate"
+},
+"entityIdentifier": {
+"$ref": "#/components/schemas/EntityIdentifier"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+},
+"glLineItems": {
+"items": {
+"$ref": "#/components/schemas/GLLineItem"
+},
+"type": "array"
+}
+},
+"required": [
+"effectiveDate",
+"glLineItems",
+"journalId"
+],
+"type": "object"
+},
+"GLAccountNumber": {
+"description": "The GL account number defined in the chart of accounts. Matches AICPA Audit Data Standard element GLAccountNumber.",
+"example": "1234-567-890",
+"maxLength": 100,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "GLAccountNumber"
+},
+"BusinessUnitCode": {
+"description": "Used to identify the business unit, region, branch, and so on at the level that financial statements are being audited and for which the trial balance is generated. For example, you may use a code aligned with the concept of a reportable segment as defined in Financial Accounting Standards Board (FASB) Accounting Standards Codification (ASC) 280, Segment Reporting. Matches AICPA Audit Data Standard element BusinessUnitCode.",
+"example": "WidgetGroup",
+"maxLength": 25,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "BusinessUnitCode"
+},
+"BalanceAsOfDate": {
+"description": "The date through which the provided balance reflects account activity. EXAMPLE If a report was run for activity through 2014-12-31 on 2015-01-22, the date recorded would be 20141231. .",
+"example": "2018-12-31",
+"format": "date",
+"type": "string"
+},
+"FiscalYear": {
+"description": "Fiscal year in which the EffectiveDate occurs. The year shall be shown in four digits as 'YYYY', which is part of the extended format and the 'YYYYMM-DD' in ISO 8601:2004. Matches AICPA Audit Data Standard element FiscalYear.\n",
+"example": "2019",
+"maxLength": 4,
+"minLength": 4,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "FiscalYear"
+},
+"Period": {
+"description": "Fiscal period in which the effective date occurs. This is the period defined by the company and is not a standardized format. Examples include W1-W53 for weekly periods, M1-M12 for monthly periods,  Q1-Q4 for quarterly periods and Year for Year. Matches AICPA Audit Data Standard element Period.",
+"example": "Year",
+"maxLength": 15,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "Period"
+},
+"BeginningFunctionalAmount": {
+"description": "Beginning balance amount of the period (same amount as the ending  balance from the prior period after opening journal entries)  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number"
+},
+"BeginningReportingAmount": {
+"description": "Beginning balance amount for the  period (same amount as the ending  balance from the prior period after opening journal entries) recorded in the currency used for  statutory reporting.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number"
+},
+"BeginningLocalAmount": {
+"description": "Beginning balance amount for the  period in the local currency used for  multi-currency tracking.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number"
+},
+"FunctionalCurrencyCode": {
+"description": "The code of functional or group currency related to the amount (ISO 4217:2015). Matches AICPA Audit Data Standard element AmountCurrency.",
+"example": "USD",
+"maxLength": 3,
+"minLength": 3,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "AmountCurrency"
+},
+"ReportingCurrencyCode": {
+"description": "The code of currency used for nonconsolidated reporting as opposed to functional, consolidated reporting, local or actual amounts (ISO 4217:2015). Matches AICPA Audit Data Standard element ReportingAmountCurrency.",
+"example": "USD",
+"maxLength": 3,
+"minLength": 3,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "ReportingAmountCurrency"
+},
+"LocalCurrencyCode": {
+"description": "The currency used for local country reporting requirements in ISO-4217 format. Matches AICPA Audit Data Standard element LocalAmountCurrency.",
+"example": "USD",
+"maxLength": 3,
+"minLength": 3,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "LocalAmountCurrency"
+},
+"EndingFunctionalAmount": {
+"description": "Ending balance amount for the period  recorded in the functional or group  currency. No multi-currency  translation should be performed on  this amount because all are recorded  in a single currency.",
+"example": 100,
+"format": "float",
+"type": "number"
+},
+"EndingReportingAmount": {
+"description": "Ending balance amount for the period  in the currency used for statutory  reporting.",
+"example": 100,
+"format": "float",
+"type": "number"
+},
+"EndingLocalAmount": {
+"description": "Ending balance amount for the period  in local currency used for multi-currency tracking.",
+"example": 100,
+"format": "float",
+"type": "number"
+},
+"BudgetFlag": {
+"description": "Indicates if the trial balance amount is an actual amount or a budget amount. If this field is missing from the return result then the value is presumed to be actual.",
+"enum": [
+"budget",
+"actual"
+],
+"example": "actual",
+"type": "string"
+},
+"SourceSystem": {
+"description": "Identifies the system that the data was sourced from.",
+"example": "XERO - Company J",
+"type": "string"
+},
+"DocumentInfoOimJson": {
+"properties": {
+"documentType": {
+"example": "http://www.xbrl.org/WGWD/YYYY-MM-DD/xbrl-json",
+"type": "string"
+},
+"features": {
+"$ref": "#/components/schemas/DocumentInfoOimJson_features"
+},
+"prefixes": {
+"additionalProperties": {
+"type": "string"
+},
+"example": {
+"xbrl": "http://www.xbrl.org/WGWD/YYYY-MM-DD/oim",
+"p1": "http://www.xbrl.org/2003/iso4217",
+"p2": "http://aicpa.org/das/us-gaap/2020-01-31",
+"p3": "http://www.xbrl.org/2003/instance"
+},
+"type": "object"
+},
+"taxonomy": {
+"items": {
+"example": "http://www.aicpa.org/das/us-gaap/2020-01-31.xsd",
+"type": "string"
+},
+"type": "array"
+}
+},
+"type": "object"
+},
+"FactsOimJson": {
+"example": {
+"xfd233befbacbc83e43d510ae01866384c65f23a60482caaa20331642": {
+"value": "151000",
+"accuracy": -3,
+"aspects": {
+"concept": "p2:ContractWithCustomers",
+"entity": "p3:0001512228",
+"period": "2015-07-01T00:00:00/2016-07-01T00:00:00",
+"unit": "p1:USD",
+"glAccountNumber": "12345678"
+}
+}
+},
+"properties": {
+"value": {
+"type": "string"
+},
+"accuracy": {
+"type": "integer"
+},
+"aspects": {
+"$ref": "#/components/schemas/FactsOimJson_aspects"
+}
+},
+"type": "object"
+},
+"GLAccountName": {
+"description": "The name of the GL account.",
+"maxLength": 100,
+"type": "string"
+},
+"FSCaption": {
+"description": "The financial statement caption represents a related group of accounts. EXAMPLE Cash and cash equivalents, accounts payable and cost of sales. The caption can be at the trial balance level.",
+"maxLength": 100,
+"type": "string"
+},
+"AccountType": {
+"description": "The type of account. EXAMPLE Assets, Liabilities, Equity, Revenue and Expense.",
+"example": "Asset",
+"maxLength": 25,
+"type": "string"
+},
+"AccountSubtype": {
+"description": "The subtype of the account. EXAMPLE Current assets are the subtype of assets.",
+"maxLength": 25,
+"type": "string"
+},
+"GLAccountDescription": {
+"description": "Label or description associated with GLAccountNumber.",
+"example": "Finished goods inventory held by the company.",
+"maxLength": 256,
+"type": "string"
+},
+"ParentGLAccountNumber": {
+"description": "A reference to the GLAccountNumber that is the parent in an account hierarchy. Provided to allow more than the predefined levels of hierarchy in the chart of accounts table.",
+"maxLength": 100,
+"type": "string"
+},
+"XBRLConcept": {
+"description": "XBRL concept associated with the account with the namespace in clark notation.",
+"example": "{http://fasb.org/us-gaap/2020-01-31}InventoryFinishedGoods",
+"type": "string"
+},
+"CustomerAccountID": {
+"description": "The unique identifier for the customer payment is expected or to whom unused credits have been applied. Typically auto-generated by the system.",
+"example": "123456",
+"maxLength": 100,
+"type": "string"
+},
+"TransactionID": {
+"description": "The unique identifier for the transaction of an open AR includes invoice and cash received. Typically auto-generated by the system. Unique identifier for each invoice. This ID may need to be created by concatenating fields (for example, document number, document type, and year) to uniquely identify each transaction. The same ID must be used for all tables with invoice data(Invoices_Generated_YYYYMMDD_YYYYMMDD,Open_Accounts_Receivable_YYYYMMDD,AR_Cash_Application_YYYYMMDD_YYYYMMDD, and AR_Adjustments_YYYYMMDD_YYYYMMDD).",
+"example": "1234567890",
+"maxLength": 60,
+"type": "string"
+},
+"InvoiceID": {
+"description": "The unique identifier for the invoice, from which AR is derived. Typically auto-generated by the system. May be set to NULL if adjustment is at customer (not invoice) level. Otherwise shall match the InvoiceID in the SAL_Invoices_Generated table.",
+"example": "1234567890",
+"maxLength": 100,
+"type": "string"
+},
+"TransactionType": {
+"description": "The code value or indicator of the method by which the transaction debit or credit amount was extinguished or apportioned to the debt by the customer (for example, check, wire transfer, cash, credit memo, invoice, interest-only invoice, and so on). If not provided, defaults to invoice.",
+"enum": [
+"credit",
+"cash",
+"invoice",
+"adjustment",
+"other"
+],
+"example": "cash",
+"maxLength": 60,
+"type": "string"
+},
+"TransactionDate": {
+"description": "The date of the transaction, regardless of the date the transaction is created. This is the date from which the due date is calculated based on the invoice terms.",
+"example": "2018-12-31",
+"format": "date",
+"maxLength": 10,
+"minLength": 10,
+"type": "string"
+},
+"TransactionDueDate": {
+"description": "The date payment is due from the customer. Not all transactions will have a due date. May be set to NULL, if there is no due date. EXAMPLE Credit memos. Aging of a receivable is usually calculated based on this date.",
+"example": "2018-12-31",
+"format": "date",
+"maxLength": 10,
+"minLength": 10,
+"type": "string"
+},
+"FunctionalBalance": {
+"description": "Balance monetary amount recorded in the functional or group currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it. No multicurrency translation should be performed on this amount because all transactions are recorded in a single currency.",
+"type": "number"
+},
+"ReportingBalance": {
+"description": "Balance monetary amount recorded in the reporting currency.",
+"example": 253.23,
+"type": "number"
+},
+"LocalBalance": {
+"description": "Balance monetary amount in local currency. The balance here refers to the remaining balance unreceived or needing settlement, which can be calculated by analyzing net of the originating invoice and any cash received and adjustments against it.",
+"example": 253.23,
+"type": "number"
+},
+"FunctionalAmount": {
+"description": "Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Matches AICPA Audit Data Standard element BusinessUnitCode.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number",
+"x-AICPA-Audit-Data-Std": "Amount"
+},
+"LocalAmount": {
+"description": "Amount in the local country currency where the transaction originated. Matches AICPA Audit Data Standard element LocalAmount.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number",
+"x-AICPA-Audit-Data-Std": "LocalAmount"
+},
+"ReportingAmount": {
+"description": "Transaction monetary amount recorded in the reporting currency. Matches AICPA Audit Data Standard element ReportingAmount.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number",
+"x-AICPA-Audit-Data-Std": "ReportingAmount"
+},
+"CreditDebitIndicator": {
+"description": "This indicates whether the amount is a credit or a debit. EXAMPLE C=credit; D=debit. Matches AICPA Audit Data Standard element AmountCreditDebitIndicator.",
+"enum": [
+"C",
+"D"
+],
+"example": "C",
+"maxLength": 1,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "AmountCreditDebitIndicator"
+},
+"CustomerAccountName": {
+"description": "The name of the customer.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerTIN": {
+"description": "The customer's tax identification number. This number is usually generated by tax regulator.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerStreetAddress1": {
+"description": "Line 1 of the customer's physical street address.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerStreetAddress2": {
+"description": "Line 2 of the customer's physical street address.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerCity": {
+"description": "The physical city where the customer is located.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerPhysicalPostalCode": {
+"description": "The postal code of the city where the customer is physically located.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerCountry": {
+"description": "The country code where the customer is physically located (ISO 3166-1).",
+"maxLength": 3,
+"type": "string"
+},
+"CustomerBillingAddress1": {
+"description": "Line 1 of the customer's billing address.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerBillingAddress2": {
+"description": "Line 2 of the customer's billing address.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerBillingCity": {
+"description": "The billing city of the customer.",
+"maxLength": 100,
+"type": "string"
+},
+"CustomerBillingPostalCode": {
+"description": "The billing postal code of the customer's city.",
+"maxLength": 20,
+"type": "string"
+},
+"CustomerBillingCountry": {
+"description": "The billing country code of the customer (ISO 3166-1).",
+"maxLength": 3,
+"type": "string"
+},
+"CustomerEmail": {
+"description": "Email address of the primary customer contact.",
+"example": "joeSmith@example.com",
+"type": "string"
+},
+"CustomerDomainAddress": {
+"description": "Web domain address of the customer.",
+"example": "www.example.com",
+"type": "string"
+},
+"CustomerActiveStatus": {
+"description": "Indicates if the customer is active.",
+"type": "boolean"
+},
+"TransactionCreditLimit": {
+"description": "The per invoice credit limit established for this customer.",
+"example": 2500,
+"type": "number"
+},
+"CustomerCreditLimit": {
+"description": "The credit limit for this customer's total outstanding balance.",
+"example": 2500,
+"type": "number"
+},
+"CustomerTermsDueDays": {
+"description": "The number of days allowed to meet the obligation before an invoice becomes overdue.",
+"example": 30,
+"type": "number"
+},
+"EnteredBy": {
+"description": "The unique identifier for the person or process that created the record. Matches AICPA Audit Data Standard element EnteredBy.",
+"example": "John Smith",
+"maxLength": 25,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "EnteredBy"
+},
+"Invoice": {
+"properties": {
+"invoiceId": {
+"$ref": "#/components/schemas/InvoiceID"
+},
+"invoiceNumber": {
+"$ref": "#/components/schemas/InvoiceNumber"
+},
+"invoiceDate": {
+"$ref": "#/components/schemas/InvoiceDate"
+},
+"invoiceFiscalYear": {
+"$ref": "#/components/schemas/FiscalYear"
+},
+"invoicePeriod": {
+"$ref": "#/components/schemas/Period"
+},
+"invoiceTypeName": {
+"$ref": "#/components/schemas/InvoiceTypeName"
+},
+"invoiceDueDate": {
+"$ref": "#/components/schemas/InvoiceDueDate"
+},
+"customerAccountId": {
+"$ref": "#/components/schemas/CustomerAccountID"
+},
+"settlementMethodCode": {
+"$ref": "#/components/schemas/SettlementMethodCode"
+},
+"invoiceAmount": {
+"$ref": "#/components/schemas/InvoiceTransactionAmount"
+},
+"invoiceAmountCurrency": {
+"$ref": "#/components/schemas/InvoiceTransactionCURCode"
+},
+"paymentTermCode": {
+"$ref": "#/components/schemas/PaymentTermCode"
+},
+"enteredBy": {
+"$ref": "#/components/schemas/EnteredBy"
+},
+"tax1TypeCode": {
+"$ref": "#/components/schemas/Tax1TypeCode"
+},
+"tax1TransactionAmount": {
+"$ref": "#/components/schemas/Tax1TransactionAmount"
+},
+"sourceSystem": {
+"$ref": "#/components/schemas/SourceSystem"
+}
+},
+"required": [
+"invoiceId",
+"invoiceNumber"
+],
+"type": "object",
+"x-abstract": true
+},
+"ReferenceNumber": {
+"description": "Identification number for an internally or externally generated transaction (for example, check number, wire transfer number, or original document ID)",
+"example": "AK-2345",
+"type": "string"
+},
+"ReferenceDate": {
+"description": "Date on an externally generated transaction (for example, check date or wire transfer date).",
+"example": "2018-12-31",
+"format": "date",
+"type": "string"
+},
+"SupplierAccountID": {
+"description": "The unique identifier of the supplier to whom payment is expected or from whom unused credits have been applied. Typically auto-generated by the system.",
+"example": "123456",
+"maxLength": 100,
+"type": "string"
+},
+"InvoiceNumber": {
+"description": "Identification number for an internally generated invoice.",
+"example": "1234567890",
+"maxLength": 100,
+"type": "string"
+},
+"InvoiceDate": {
+"description": "The date of the invoice, regardless of the date the invoice is created. This is the date from which the due date is calculated based on the invoice terms.",
+"format": "date",
+"maxLength": 10,
+"type": "string"
+},
+"InvoiceTypeName": {
+"description": "The name of the invoice type. The documents are classified according  to business content.",
+"maxLength": 60,
+"type": "string"
+},
+"InvoiceDueDate": {
+"description": "The date payment is due from the customer. Aging of a receivable is usually calculated based on this date.",
+"format": "date",
+"maxLength": 10,
+"type": "string"
+},
+"SettlementMethodCode": {
+"description": "The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Shall match the SettlementMethodCode in the BAS_Settlement_Method table.",
+"example": "sales",
+"maxLength": 60,
+"type": "string"
+},
+"InvoiceTransactionAmount": {
+"description": "The transaction monetary amount  recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency.",
+"format": "float",
+"type": "number"
+},
+"InvoiceTransactionCURCode": {
+"description": "The transactional currency appeared in the invoice (ISO 4217:2015). Shall match the CurrencyCode in the BAS_Currency table.",
+"maxLength": 3,
+"type": "string"
+},
+"PaymentTermCode": {
+"description": "The code of the payment term. Shall match the PaymentTermCode in the BAS_Payment_Term table; for example, cash on delivery, payment 30 days after delivery date.",
+"maxLength": 80,
+"type": "string"
+},
+"Tax1TypeCode": {
+"description": "Code for Tax1 type. This field shall match the TaxTypeCode in the BAS_Tax_Type table.",
+"maxLength": 25,
+"type": "string"
+},
+"Tax1TransactionAmount": {
+"description": "The amount of Tax1 included in the transaction. Recorded in transaction currency.",
+"format": "float",
+"type": "number"
+},
+"PaymentType": {
+"description": "The method by which the transaction amount was extinguished or apportioned to the debt by the supplier (for example, check, wire transfer, cash)",
+"example": "cash",
+"type": "string"
+},
+"InventoryProductID": {
+"description": "Inventory product identifier.",
+"example": "SKU-12345",
+"type": "string"
+},
+"InventoryDescription": {
+"description": "Description of Inventory item.",
+"example": "Titanium Oxide",
+"type": "string"
+},
+"Inventory_Bar_Code": {
+"description": "UPC product code.",
+"example": "122334423432",
+"type": "string"
+},
+"LocationID": {
+"description": "Inventory location identifier.",
+"example": "A1234",
+"type": "string"
+},
+"InventoryQuantity": {
+"description": "Count as expressed in the UOM.",
+"example": 30,
+"type": "number"
+},
+"InventoryStockingUOM": {
+"description": "Unit of measure used associated with the quantity used for stocking inventory. Use the Stand UOM measures defined in the XBRL units of measure registry at https://www.xbrl.org/utr/utr.xml.",
+"example": "kg",
+"type": "string"
+},
+"InventoryCostMethod": {
+"description": "Description of costing practice, such as LIFO, FIFO, Average, Standard, and specific identification.",
+"example": "LIFO",
+"type": "string"
+},
+"InventoryCost": {
+"description": "Cost per unit using the inventory cost method.",
+"example": 23.33,
+"type": "number"
+},
+"InventoryTransactionType": {
+"description": "Different software products use different codes and descriptions for the primary inventory-specific actions that take place in inventory transactions related to the movement of goods related to trade, quantity adjustments from internal business events and cost adjustments, due to market factors or damage. While the client and auditor can agree on codes and descriptions to describe the impact on inventory quantities and costs, the use of this set of standard entries can provide an automated understanding of the transaction.",
+"enum": [
+"Damage",
+"Increase_Due_To_Revaluation",
+"Lower_Of_Cost_or_Market_Realization",
+"Moved_From_Production",
+"Moved_To_Production",
+"Obsolete",
+"Physical_Count_Adjustment",
+"Receipt",
+"Return",
+"Scrapped",
+"Shipment",
+"Transfer"
+],
+"example": "Receipt",
+"type": "string"
+},
+"TransactionQuantity": {
+"description": "Quantity or item affected expressed in location stocking unit. Enter stock in as a positive and stock out as a negative.",
+"example": 129,
+"type": "number"
+},
+"TransactionDescription": {
+"description": "Description of transaction.",
+"example": "Received Inventory from supplier.",
+"type": "string"
+},
+"JournalID": {
+"description": "The unique identifier for the journal entry. Typically auto-generated by the system.",
+"example": "1234abc",
+"maxLength": 100,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "JournalID"
+},
+"EffectiveDate": {
+"description": "The date of the journal entry, no matter when the entry is received or created. This sometimes refers to the accounting date or accounting effective date; for example, if the user wants to see the financial results for the period ending March 5, 20X1, the journal entry may be created on any day during the open period and be assigned to the period ending March 5, 20X1. Matches AICPA Audit Data Standard element EffectiveDate.",
+"example": "2018-12-31",
+"format": "date",
+"type": "string",
+"x-AICPA-Audit-Data-Std": "EffectiveDate"
+},
+"JEHeaderDescription": {
+"description": "Description of the entire journal entry as described by the journal entry header. Matches AICPA Audit Data Standard element JEHeaderDescription.",
+"example": "My first json Journal",
+"maxLength": 1000,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "JEHeaderDescription"
+},
+"Source": {
+"description": "Code for source from which the journal entry originated. EXAMPLE Sales journal, cash receipts journal, general journal, payroll journal, accountant manual entry, or spreadsheet. Matches AICPA Audit Data Standard element Source.",
+"example": "Sales journal",
+"maxLength": 25,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "Source"
+},
+"ReversalIndicator": {
+"description": "Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty ('') = none of the above or system generated indicators. Matches AICPA Audit Data Standard element ReversalIndicator.",
+"example": "1",
+"maxLength": 1,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "ReversalIndicator"
+},
+"ReversalJournalID": {
+"description": "The code value or indicator of the settlement method used for cash receipt from customers (i.e. sales) and cash payment to suppliers (i.e. purchase); for example, check, wire transfer and cash. Matches AICPA Audit Data Standard element ReversalJournalID.",
+"example": "sales",
+"maxLength": 100,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "ReversalJournalID"
+},
+"CancellationSign": {
+"description": "The sign of cancellation of a journal entry already formed but not yet posted. EXAMPLE False=entry is not cancelled, True=entry is cancelled.",
+"type": "boolean",
+"x-AICPA-Audit-Data-Std": "none"
+},
+"CreatedDate": {
+"description": "The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date. Matches AICPA Audit Data Standard element EnteredDate.",
+"example": "2019-01-01",
+"format": "date",
+"type": "string",
+"x-AICPA-Audit-Data-Std": "EnteredDate"
+},
+"CreatedTime": {
+"description": "The time the journal entry was created in the system. Matches AICPA Audit Data Standard element EnteredTime.",
+"example": "01:32",
+"format": "time",
+"type": "string",
+"x-AICPA-Audit-Data-Std": "EnteredTime"
+},
+"LastModifiedBy": {
+"description": "UserID (from UserListing file) for the last person modifying this entry. Matches AICPA Audit Data Standard element LastModifiedBy.",
+"example": "Sam Smith",
+"maxLength": 25,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "LastModifiedBy"
+},
+"LastModifiedDate": {
+"description": "The date the entry was last modified before posting. Matches AICPA Audit Data Standard element LastModifiedDate.",
+"example": "2019-01-01",
+"format": "date",
+"type": "string",
+"x-AICPA-Audit-Data-Std": "LastModifiedDate"
+},
+"ApprovedPersonID": {
+"description": "The unique identifier for the person who approved the entry. Typically auto-generated by the system.  Matches AICPA Audit Data Standard element ApprovedBy.",
+"example": "123456",
+"maxLength": 25,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "ApprovedBy"
+},
+"ApprovedDate": {
+"description": "The date the entry was approved. Matches AICPA Audit Data Standard element ApprovedDate.",
+"example": "2018-12-31",
+"format": "date",
+"type": "string",
+"x-AICPA-Audit-Data-Std": "ApprovedDate"
+},
+"GLLineItem": {
+"properties": {
+"glAccountNumber": {
+"$ref": "#/components/schemas/GLAccountNumber"
+},
+"journalIDLineNumber": {
+"$ref": "#/components/schemas/JournalIDLineNumber"
+},
+"jeLineDescription": {
+"$ref": "#/components/schemas/JELineDescription"
+},
+"amount": {
+"$ref": "#/components/schemas/FunctionalAmount"
+},
+"amountCurrency": {
+"$ref": "#/components/schemas/FunctionalCurrencyCode"
+},
+"reportingAmount": {
+"$ref": "#/components/schemas/ReportingAmount"
+},
+"reportingAmountCurrency": {
+"$ref": "#/components/schemas/ReportingCurrencyCode"
+},
+"localAmount": {
+"$ref": "#/components/schemas/LocalAmount"
+},
+"localAmountCurrency": {
+"$ref": "#/components/schemas/LocalCurrencyCode"
+},
+"transactionAmount": {
+"$ref": "#/components/schemas/TransactionAmount"
+},
+"transactionCurrency": {
+"$ref": "#/components/schemas/TransactionCurrencyCode"
+},
+"amountCreditDebitIndicator": {
+"$ref": "#/components/schemas/CreditDebitIndicator"
+}
+},
+"required": [
+"amount",
+"amountCreditDebitIndicator",
+"amountCurrency",
+"glAccountNumber"
+],
+"type": "object"
+},
+"JournalIDLineNumber": {
+"description": "Identifier that is unique for each line within a journal entry. Matches AICPA Audit Data Standard element JournalIDLineNumber.",
+"example": "1",
+"maxLength": 100,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "JournalIDLineNumber"
+},
+"JELineDescription": {
+"description": "Description of the individual line within the journal entry. Matches AICPA Audit Data Standard element JELineDescription.",
+"example": "Book to accrual account",
+"maxLength": 1000,
+"type": "string",
+"x-AICPA-Audit-Data-Std": "JELineDescription"
+},
+"TransactionAmount": {
+"description": "Amount in the transaction currency.",
+"example": 100,
+"format": "float",
+"nullable": true,
+"type": "number",
+"x-AICPA-Audit-Data-Std": "none"
+},
+"TransactionCurrencyCode": {
+"description": "The currency used in actual transaction (ISO 4217:2015).",
+"maxLength": 3,
+"minLength": 3,
+"type": "string"
+},
+"DocumentInfoOimJson_features": {
+"properties": {
+"xbrl:canonicalValues": {
+"type": "boolean"
+}
+},
+"type": "object"
+},
+"FactsOimJson_aspects": {
+"properties": {
+"concept": {
+"type": "string"
+},
+"entity": {
+"type": "string"
+},
+"period": {
+"type": "string"
+},
+"unit": {
+"type": "string"
+},
+"glAccountNumber": {
+"$ref": "#/components/schemas/GLAccountNumber"
+}
+},
+"type": "object"
+}
+}
+}
 }
