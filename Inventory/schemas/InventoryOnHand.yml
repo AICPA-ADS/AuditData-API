@@ -28,6 +28,8 @@ properties:
   #Inventory_Description
   inventoryDescription:
     $ref: '../../shared/schemas/fields.yml#/InventoryDescription'
+  inventoryBarCode:
+    $ref: '../../shared/schemas/fields.yml#/Inventory_Bar_Code'
   locationID :
     $ref: '../../shared/schemas/fields.yml#/LocationID'
   inventoryQuantity:

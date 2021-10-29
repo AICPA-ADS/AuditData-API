@@ -55,3 +55,38 @@ paths:
                 $ref: './schemas/index.yml#/InventoryOnHandItems'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
+
+  /InventoryTransactions:
+    get:
+      operationId: GetInventoryTransactions
+      tags: [Inventory]      
+      description: >
+        Captures all transaction history (for example, receipts, shipments, transfers, returns, adjustments) affecting inventory accounts during the time period specified.
+
+        Should be able to pass a start and end date and get back a list of all transactions during the period.
+      parameters:
+        - name: startDate
+          in: query
+          description: Returns all invoices with a start date equal or greater than the start date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Returns all invoices with an end date equal or less than the end date.
+          required: true
+          schema:
+            type: string
+            format: date
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
+      
+      responses:
+        '200':
+          description: __GetInventoryTransactions__ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/InventoryTransactionItems'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'

@@ -21,25 +21,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-InventoryOnHandItems:
-  type: array
-  items:
-      $ref: '#/InventoryOnHand'
+type: object
+properties:
+  inventoryProductId:
+    $ref: '../../shared/schemas/fields.yml#/InventoryProductID'
+  transactionType:
+    $ref: '../../shared/schemas/fields.yml#/InventoryTransactionType'
+  transactionDate:
+    $ref: '../../shared/schemas/fields.yml#/TransactionDate'
+  transactionQuantity :
+    $ref: '../../shared/schemas/fields.yml#/TransactionQuantity'
+  transactionDescription:
+    $ref: '../../shared/schemas/fields.yml#/TransactionDescription'
+  inventoryGLLineDebitAccount:
+    $ref: '../../shared/schemas/fields.yml#/GLAccountNumber'
+  inventoryGLLineCreditAccount:
+    $ref: '../../shared/schemas/fields.yml#/GLAccountNumber'
+  #NEW
+  sourceSystem:
+    $ref: '../../shared/schemas/fields.yml#/SourceSystem'
 
-InventoryOnHand: 
-  $ref: InventoryOnHand.yml
-
-InventoryTransactionItems:
-  type: array
-  items:
-      $ref: '#/InventoryTransaction'
-
-InventoryTransaction: 
-  $ref: InventoryTransactions.yml
-
-
-
-
-
-
-      
+required:
+  - inventoryProductId
+  - inventoryQuantity
+  - inventoryStockingUOM
+  - inventoryCost

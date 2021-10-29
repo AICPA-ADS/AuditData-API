@@ -665,6 +665,29 @@ InventoryCost:
   description: Cost per unit using the inventory cost method.
   example: '23.33'
 
+Inventory_Bar_Code:
+  type: string
+  description: UPC product code.
+  example: '122334423432'
+
+TransactionQuantity:
+  type: number
+  description: Quantity or item affected expressed in location stocking unit. Enter stock in as a positive and stock out as a negative.
+  example: '129'
+
+InventoryTransactionType:
+  type: string
+  description: Different software products use different codes and descriptions for the primary inventory-specific actions that take place in inventory transactions related to the movement of goods related to trade, quantity adjustments from internal business events and cost adjustments, due to market factors or damage. While the client and auditor can agree on codes and descriptions to describe the impact on inventory quantities and costs, the use of this set of standard entries can provide an automated understanding of the transaction.
+  example: Receipt
+  enum: ['Damage','Increase_Due_To_Revaluation','Lower_Of_Cost_or_Market_Realization','Moved_From_Production','Moved_To_Production','Obsolete','Physical_Count_Adjustment','Receipt','Return','Scrapped','Shipment','Transfer']
+
+TransactionDescription:
+  type: string
+  description: Description of transaction.
+  example: 'Received Inventory from supplier.'
+
+
+
 
   
 
