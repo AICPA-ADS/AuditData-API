@@ -256,7 +256,7 @@ ReversalIndicator:
   type: string
   maxLength: 1
   example: "1"
-  description: Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty (“”) = none of the above or system generated indicators. Matches AICPA Audit Data Standard element ReversalIndicator.
+  description: Indicates whether this entry is a reversal or to be reversed. EXAMPLE 1 = entry is a reversal, 2 = entry is being reversed, and empty ("") = none of the above or system generated indicators. Matches AICPA Audit Data Standard element ReversalIndicator.
   x-AICPA-Audit-Data-Std: 'ReversalIndicator'
 
 ReversalJournalID:
