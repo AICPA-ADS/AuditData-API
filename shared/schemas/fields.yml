@@ -100,14 +100,14 @@ FiscalYear:
   minLength: 4
   maxLength: 4
   description: |
-    Fiscal year in which the EffectiveDate occurs. The year shall be shown in four digits as “YYYY”, which is part of the extended format and the “YYYYMM-DD” in ISO 8601:2004. Matches AICPA Audit Data Standard element FiscalYear.
+    Fiscal year in which the EffectiveDate occurs. The year shall be shown in four digits as "YYYY", which is part of the extended format and the "YYYYMM-DD" in ISO 8601:2004. Matches AICPA Audit Data Standard element FiscalYear.
   example: 2019
   x-AICPA-Audit-Data-Std: 'FiscalYear'
 
 Period:
   type: string
   maxLength: 15
-  description: Fiscal period in which the effective date occurs. This is the period defined by the company and is not a standardized format. Examples include W1–W53 for weekly periods, M1–M12 for monthly periods,  Q1–Q4 for quarterly periods and Year for Year. Matches AICPA Audit Data Standard element Period.
+  description: Fiscal period in which the effective date occurs. This is the period defined by the company and is not a standardized format. Examples include W1-W53 for weekly periods, M1-M12 for monthly periods,  Q1-Q4 for quarterly periods and Year for Year. Matches AICPA Audit Data Standard element Period.
   example: Year
   x-AICPA-Audit-Data-Std: 'Period'
 
@@ -200,7 +200,7 @@ FunctionalAmount:
   format: float
   nullable: true
   example: 100
-  description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Matches AICPA Audit Data Standard element BusinessUnitCode.
+  description: Transaction monetary amount recorded in the functional or group currency. No multi-currency translation should be performed on this amount because all transactions are recorded in a single currency. Values ae entered as positive value if they are a debit and a negative value if they are a credit. No credit debit indicator is used. Matches AICPA Audit Data Standard element BusinessUnitCode.
   x-AICPA-Audit-Data-Std: 'Amount'
 
 
@@ -209,7 +209,7 @@ ReportingAmount:
   format: float
   nullable: true
   example: 100      
-  description: Transaction monetary amount recorded in the reporting currency. Matches AICPA Audit Data Standard element ReportingAmount.
+  description: Transaction monetary amount recorded in the reporting currency. Values ae entered as positive value if they are a debit and a negative value if they are a credit. Matches AICPA Audit Data Standard element ReportingAmount.
   x-AICPA-Audit-Data-Std: 'ReportingAmount'
 
 ReportingCurrencyCode:
@@ -225,7 +225,7 @@ LocalAmount:
   format: float
   nullable: true
   example: 100
-  description: Amount in the local country currency where the transaction originated. Matches AICPA Audit Data Standard element LocalAmount.
+  description: Amount in the local country currency where the transaction originated. Values ae entered as positive value if they are a debit and a negative value if they are a credit. Matches AICPA Audit Data Standard element LocalAmount.
   x-AICPA-Audit-Data-Std: 'LocalAmount'
 
 LocalCurrencyCode:
@@ -241,7 +241,7 @@ TransactionAmount:
   format: float
   nullable: true
   example: 100      
-  description: Amount in the transaction currency.
+  description: Amount in the transaction currency. Values ae entered as positive value if they are a debit and a negative value if they are a credit.
   x-AICPA-Audit-Data-Std: 'none'
 
 CreditDebitIndicator:
@@ -280,9 +280,9 @@ EnteredBy:
 
 CreatedDate:
   type: string
-  format: date
-  description: The date the journal entry was created in the system. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date. Matches AICPA Audit Data Standard element EnteredDate.
-  example: "2019-01-01"
+  format: date-time
+  description: The date and time the journal entry was created in the system recorded at UTC time. This sometimes refers to the creation date. This should be a system-generated date (rather than user-created date), when possible. This date does not necessarily correspond with the date when the journal entry was posted to the GL or the period-end date. Matches AICPA Audit Data Standard element EnteredDate.
+  example: "2019-01-01T09:12:28"
   x-AICPA-Audit-Data-Std: 'EnteredDate'
   
 CreatedTime:
@@ -301,9 +301,9 @@ LastModifiedBy:
 
 LastModifiedDate:
   type: string
-  format: date
-  description: The date the entry was last modified before posting. Matches AICPA Audit Data Standard element LastModifiedDate.
-  example: "2019-01-01"
+  format: date-time
+  description: The date time the entry was last modified before posting. The date time is recorded using UTC date time in ISO 8601 format. Matches AICPA Audit Data Standard element LastModifiedDate.
+  example: "2019-01-01T09:12:28"
   x-AICPA-Audit-Data-Std: 'LastModifiedDate'
 
 ApprovedPersonID:
@@ -315,9 +315,9 @@ ApprovedPersonID:
   
 ApprovedDate:
   type: string
-  format: date
-  description: The date the entry was approved. Matches AICPA Audit Data Standard element ApprovedDate.
-  example: '2018-12-31'
+  format: date-time
+  description: The date time the the entry was approved. The date time is recorded using UTC date time in ISO 8601 format. Matches AICPA Audit Data Standard element ApprovedDate.
+  example: '2018-12-31T09:12:28'
   x-AICPA-Audit-Data-Std: 'ApprovedDate'
   
 
@@ -518,18 +518,18 @@ CustomerAccountName:
 CustomerTIN:
   type: string
   maxLength: 100
-  description: The customer’s tax identification number. This number is usually generated by tax regulator.
+  description: The customer's tax identification number. This number is usually generated by tax regulator.
   example:
 
 CustomerStreetAddress1:
   type: string
   maxLength: 100
-  description: Line 1 of the customer’s physical street address.
+  description: Line 1 of the customer's physical street address.
 
 CustomerStreetAddress2:
   type: string
   maxLength: 100
-  description: Line 2 of the customer’s physical street address.
+  description: Line 2 of the customer's physical street address.
   example:
 
 CustomerCity:
@@ -552,13 +552,13 @@ CustomerCountry:
 CustomerBillingAddress1:
   type: string
   maxLength: 100
-  description: Line 1 of the customer’s billing address.
+  description: Line 1 of the customer's billing address.
   example:
 
 CustomerBillingAddress2:
   type: string
   maxLength: 100
-  description: Line 2 of the customer’s billing address.
+  description: Line 2 of the customer's billing address.
   example:
 
 CustomerBillingCity:
@@ -569,7 +569,7 @@ CustomerBillingCity:
 CustomerBillingPostalCode:
   type: string
   maxLength: 20
-  description: The billing postal code of the customer’s city.
+  description: The billing postal code of the customer's city.
   example:
 
 CustomerBillingCountry:
@@ -600,7 +600,7 @@ TransactionCreditLimit:
 
 CustomerCreditLimit:
   type: number
-  description: The credit limit for this customer’s total outstanding balance.
+  description: The credit limit for this customer's total outstanding balance.
   example: '2500'
 
 CustomerTermsDueDays:

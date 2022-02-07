@@ -63,12 +63,12 @@ properties:
   # The ISO standard changed it to CreatedUserId. 
   enteredBy:
     $ref: '../../shared/schemas/fields.yml#/EnteredBy'
-  #In AICPA and called CreatedDate in ISO
+  #In AICPA and called CreatedDate in ISO. Should be format ISO 8601 for UTC time
   enteredDate:
     $ref: '../../shared/schemas/fields.yml#/CreatedDate'
-  #In AICPA and called CreatedTime in ISO
-  enteredTime:
-    $ref: '../../shared/schemas/fields.yml#/CreatedTime'
+  #In AICPA and called CreatedTime in ISO. Entered Time was removed as captured by entered date.
+  # enteredTime:
+  #  $ref: '../../shared/schemas/fields.yml#/CreatedTime'
   #AICPA ONLY
   lastModifiedBy:
     $ref: '../../shared/schemas/fields.yml#/LastModifiedBy'

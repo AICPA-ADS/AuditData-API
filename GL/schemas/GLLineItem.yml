@@ -27,28 +27,28 @@ properties:
   glAccountNumber:
     $ref: '../../shared/schemas/fields.yml#/GLAccountNumber'
   #In AICPA and ISO
-  journalIDLineNumber:
+  journalIdLineNumber:
     $ref: '../../shared/schemas/fields.yml#/JournalIDLineNumber'
   #In AICPA and ISO
   jeLineDescription:
     $ref: '../../shared/schemas/fields.yml#/JELineDescription'
   #Amount in AICPA FunctionalAmount in ISO
-  amount:
+  functionalAmount:
     $ref: '../../shared/schemas/fields.yml#/FunctionalAmount'
   #AmountCurrency in AICPA FunctionalAmount in ISO
-  amountCurrency:
+  functionalCurrency:
     $ref: '../../shared/schemas/fields.yml#/FunctionalCurrencyCode'
   #In AICPA and ISO
   reportingAmount:
     $ref: '../../shared/schemas/fields.yml#/ReportingAmount'
   #In AICPA and ISO as ReportingCurrencyCode
-  reportingAmountCurrency:
+  reportingCurrency:
     $ref: '../../shared/schemas/fields.yml#/ReportingCurrencyCode'
   #In AICPA and ISO
   localAmount:
     $ref: '../../shared/schemas/fields.yml#/LocalAmount' 
   #In AICPA and ISO as LocalCurrencyCode
-  localAmountCurrency:
+  localCurrency:
     $ref: '../../shared/schemas/fields.yml#/LocalCurrencyCode'
   #ISO ONLY
   transactionAmount:
@@ -56,9 +56,8 @@ properties:
   #ISO ONLY
   transactionCurrency:
     $ref: '../../shared/schemas/fields.yml#/TransactionCurrencyCode'
-  #AmountCreditDebitIndicator in AICPA CreditDebitIndicator in ISO
-  amountCreditDebitIndicator:
-    $ref: '../../shared/schemas/fields.yml#/CreditDebitIndicator'
+  #AmountCreditDebitIndicator in AICPA CreditDebitIndicator in ISO was removed and amounts entered as negative or positive.
+
     
 required:
   - glAccountNumber

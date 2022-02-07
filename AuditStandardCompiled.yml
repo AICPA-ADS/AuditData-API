@@ -2610,7 +2610,7 @@
 "glAccountNumber": {
 "$ref": "#/components/schemas/GLAccountNumber"
 },
-"journalIDLineNumber": {
+"journalIdLineNumber": {
 "$ref": "#/components/schemas/JournalIDLineNumber"
 },
 "jeLineDescription": {
