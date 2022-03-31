@@ -78,3 +78,21 @@ paths:
                 $ref: './schemas/index.yml#/Entities'
         '400':
           $ref: '../shared/responses/index.yml#/BadRequest'
+
+  /Users:
+    get:
+      operationId: GetUsers
+      tags: [Users]      
+      description: >
+        Allows requesting user details from the API based on a Userid.
+      parameters:
+        - $ref: '../shared/parameters/index.yml#/userIdParam'
+      responses:
+        '200':
+          description: _users_ successfully accepted
+          content:  
+            application/json:
+              schema:
+                $ref: './schemas/index.yml#/Users'
+        '400':
+          $ref: '../shared/responses/index.yml#/BadRequest'

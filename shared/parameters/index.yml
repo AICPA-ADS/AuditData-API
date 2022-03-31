@@ -60,3 +60,11 @@ supplierAccountIDParam:
   required: false
   schema:
     type: string
+
+userIdParam:
+  in: query
+  name: userId
+  description: A unique identifier of individuals entering transactions into the ERP system. 
+  required: false
+  schema:
+    type: string

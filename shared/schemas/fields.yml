@@ -686,6 +686,45 @@ TransactionDescription:
   description: Description of transaction.
   example: 'Received Inventory from supplier.'
 
+Department:
+  type: string
+  description: The department the person is part of (for example, accounting).
+  example: 'Accounting'
+
+FirstName:
+  type: string
+  description: The first (given) name of the person.
+  example: 'Luke'
+
+LastName:
+  type: string
+  description: The last (family) name of the person.
+  example: 'Lucky'
+
+RoleResponsibility:
+   type: string
+   description: The persons functional role or primary responsibility.
+   example: 'Account Payable'
+
+Title:
+  type: string
+  description: The title of the person.
+  example: 'Accounting Manager'
+
+UserActiveModifiedDate:
+  type: date
+  description: The date of user activation or termination.
+  example: '2021-12-31'
+
+UserActiveStatus:
+  type: boolean
+  description: The status of users (for identification of transactions by inactive users). The value of this field should be either 'true' if active  or false if inactive.
+  example: 'true'
+
+UserId:
+  type: string
+  description: A unique identifier of individuals entering transactions into the ERP system. This field is used to join information in this request to other requests based on the fields EnteredBy, LastModifiedBy, and ApprovedPersonID.
+  example: 'U1234'
 
 
 

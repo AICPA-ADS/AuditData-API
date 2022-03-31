@@ -3,5 +3,10 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"yaml.schemas": {
+			"openapi:v3": "file:///Users/campbellpryde/Documents/GitHub/AuditData-API/AuditDataStandard.yml"
+		}
+	}
 }

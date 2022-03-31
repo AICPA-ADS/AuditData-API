@@ -22,12 +22,6 @@
 # SOFTWARE.
 
 
-#--------OUTSTANDING ITEMS  -----------
-
-# PAGINATION
-# Define pagination scheme if this implemented by an API provider. Don't want implementers to use different 
-# schemes thus making the API incompatible.
-
 openapi: 3.0.0
 servers:
   - url: /AuditDataOpenAPI/v1.0
@@ -54,6 +48,9 @@ paths:
 
   /Entities/{entityId}/Periods:
     $ref: './Entities/index.yml#/paths/~1Periods'
+  
+  /Entities/{entityId}/Users:
+    $ref: './Entities/index.yml#/paths/~1Users'
 
   /Entities/{entityId}/GL/Journals:
     $ref: './GL/index.yml#/paths/~1Journals'
