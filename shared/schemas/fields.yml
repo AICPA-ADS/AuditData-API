@@ -726,6 +726,10 @@ UserId:
   description: A unique identifier of individuals entering transactions into the ERP system. This field is used to join information in this request to other requests based on the fields EnteredBy, LastModifiedBy, and ApprovedPersonID.
   example: 'U1234'
 
+UserTimeZone:
+  type: string
+  description: The time zone in which the user is based, in the format (UTC-07:00) for Mountain Time USA or (UTC+10:00) for Brisbane Australia.
+  example: '(UTC-07:00)'
 
 
   

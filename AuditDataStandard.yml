@@ -33,6 +33,8 @@ info:
 tags:
   - name: Entities
     description: Used across modules.
+  - name: Users
+    description: Used to request System User Information
   - name: General Ledger
     description: Used to request General Ledger Information
   - name: Accounts Receivable
