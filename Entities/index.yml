@@ -87,6 +87,7 @@ paths:
         Allows requesting user details from the API based on a Userid.
       parameters:
         - $ref: '../shared/parameters/index.yml#/userIdParam'
+        - $ref: '../shared/parameters/index.yml#/entityIdRequiredParam'
       responses:
         '200':
           description: _users_ successfully accepted
