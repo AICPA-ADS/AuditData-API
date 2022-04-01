@@ -20,7 +20,26 @@ The journal entries end point allows a user to request journal entries for a spe
 
 To return data for a specific time range the user provides the start date and the end date.  This date refers to the effective date of the journal entry.
 
-If the system contains journal entry data for multiple entities then the system will determine which entity information to return based on the user making the request.  This is system dependent.
+If the system contains journal entry data for multiple entities then the system will return the journals based on the entity id that must be provided as a component of the request.
+
+The journal entries include 4 different amounts that can be reported for each transaction with an associated currency. These are:
+* Functional Amount
+* Reporting (Presentation) Amount
+* Local Amount
+* Transaction Amount
+
+#### Functional Amount
+The functional amount is the primary currency in which the economic activity of the entity occurs. This is the entities operating currency and is determined by the management of the entity. The functional currency is typically the local currency of where the entity resides, but doesn't have to be.  An entity based in Deleware for example may conduct the majority of it operations in the UK and may decide to have a functionional currency of GBP vs USD.
+
+#### Reporting (Presentation) Amount
+The reporting amount refers to the currency that is used to report the financial statements. The functional currency of a subsidiary using GBP may differ from the functional currency of its parent company using USD that reports the consolidated results in USD. In this case the reporting currency of the subsidiary (USD) would differ from its functional currency of GPB.
+
+#### Local Amount
+The currency of the country where the entity is operating is referred to as the local currency. In most cases the local currency will be the same as the functional currency of the entity. A currency that is different than an entity's functional currency is for accounting purposes treated as a forign currency, and thus subject to Forign Exchange adjustments.
+
+#### Transaction Amount
+The transaction amount is the value in the currency in which the transaction occured. All journals should have a transactional amount.  This reflects that actual currency that was used to conduct the transcation.  For a domestic entity this will typically be the same as the functional currency. Every journal must have a Transaction amount and currency.
+
 
 
 ### Trial Balance
