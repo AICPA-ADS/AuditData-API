@@ -719,7 +719,7 @@ UserActiveModifiedDate:
 UserActiveStatus:
   type: boolean
   description: The status of users (for identification of transactions by inactive users). The value of this field should be either 'true' if active  or false if inactive.
-  example: 'true'
+  example: true
 
 UserId:
   type: string
