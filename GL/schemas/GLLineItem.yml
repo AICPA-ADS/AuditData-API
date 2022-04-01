@@ -61,6 +61,5 @@ properties:
     
 required:
   - glAccountNumber
-  - amount
-  - amountCreditDebitIndicator
-  - amountCurrency
+  - transactionAmount
+  - transactionCurrency

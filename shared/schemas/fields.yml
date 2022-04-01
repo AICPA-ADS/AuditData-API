@@ -712,7 +712,8 @@ Title:
   example: 'Accounting Manager'
 
 UserActiveModifiedDate:
-  type: date
+  type: string  
+  format: date
   description: The date of user activation or termination.
   example: '2021-12-31'
 
