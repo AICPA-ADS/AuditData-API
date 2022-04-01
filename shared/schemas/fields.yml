@@ -728,8 +728,8 @@ UserId:
 
 UserTimeZone:
   type: string
-  description: The time zone in which the user is based, in the format (UTC-07:00) for Mountain Time USA or (UTC+10:00) for Brisbane Australia.
-  example: '(UTC-07:00)'
+  description: The time zone in which the user is based, in the format UTC-07:00 for Mountain Time USA or UTC+10:00 for Brisbane Australia.
+  example: 'UTC-07:00'
 
 
   
