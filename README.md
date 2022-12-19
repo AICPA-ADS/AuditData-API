@@ -32,7 +32,11 @@ The  scope of the APIs covers the following:
 * Purchase Ledger and Accounts Payable
 * Inventory
 
+In addition the API's cover the definition of Users and Entities. These can be used across the different scope area's using consistent keys.
+
 The Working Group focused on developing and publishing the APIs, and promoting their adoption among auditees, ERP companies that work with them, and audit data extraction and analytics providers. 
+
+The API does not cover Property Plant and Equipment or Payroll.
 
 ### Data Security
 The the API standard will not provide prescriptive guidance on security topics such as specific authentication/authorization schemes or in-transit data security, and will instead treat those as details to be chosen between implementing parties. The standard may address additional security concerns by providing implementation notes, as required.
